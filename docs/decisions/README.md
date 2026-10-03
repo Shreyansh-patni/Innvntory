@@ -6,17 +6,18 @@ This directory holds Innvntory's architectural decision records (ADRs).
 
 ## Status
 
-**Three decisions accepted.**
+**Four decisions accepted.**
 
 | # | Decision | Status | Date |
 |---|---|---|---|
-| [0001](0001-backend-architecture.md) | Backend architecture — dedicated backend service (modular monolith) | **Accepted** | 2026-10-03 |
-| [0002](0002-frontend-framework.md) | Frontend framework — **Next.js + React** | **Accepted** | 2026-10-03 |
-| [0003](0003-database-isolation-access-layer.md) | Database isolation & access layer — **Option C, hybrid application + PostgreSQL RLS** | **Accepted** | 2026-10-04 |
+| [0001](0001-backend-architecture.md) | Backend architecture - dedicated backend service (modular monolith) | **Accepted** | 2026-10-03 |
+| [0002](0002-frontend-framework.md) | Frontend framework - **Next.js + React** | **Accepted** | 2026-10-03 |
+| [0003](0003-database-isolation-access-layer.md) | Database isolation & access layer - **Option C, hybrid application + PostgreSQL RLS** | **Accepted** | 2026-10-04 |
+| [0004](0004-orm-query-access-and-pooling.md) | ORM, query access, pooling, roles & platform access - **Drizzle + transaction-local context** | **Accepted** | 2026-10-04 |
 
-The decisions that still need records are listed in `docs/ARCHITECTURE.md` §15. The
-next open decision is the **ORM / query-access policy (Q4)**, followed by the
-connection-pooling mode (Q5).
+**No architecture blocker remains** for initial application scaffolding and the
+identity/tenant/RBAC schema foundation. The decisions still needing records are listed
+in `docs/ARCHITECTURE.md` §15.
 
 ### A note on ADR 0001
 
@@ -144,3 +145,4 @@ Maintain this list as records are added.
 | [0001](0001-backend-architecture.md) | Backend architecture | **Accepted** | 2026-10-03 |
 | [0002](0002-frontend-framework.md) | Frontend framework — Next.js + React | **Accepted** | 2026-10-03 |
 | [0003](0003-database-isolation-access-layer.md) | Database isolation & access layer — Option C (hybrid) | **Accepted** | 2026-10-04 |
+| [0004](0004-orm-query-access-and-pooling.md) | ORM, query access, pooling, roles & platform access — Drizzle | **Accepted** | 2026-10-04 |

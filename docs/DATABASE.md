@@ -281,8 +281,6 @@ both driven by one `TenantContext`.
 
 ```text
 TBD — architectural decision required
-  · ORM / query builder / raw-SQL policy (ADR 0003 Q4)
-  · Connection pooling mode (ADR 0003 Q5) — required before schema work
   · Migration tool and review process
   · Money representation (integer minor units vs decimal) and currency column
   · Timezone, fiscal year, and financial period handling for an India-first market
@@ -293,8 +291,6 @@ TBD — architectural decision required
   · Idempotency-key storage design
   · Audit log retention and archival
   · Data residency (unaddressed in the specification)
-  · Support/platform cross-tenant access model (ADR 0003 Q2)
-  · `users` table ownership details (ADR 0003 Q6)
 ```
 
 **Resolved and closed here:**

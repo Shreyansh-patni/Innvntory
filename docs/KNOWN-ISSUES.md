@@ -121,9 +121,11 @@ fan-out.
   (`roles`, `permissions`, `role_permissions`), with *assignments* organization-scoped
   via `organization_memberships`. No additional role model beyond this.
 
-**Still open from ADR 0003:** Q2 support/platform cross-tenant access · **Q4 ORM /
-query policy** · **Q5 connection pooling mode** · Q6 `users` ownership details · Q7
-operator/migration bypass auditing. Q4 and Q5 are required before schema work.
+**All five follow-on questions resolved** in [ADR
+0004](decisions/0004-orm-query-access-and-pooling.md) (`Accepted`, 2026-10-04): Q2
+explicit operator context · Q4 Drizzle + raw-SQL boundary · Q5 transaction-pooling
+compatibility with `SET LOCAL` · Q6 `users` as platform identity with
+`organization_memberships` · Q7 non-owner runtime role with audited operator paths.
 
 Also open elsewhere: money representation, timezone and fiscal-calendar handling,
 and fractional-quantity support (implied but not decided — spec §10 lists "Unit" as a

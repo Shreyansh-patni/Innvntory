@@ -1,107 +1,35 @@
-# Innvntory — repository ignore rules
-#
-# Phase 0 note:
-# The application stack is not installed yet, so many entries below are
-# forward-looking. They are recorded now so the contract is explicit before any
-# code lands, not because these tools are currently in use.
-
-# ---------------------------------------------------------------------------
-# Dependencies
-# ---------------------------------------------------------------------------
+# Dependencies — installed by the package manager, never committed.
 node_modules/
-.pnp
-.pnp.js
-.yarn/cache
-.yarn/unplugged
-.yarn/build-state.yml
-.yarn/install-state.gz
-bun.lockb
+.pnpm-store/
 
-# ---------------------------------------------------------------------------
 # Build output
-# ---------------------------------------------------------------------------
 dist/
+dist-test/
 build/
 out/
 .next/
-.nuxt/
-.svelte-kit/
-.turbo/
-.astro/
-.vercel/
-.wrangler/
 *.tsbuildinfo
+.turbo/
 
-# ---------------------------------------------------------------------------
-# Environment and secrets
-# ---------------------------------------------------------------------------
-# Only .env.example is tracked. Never commit a real environment file.
+# Test / coverage
+coverage/
+.nyc_output/
+
+# Environment and secrets — only .env.example is tracked
 .env
 .env.*
 !.env.example
 
-# ---------------------------------------------------------------------------
-# Test and coverage output
-# ---------------------------------------------------------------------------
-coverage/
-.nyc_output/
-test-results/
-playwright-report/
-blob-report/
-.playwright/
-.vitest/
-
-# ---------------------------------------------------------------------------
-# Logs
-# ---------------------------------------------------------------------------
-logs/
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
-
-# ---------------------------------------------------------------------------
-# Caches
-# ---------------------------------------------------------------------------
-.cache/
-.eslintcache
-.stylelintcache
-.parcel-cache/
-.turbo-cache/
-.swc/
-
-# ---------------------------------------------------------------------------
-# Editor and OS noise
-# ---------------------------------------------------------------------------
-.vscode/*
-!.vscode/extensions.json
-!.vscode/settings.json
-.idea/
-*.swp
-*.swo
-*~
-Thumbs.db
-Desktop.ini
-.DS_Store
-.AppleDouble
-.LSOverride
-._*
-
-# ---------------------------------------------------------------------------
-# Local tooling scratch
-# ---------------------------------------------------------------------------
-.tmp/
-tmp/
-scratch/
-*.local
-*.local.json
-
-# ---------------------------------------------------------------------------
-# Local infrastructure state
-# ---------------------------------------------------------------------------
-# Local database volumes and service state must never be committed.
-docker-compose.override.yml
+# Local PostgreSQL / PGDATA volumes
+pgdata/
 .pgdata/
 postgres-data/
+
+# Editor and OS noise
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
+*.log

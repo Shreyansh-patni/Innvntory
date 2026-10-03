@@ -5,6 +5,7 @@
 - **Accepted:** 2026-10-04
 - **Decision authority:** Human-approved architectural decision
 - **Accepted decision:** Option C — Hybrid application + PostgreSQL enforcement
+- **Follow-on:** Q2, Q4, Q5, Q6 and Q7 resolved in [ADR 0004](0004-orm-query-access-and-pooling.md) (`Accepted`, 2026-10-04)
 - **Specification references:** `Innvntory.md.txt` §4.8, §4.9, §4.10, §31, §32, §33, §34, §35, §43, §50, §54, §55, §56, §58, §59, §60, §61, §66, §83, §88
 - **Related:** [ADR 0001 — Backend Architecture](0001-backend-architecture.md) (`Accepted`), [ADR 0002 — Frontend Framework](0002-frontend-framework.md) (`Accepted`)
 - **Supersedes:** nothing
@@ -805,6 +806,23 @@ organization_memberships
 **None of these five may be resolved by an agent, and none is treated as decided.**
 Q4 and Q5 should be settled before any schema or connection work begins, since both
 determine how requirement 3 and I4 are implemented in practice.
+
+> ### Later resolution — 2026-10-04, [ADR 0004](0004-orm-query-access-and-pooling.md) (`Accepted`)
+>
+> All five questions above were resolved by the human owner in ADR 0004. **The accepted
+> ADR 0003 architecture is unchanged.** This section is retained verbatim as the
+> historical record of what was open at the time.
+>
+> | # | Resolution (ADR 0004) |
+> |---|---|
+> | Q2 | **Explicit operator context.** Tenant requests always operate inside a `TenantContext`. Cross-tenant/platform operations use a separate operator context, **never inferred from a missing `organizationId`**. Explicit platform permissions, explicitly audited. RLS fails closed for tenant context. No "admin sees everything" inside tenant services. |
+> | Q4 | **TypeScript + Drizzle ORM** as the canonical data-access layer. No Prisma, no second ORM. Raw SQL only for PostgreSQL infrastructure, genuinely inexpressible queries, or documented reporting cases — always parameterized. |
+> | Q5 | **Transaction-pooling compatible** (PgBouncer transaction mode in production). Tenant context via **`SET LOCAL`** inside the same transaction. **Never** session-level `SET`; never connection affinity; a pooled connection must not retain tenant state. |
+> | Q6 | **`users` is platform-level identity** with no permanent `organization_id`. Membership lives in `organization_memberships` (user_id, organization_id, role_id, status). Active organization is session state. No parallel membership model. |
+> | Q7 | **Runtime role must not own tables**; a separate migration role owns schema. Tenant runtime cannot bypass RLS. Privileged operator paths are explicit, separately permissioned, and audited. No hidden god mode. Audit captures actor, org context, action, target, timestamp, correlation id — never secrets. |
+>
+> I4 and I5 — the pooling and role-bypass hazards identified in this record — are
+> directly answered by ADR 0004's Q5 and Q7 respectively.
 
 ---
 

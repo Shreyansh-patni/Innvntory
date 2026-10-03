@@ -131,9 +131,12 @@ missing-filter returns zero rows, T4 pooled-connection context reset, T5 runtime
 role is not owner, T6 every tenant table has an active policy, T7 worker isolation,
 T8 AI-tool isolation.
 
-**Still open:** `ADR 0003` Q2 (support/platform cross-tenant access), Q5
-(connection pooling mode), Q6 (`users` ownership details), Q7 (operator/migration
-bypass and its auditing), and Q4 (ORM/query policy). See `docs/DATABASE.md` §4.
+**Resolved by [ADR 0004](decisions/0004-orm-query-access-and-pooling.md)**
+(`Accepted`, 2026-10-04): Drizzle is the sole data-access interface; tenant context uses
+**transaction-local `SET LOCAL`** and is pool-safe; the **runtime role must not own
+tables** (owner bypasses RLS); platform/cross-tenant access requires an **explicit
+audited operator context** that is never inferred from a missing `organizationId`.
+See `docs/DATABASE.md` §4.
 
 ---
 

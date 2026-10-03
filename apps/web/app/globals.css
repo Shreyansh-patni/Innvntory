@@ -1,0 +1,224 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   Innvntory design tokens
+   --------------------------------------------------------------------------
+   Direction from docs/DESIGN-SYSTEM.md: warm cream canvas, near-black ink,
+   hairline borders, restrained radius, generous whitespace, minimal shadow.
+
+   HONESTY: docs/DESIGN-SYSTEM.md records the brand identity, palette, and
+   typeface as TBD (blocked on the brand decision). These values are a coherent
+   PROVISIONAL system built to validate the design direction, not an approved
+   brand palette. When brand tokens land, only this block changes.
+   ========================================================================== */
+
+@theme {
+  /* Surfaces — warm, never stark white (long operational sessions) */
+  --color-canvas: #faf9f7;
+  --color-canvas-soft: #f5f4f1;
+  --color-surface: #ffffff;
+  --color-surface-muted: #f7f6f4;
+
+  /* Ink — warm near-black, never pure #000 */
+  --color-ink: #17161a;
+  --color-ink-secondary: #45434c;
+  --color-ink-muted: #6f6c78;
+  --color-ink-faint: #9a97a1;
+  --color-ink-disabled: #b8b5bd;
+
+  /* Hairlines carry all depth. No drop shadows. */
+  --color-hairline: #e8e6e2;
+  --color-hairline-soft: #f0eeeb;
+  --color-hairline-strong: #d6d3cd;
+
+  /* Primary action is INK. Black CTAs, per the approved direction. */
+  --color-primary: #17161a;
+  --color-primary-hover: #2a2830;
+  --color-primary-active: #0d0c0f;
+  --color-on-primary: #ffffff;
+
+  /* A single restrained accent. Used sparingly — never as a second CTA colour. */
+  --color-accent: #2f5d50;
+  --color-accent-soft: #eef2f0;
+
+  /* Semantic — never the sole carrier of meaning (DESIGN-SYSTEM.md §10) */
+  --color-positive: #1f6f4f;
+  --color-positive-soft: #edf5f1;
+  --color-caution: #8a6116;
+  --color-caution-soft: #faf3e7;
+  --color-critical: #a33434;
+  --color-critical-soft: #fbeeee;
+
+  /* Typography — system stack pending the brand typeface decision */
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", "JetBrains Mono", Menlo,
+    Consolas, monospace;
+
+  /* Restrained radius */
+  --radius-xs: 3px;
+  --radius-sm: 5px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  /* Generous whitespace, 4px base */
+  --spacing-section: 5rem;
+
+  /* Motion — short and functional; reduced-motion honoured below */
+  --duration-fast: 120ms;
+  --duration-base: 180ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "kern", "liga", "calt";
+}
+
+/* A single, consistent focus ring everywhere. Never removed. */
+:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Honour reduced motion globally (DESIGN-SYSTEM.md §8, spec §72). */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ==========================================================================
+   Structural background
+   Subtle geometric field, not a gradient spectacle.
+   ========================================================================== */
+
+.grid-field {
+  background-image:
+    linear-gradient(to right, var(--color-hairline-soft) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--color-hairline-soft) 1px, transparent 1px);
+  background-size: 72px 72px;
+  background-position: center top;
+}
+
+.hairline-grid {
+  background-image:
+    linear-gradient(to right, var(--color-hairline) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--color-hairline) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+/* ==========================================================================
+   Component primitives
+   ========================================================================== */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1;
+  border-radius: var(--radius-md);
+  padding: 0.625rem 1.125rem;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition:
+    background-color var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+}
+.btn-primary:hover {
+  background-color: var(--color-primary-hover);
+}
+.btn-primary:active {
+  background-color: var(--color-primary-active);
+}
+
+.btn-secondary {
+  background-color: var(--color-surface);
+  color: var(--color-ink);
+  border-color: var(--color-hairline-strong);
+}
+.btn-secondary:hover {
+  background-color: var(--color-surface-muted);
+}
+
+.btn-ghost {
+  background-color: transparent;
+  color: var(--color-ink-secondary);
+}
+.btn-ghost:hover {
+  background-color: var(--color-surface-muted);
+  color: var(--color-ink);
+}
+
+.btn:disabled,
+.btn[aria-disabled="true"] {
+  cursor: not-allowed;
+  color: var(--color-ink-disabled);
+  background-color: var(--color-surface-muted);
+  border-color: var(--color-hairline);
+}
+
+/* Cards: hairline only. No shadow. */
+.card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-lg);
+}
+
+/* Tabular figures for money, quantities and stock counts. */
+.tabular {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Section label: small, uppercase, tracked. */
+.eyebrow {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+}
+
+/* Status dot: always paired with a text label, never used alone. */
+.status-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  flex: none;
+}

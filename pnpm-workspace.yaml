@@ -1,0 +1,16 @@
+packages:
+  - "apps/*"
+  - "packages/*"
+
+allowBuilds:
+  '@tailwindcss/oxide': set this to true or false
+  esbuild: set this to true or false
+  sharp: set this to true or false
+
+# pnpm 11 reads settings from this file, not from package.json.
+# Explicitly allowed postinstall scripts, and nothing else:
+#   sharp  - places the native image-optimisation binaries Next.js uses.
+# Everything else stays blocked by the supply-chain policy.
+onlyBuiltDependencies:
+  - sharp
+  - "@tailwindcss/oxide"
