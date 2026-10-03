@@ -184,6 +184,85 @@ Context → Plan → Implement → Validate → Review → Commit
 Work in small, controlled, verifiable slices. Do not make broad speculative changes.
 See `docs/DEVELOPMENT.md`.
 
+The commit and push steps of that loop are governed by
+[Git and GitHub Workflow](#git-and-github-workflow) below.
+
+---
+
+## Git and GitHub Workflow
+
+Git commit and GitHub synchronisation are part of the normal development loop, not a
+separate manual activity. For every **meaningful, self-contained task**, an agent
+follows this sequence to completion:
+
+```text
+Plan → Implement → Validate → Review diff → Commit → Push → Report → Stop
+```
+
+### Sequence
+
+1. **Implement only the requested scope.** No adjacent improvements, no unrequested
+   files.
+2. **Run the appropriate validation** per §7.
+3. **Do not commit if validation fails.** Fix the cause, or report the failure and
+   stop. Never weaken or skip a check to make a change look green.
+4. **Review `git diff`.** Read every changed line before committing.
+5. **Review `git status`.** Confirm no unrelated file changed and nothing untracked
+   was overlooked.
+6. **Commit the completed task** with a concise conventional commit message.
+7. **Push** the commit to the configured GitHub remote.
+8. **Report**: commit hash, commit message, push result, branch, validation
+   performed, and final `git status`.
+9. **Stop.** Do not begin the next task automatically.
+
+### What counts as a meaningful task
+
+A completed, independently reviewable unit of work — for example:
+
+```text
+architectural decision · feature · page · component system
+integration · bug fix · documented configuration change
+```
+
+Do **not** create a commit for every individual file edit or a small formatting
+change. Do not bundle several unrelated tasks into one commit.
+
+### Prohibited
+
+An agent must never:
+
+```text
+commit while validation is failing
+push broken or unvalidated work
+push secrets, credentials, or real .env files
+push node_modules, build output, or generated/temporary artefacts
+amend a previous commit unless explicitly requested
+rewrite history
+force push
+create unrelated or empty commits
+continue into a further task after pushing
+```
+
+Before committing, confirm the staged set contains no secret, no `.env`, and no
+generated artefact. `.gitignore` is the safety net, not the check.
+
+### GitHub remote
+
+An agent must **not** create a GitHub repository, and must **not** invent or guess a
+GitHub URL. A remote is connected only by explicit human instruction.
+
+- **Until a remote is configured**, commit locally only and report exactly:
+  `GitHub remote not configured; commit locally only.`
+- **Once a remote is configured**, push automatically as step 7 above, and include
+  the push result in the report. If a push fails, report the failure — never retry
+  destructively and never force-push to get green.
+
+### Branches
+
+Specification §64 suggests `main`, `develop`, `feature/*`, `fix/*`, `hotfix/*`.
+Never commit directly to `main` without an explicit instruction. Production
+deployments remain traceable to a commit (spec §64).
+
 ---
 
 ## 9. Definition of done
