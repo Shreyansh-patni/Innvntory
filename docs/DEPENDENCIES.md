@@ -113,7 +113,7 @@ decided; the rest of the stack is not.**
 
 | Layer | Named in spec §61 | Status |
 |---|---|---|
-| Frontend framework | Next.js | Candidate. Not decided. Not installed. Proposal in [ADR 0002](decisions/0002-frontend-framework.md) recommends React + Vite; **still pending human approval** |
+| Frontend framework | Next.js | **DECIDED — Next.js + React**, [ADR 0002](decisions/0002-frontend-framework.md), Accepted 2026-10-03. Not installed. Versions (U5) still open |
 | UI runtime | React | Candidate. Not decided. Not installed |
 | Language | TypeScript | Candidate. Not decided. Not installed |
 | Styling | Tailwind CSS | Candidate. Not decided. Not installed |

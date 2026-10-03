@@ -57,36 +57,38 @@ risk**. Neither blocks further work.
 all implementation work, because the backend boundary in ADR 0001 is defined
 relative to it.
 
-### 1.2 Frontend framework and rendering strategy
+### 1.2 Frontend framework and rendering strategy — **RESOLVED (framework)**
 
-**Status:** Open — **proposal written, pending human approval.** See
-[`docs/decisions/0002-frontend-framework.md`](decisions/0002-frontend-framework.md)
-(`Proposed`).
+**Status:** Framework **DECIDED** — **Next.js + React**, 2026-10-03, [ADR
+0002](decisions/0002-frontend-framework.md) (`Accepted`). **Per-route rendering
+strategy (U2) remains open.**
 
-Specification §61 names Next.js / React / TypeScript / Tailwind CSS as a *possible*
-stack. That is not a decision. Rendering strategy (SSR / SSG / ISR / client, per
-route class), the data-fetching layer, and the route structure are all undecided.
+ADR 0002 accepted Option A after the human owner answered the three questions no
+agent could resolve from the project documents:
 
-ADR 0002 evaluates Next.js + React against React + Vite, plus a split option, and
-recommends **Option B (React + Vite)** on documented requirements — because the
-specification never states an SEO, SSR or rendering requirement, and ADR 0001's D2
-structurally prevents a client-only frontend from hosting business logic.
+```text
+U1  Public marketing pages must be indexable ................ YES
+U4  Public marketing site is in the first production release  YES
+U7  Initial operating model ................... founder/product team + AI coding agents
+```
 
-**It is not decided.** Three questions must be answered by a human before approval,
-and ADR 0002 deliberately leaves them open:
+U1 = YES makes **public search-indexable marketing capability an explicit product
+requirement**, which `Innvntory.md.txt` v1.0 does not state.
 
-- **U1** — must the public marketing site be indexed by search engines?
-- **U4** — is the public marketing site in scope for the first production release?
-- **U7** — team size, composition and React/framework experience.
+ADR 0002 records **17 adopted architectural constraints**, chiefly that Next.js server
+capabilities are restricted to presentation concerns, that no business logic and no
+database access may exist in `apps/web`, and that ADR 0001's backend remains the
+authoritative business-service layer.
 
-U1 is decisive: it is the one question that would flip the recommendation to
-Next.js. The specification is silent on it.
+**Knock-on:** this no longer blocks implementation by itself. The open decisions are
+§1.3 (database isolation) and the rendering strategy (U2).
 
-**Note:** `docs/UI-LIBRARIES.md` and `skills/SKILLS-REGISTRY.md` both flag that the
-`nextjs-saas` skill is conditional on this decision, and must not drive it. ADR 0002
-confirms it was not used as evidence.
+**Note:** `docs/UI-LIBRARIES.md` and `skills/SKILLS-REGISTRY.md` flag that the
+`nextjs-saas` skill is conditional. That condition is now satisfied, but ADR 0002
+confirms the skill was **not** used as evidence for the decision.
 
-Blocks: any UI work, and the shadcn/ui installation.
+Blocks: rendering strategy (U2) only. The framework decision unblocks nothing on its
+own — design tokens remain blocked by §3.1.
 
 ### 1.3 Database isolation mechanism
 
@@ -336,32 +338,31 @@ Reference files .................. 3 groups preserved, byte-identical
 
 ## 7. Recommended next smallest step
 
-**Answer the three blocking questions in ADR 0002, then approve or reject it.**
+**Decide the database isolation mechanism and access layer (§1.3) by writing ADR 0003.**
 
-This replaces the previous recommendation, which was to write ADR 0002. That is now
-done — the record exists at
-[`docs/decisions/0002-frontend-framework.md`](decisions/0002-frontend-framework.md)
-as **`Proposed`**. Writing it was the previous step; reviewing it is this one.
+This replaces the previous recommendation. Both architectural blockers named earlier
+are now closed: §1.1 by [ADR 0001](decisions/0001-backend-architecture.md), and §1.2 by
+[ADR 0002](decisions/0002-frontend-framework.md).
 
-No further analysis is needed before a decision can be made. What is needed is
-**human input** on questions no agent can answer from the project documents:
+The database isolation mechanism is now the first open decision. It is the most
+consequential remaining one because it constrains **every tenant-owned table**
+(`docs/DATABASE.md` §4), and specification §58 names tenant isolation as a critical
+test scenario: *"User A must never access Organization B's data."*
+
+Two smaller items are open alongside it and do not block it:
 
 ```text
-U1  Must the public marketing site be indexed by search engines?
-U4  Is the public marketing site in scope for the first production release?
-U7  Team size, composition and React/framework experience
+U2  Per-route rendering strategy (ADR 0002) — required now that a server-capable
+    framework is chosen, but not blocking the database decision
+U5  Framework versions, resolved at install time
 ```
 
-U1 is decisive — it is the only question that would change the recommendation.
-U7 is the same class of gap already recorded as ADR 0001 P1.
+Second, and independent: finalise the brand identity (§3.1). This is now the main
+blocker on visible progress, and neither accepted architecture decision unblocks it.
 
-**The frontend framework decision remains pending human approval.** It must not be
-resolved by default, and it must not be resolved by whichever framework is easiest to
-scaffold, or by the presence of the `nextjs-saas` skill.
+Third: ADR 0002 records residual risk **R2** — a founder/product team plus AI agents
+absorbing Next.js server semantics and the CI enforcement burden in constraint 4. That
+capacity risk is worth watching as Phase 1 begins.
 
-Second, and independent of that: finalise the brand identity (§3.1), which blocks all
-visual work. Note that resolving the framework does **not** unblock visual work — the
-design tokens are gated on brand identity, not on this decision.
-
-Third: ADR 0001 recommends an architecture review of its own reasoning, since that
-analysis was agent-authored and not independently reviewed.
+Fourth: both ADRs recommend an architecture review, since both analyses were
+agent-authored and neither has been reviewed by a second engineer.

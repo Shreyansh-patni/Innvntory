@@ -16,11 +16,13 @@ leaves open.
 > rules exist, and background processing runs as a separate process from the same
 > backend codebase. The backend is a **modular monolith**, not microservices.
 >
-> **Not yet decided:** the frontend framework, the database isolation mechanism, the
-> auth provider, the RBAC model, the queue technology, and several other items in
-> §15. The frontend framework has a **proposal** — [ADR
-> 0002](decisions/0002-frontend-framework.md) (`Proposed`) — but it is **not
-> decided**; it remains **pending human approval**.
+> **Frontend framework: DECIDED.** **[ADR
+> 0002](decisions/0002-frontend-framework.md)** (`Accepted`, 2026-10-03) —
+> **Next.js + React**, with server capabilities restricted to presentation concerns and
+> business logic confined to `apps/api` (ADR 0002 constraints 1–17).
+>
+> **Not yet decided:** the database isolation mechanism, the auth provider, the RBAC
+> model, the queue technology, and several other items in §15. Those remain:
 >
 > ```text
 > TBD — architectural decision required
@@ -511,7 +513,7 @@ All architectural decisions, in one place. Each requires an ADR in `docs/decisio
 | # | Decision | Status |
 |---|---|---|
 | 1 | **Backend architecture** — Next.js API vs dedicated service | **DECIDED** — dedicated backend service, modular monolith. [ADR 0001](decisions/0001-backend-architecture.md), Accepted 2026-10-03 |
-| 2 | Frontend framework and rendering strategy | Open — proposal in [ADR 0002](decisions/0002-frontend-framework.md) (`Proposed`, pending human approval). **Still the prerequisite for all implementation work** |
+| 2 | Frontend framework and rendering strategy | **DECIDED** — Next.js + React. [ADR 0002](decisions/0002-frontend-framework.md), Accepted 2026-10-03. Per-route rendering strategy (U2) still open |
 | 3 | Database isolation mechanism and access layer | Open |
 | 4 | Auth provider and session strategy | Open |
 | 5 | RBAC storage and enforcement model | Open |

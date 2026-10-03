@@ -106,22 +106,19 @@ When sources conflict, follow the hierarchy in `AGENTS.md` §2.
 Setup instructions are intentionally not written yet. **No dependency has been
 selected or installed**, so there is nothing concrete to instruct.
 
-One architectural decision is now made: a Next.js frontend plus a **dedicated backend
-service**, structured as a modular monolith with its own worker process — see
-[ADR 0001](docs/decisions/0001-backend-architecture.md) (`Accepted`). That fixes the
-system shape, but deliberately does **not** name a server framework, ORM, queue, or
-hosting provider, so no setup steps follow from it yet.
+Two architectural decisions are now made. A **Next.js frontend plus a dedicated
+backend service**, structured as a modular monolith with its own worker process — see
+[ADR 0001](docs/decisions/0001-backend-architecture.md) and
+[ADR 0002](docs/decisions/0002-frontend-framework.md) (both `Accepted`). Those fix the
+system shape, but deliberately do **not** name an ORM, queue, or hosting provider, so
+no setup steps follow from them yet.
 
 The following remain unresolved and must be decided before setup can be documented:
 
-- Frontend framework and rendering strategy — **pending human approval**. A proposal
-  exists in [ADR 0002](docs/decisions/0002-frontend-framework.md), recommending
-  **React + Vite**, but it is **not decided**. It turns on a question the
-  specification never answers: must the public marketing site be indexed by search
-  engines?
+- Rendering strategy per route class — *TBD — requires architectural decision*
 - Backend server framework and runtime — *TBD — requires architectural decision*
 - Repository and workspace layout details, contracts sync mechanism — *TBD*
-- Database access layer / ORM — *TBD — requires architectural decision*
+- Database access layer / ORM and tenant isolation mechanism — *TBD*
 - Test stack — *TBD — requires architectural decision*
 - Environment, hosting and deployment target — *TBD — requires architectural decision*
 

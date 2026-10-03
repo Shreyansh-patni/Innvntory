@@ -1,7 +1,10 @@
 # ADR 0002 — Frontend Framework
 
-- **Status:** **Proposed — awaiting human approval**
-- **Date:** 2026-10-03
+- **Status:** **Accepted**
+- **Proposed:** 2026-10-03
+- **Accepted:** 2026-10-03
+- **Decision authority:** Human-approved architectural decision
+- **Decision:** Next.js + React
 - **Specification references:** `Innvntory.md.txt` §4.5, §4.6, §4.9, §4.10, §12, §26–§29, §31–§32, §37–§45, §57, §59, §61–§67, §70–§72, §83, §84, §88
 - **Related:** [ADR 0001 — Backend Architecture](0001-backend-architecture.md) (`Accepted`)
 - **Supersedes:** nothing
@@ -11,11 +14,27 @@
 
 ## Status
 
-**Proposed — awaiting human approval.**
+**Accepted — 2026-10-03. Decision: Next.js + React.**
 
-This is agent-authored analysis. The `## Decision` section reads
-`PENDING HUMAN APPROVAL`. Nothing has been installed, scaffolded, or configured,
-and no tracked file was modified to produce this record.
+The human owner reviewed this record and approved **Option A (Next.js + React)**,
+having first answered the three questions this analysis could not: **U1 = YES** (the
+public marketing site must be indexable), **U4 = YES** (it is part of the first
+production release), and **U7 = founder/product team + AI coding agents**.
+
+Those product-level answers make **public search-indexable marketing capability an
+explicit Innvntory product requirement** — a fact that was *not* in
+`Innvntory.md.txt` v1.0 and is now established by decision rather than by
+specification. See `## Decision`.
+
+**The analysis below is preserved unaltered.** Options, comparison, recommendation,
+consequences and reasoning are retained as the record of *why* this decision was
+reasonable, including the conditional recommendation that pointed the other way. Do
+not read the retained recommendation as current advice — it was resolved by the
+product answers, not overruled on the merits.
+
+**Still nothing has been implemented.** No dependency installed, no project
+scaffolded, no component, route or configuration created. This record establishes an
+architecture; it does not begin building one.
 
 ---
 
@@ -32,6 +51,11 @@ same backend codebase. That decision left one item explicitly open —
 — on the critical path, because ADR 0001 defines the backend boundary *relative to*
 the frontend. Until it is settled, the repository shape (`apps/web`), the deployment
 topology, and the UI-library installation are all undefined.
+
+> **Resolved 2026-10-03.** This record was written as a proposal, reviewed, and then
+> **accepted as Option A (Next.js + React)** after the human owner supplied U1, U4 and
+> U7. The analysis below is retained as the reasoning of record. See `## Status` and
+> `## Decision`.
 
 Specification §61 names a *possible* frontend stack and does not commit to it:
 
@@ -200,16 +224,16 @@ These are **not** invented or assumed anywhere below.
 
 | # | Unknown | Why it matters |
 |---|---|---|
-| **U1** | **Whether the public marketing site must be indexed by search engines.** The specification is silent (Finding 1). | **Potentially decisive.** It is the single strongest technical differentiator between the candidates, and the project has no answer to it. |
-| **U2** | Rendering strategy per route class — SSR, static, or client. | `docs/KNOWN-ISSUES.md` §1.2 records this as undecided. |
+| **U1** | ~~**Whether the public marketing site must be indexed by search engines.** The specification is silent.~~ **RESOLVED — YES.** Indexability is now a product requirement. | **Was decisive.** Decided the framework. See `## Decision`. |
+| **U2** | Rendering strategy per route class — SSR, static, or client. | **Now required**, because a server-capable framework is chosen. |
 | **U3** | The real-time mechanism for §12 "real-time stock" — polling, SSE, or WebSocket. The spec states the capability but not the transport. | Affects whether a persistent server connection is needed, which Vite-only does not provide itself. |
-| **U4** | Whether the public marketing site is in scope for the first production release. | If not, U1 becomes irrelevant and the calculus changes. |
+| **U4** | ~~Whether the public marketing site is in scope for the first production release.~~ **RESOLVED — YES.** | Confirms U1 is a first-release obligation, not deferred. |
 | **U5** | Specific framework versions. | Must be resolved at install time against current releases. Not pinned here. |
 | **U6** | Whether offline/PWA capability is wanted, despite §45's explicit warning. | §45 says it "should not be implemented casually" and that inventory correctness outranks offline convenience. |
-| **U7** | Team JavaScript/React experience, size and staffing. | Same class of gap as ADR 0001 P1 — the specification's "team requirements" input is unavailable. |
+| **U7** | ~~Team JavaScript/React experience, size and staffing.~~ **RESOLVED for the initial model — founder/product team + AI coding agents.** | Bears on capacity for Option A's learning load. See Risks R2. |
 | **U8** | Barcode-scanning implementation approach for web (§44). | Explicitly a future capability. |
 | **U9** | Design token values — blocked on the brand identity decision. | Blocks all visual work regardless of framework. |
-| **U10** | Hosting and deployment platform. | Affects the viability and cost of any server-rendering option. |
+| **U10** | Hosting and deployment platform. | Affects the viability and cost of any server-rendering option. **Now required**, since the chosen framework has a server runtime. |
 
 ---
 
@@ -360,12 +384,33 @@ Axes 1 and 2 pull in **opposite directions**. That is the whole decision.
 
 ## Recommendation
 
-> ### This is agent analysis, not an approved decision.
+> ### Superseded by decision — retained as historical reasoning
 >
-> The reasoning below is labelled **[Inference]** and **[Agent analysis]** where it
-> goes beyond the source material. The decision remains `PENDING HUMAN APPROVAL`.
+> **This section was written before a decision existed, when it was agent analysis and
+> explicitly not approved advice.** It is preserved because the basis for an accepted
+> decision matters as much as the decision itself.
+>
+> **It is no longer current advice.** The conditional recommendation below was
+> **resolved by the human-approved product decisions**, exactly as this analysis
+> predicted it would be:
+>
+> | | Conditional recommendation at the time | Resolution |
+> |---|---|---|
+> | U1 | If indexability **not** required → Option B | **U1 = YES** |
+> | U4 | If public site **not** in first release → Option B | **U4 = YES** |
+> | Outcome | "Recommend Option A if U1 is *indexability required*" | **That condition is met. Option A adopted.** |
+>
+> The reasoning that argued for Option B was sound **on the evidence then
+> available** — the specification never states an SEO, SSR or rendering requirement
+> (Finding 1). It was wrong only because it assumed the absence of such a requirement
+> meant the absence of the need. U1 = YES establishes that the need exists at the
+> product level even though the specification never says so.
+>
+> This is the correct outcome for this process: an agent flagged the deciding
+> question, a human answered it, and the answer determined the result. No requirement
+> was invented by the agent, and none was quietly dropped.
 
-### Recommendation
+### Original recommendation (superseded)
 
 **On documented requirements alone, Option B (React + Vite) is the better fit. On the
 unknown that would overturn it, Option A is the better choice.**
@@ -438,20 +483,24 @@ improvisation, and it should be taken deliberately rather than discovered.
 
 ## Consequences
 
-### If Option A is selected
+> **Option A is adopted.** The A-table below is therefore now in force, not
+> hypothetical. The B-table is retained to record what was given up, which is part of
+> the decision's honesty.
+
+### If Option A is selected — **IN FORCE**
 
 | # | Consequence |
 |---|---|
 | A1 | `apps/web` contains a server runtime. Hosting must support it (U10). |
 | A2 | **A rendering-mode decision is required per route class** (U2), and becomes permanent complexity. |
-| A3 | **ADR 0001 D2 must be actively enforced** — no route handlers serving `/api/v1`, no server actions performing business mutations, no database driver in `apps/web`. Requires lint rules, architectural tests, and CI checks. |
+| A3 | **ADR 0001 D2 must be actively enforced** — no route handlers serving `/api/v1`, no server actions performing business mutations, no database driver in `apps/web`. Requires lint rules, architectural tests, and CI checks. See `## Adopted Architectural Constraints`. |
 | A4 | A server-capable frontend makes an ADR 0001 violation *possible*; it does not make one likely, but the guardrail is mandatory rather than incidental. |
-| A5 | Class A indexability is available if U1 requires it. |
+| A5 | Class A indexability is available, and **is required** — U1 = YES. This is now a product requirement, not a contingency. |
 | A6 | Framework-level concepts (server/client component boundaries, caching, revalidation) must be learned and maintained. |
 | A7 | Phase 1 gains a framework-learning cost alongside the backend work. |
-| A8 | I11 applies: server-rendering cost is incurred on the application surface without a documented application requirement. |
+| A8 | I11 applied to the application surface: server-rendering cost is incurred there without a documented application requirement. **For the public marketing site it is now justified**, because U1 = YES makes indexability a requirement. |
 
-### If Option B is selected
+### If Option B is selected — **NOT selected; retained for the record**
 
 | # | Consequence |
 |---|---|
@@ -468,19 +517,22 @@ improvisation, and it should be taken deliberately rather than discovered.
 
 ## Risks
 
-Risks of the **process and of the recommendation**, since the decision is not yet made.
+Risks now **in force** under the accepted decision, plus risks of the decision process.
+R1, R2 and R5 were the caveats attached to the earlier proposal; their status is
+stated rather than deleted.
 
 | # | Risk | Note |
 |---|---|---|
-| R1 | **The recommendation rests on an unresolved unknown.** U1 is decisive and unanswered. | The single most important caveat in this record. |
-| R2 | **U7 — team capability is unknown**, the same gap recorded as ADR 0001 P1. Option A has a higher learning and maintenance load; Option B's is lower. If the team is small, that matters more than any framework feature. | Cannot be assessed from project material. |
-| R3 | **This analysis is agent-authored** and has not been reviewed by a second engineer. | Consistent with ADR 0001 P2. |
+| R1 | ~~**The recommendation rests on an unresolved unknown.**~~ **RESOLVED.** U1 = YES, U4 = YES. | The deciding caveat no longer applies. |
+| R2 | **U7 resolved to a small operating model — founder/product team + AI coding agents.** Option A carries the *higher* learning and maintenance load of the two candidates, and was chosen partly against that. | **This is now the most significant residual risk in this record.** A single-founder team absorbing Next.js server semantics, rendering modes, caching, and the A3 enforcement burden is a real capacity risk. ADR 0001 P1 has the same shape. |
+| R3 | **This analysis is agent-authored** and has not been reviewed by a second engineer. The decision was made by the human owner on this analysis. | Consistent with ADR 0001 P2. Compensating control: the human supplied the three decisive product inputs an agent could not. |
 | R4 | **All performance and complexity statements are [Inference].** Nothing is built, so nothing is measured. | Consistent with ADR 0001 P3. |
-| R5 | **Choosing Option B while U1 is unknown risks deferring public-site work** to a later, more expensive point. | Mitigated by treating B3 as a decision, not a deferral. |
-| R6 | **Choosing Option A carries a permanent D2 enforcement burden.** If unenforced, business logic migrates into `apps/web` and ADR 0001's central guarantee weakens. | Guardrail must be CI-enforced, not review-enforced. |
+| R5 | ~~**Choosing Option B while U1 is unknown risks deferring public-site work.**~~ **RESOLVED.** U1 and U4 are both YES, so indexability is served directly by the chosen framework rather than deferred to a second build. | The risk Option A was recommended to avoid has been avoided. |
+| R6 | **Option A carries a permanent D2 enforcement burden.** If unenforced, business logic migrates into `apps/web` and ADR 0001's central guarantee weakens. | **Elevated by R2** — a small team is less likely to sustain CI-enforced guardrails by discipline. Must be CI-enforced, not review-enforced. See `## Adopted Architectural Constraints`. |
 | R7 | **Framework version selection (U5) is unresolved** and could surface incompatibilities with React, Tailwind, or shadcn/ui at install time. | Resolve at install; do not pre-commit to versions here. |
-| R8 | **U9 blocks visual work regardless of framework.** No framework choice unblocks design tokens. | Prevents a false sense of progress. |
+| R8 | **U9 blocks visual work regardless of framework.** No framework choice unblocks design tokens. | Prevents a false sense of progress. **Still true.** |
 | R9 | A future offline requirement (U6) would interact with the rendering model, and §45 warns specifically against casual offline implementation. | Revisit trigger defined below. |
+| R10 | **Indexability is now a product requirement with no specified target.** U1 establishes *that* the public site must be indexable, but no success metric, target, or verification method is recorded anywhere. | New. Requirements without verification criteria cannot be shown to be met. Recommend a measurable target as a follow-up. |
 
 ---
 
@@ -488,91 +540,160 @@ Risks of the **process and of the recommendation**, since the decision is not ye
 
 Concrete circumstances that would justify reopening this decision.
 
-**Reconsider toward Option A if:**
-
-| Condition | Source of the signal |
-|---|---|
-| U1 resolves to "the public marketing site must be indexed", **and** Class A is in scope | Business/marketing decision — the human must supply this |
-| Acquisition metrics (§76) show organic search is a required channel | Post-launch data |
-| A public-site build is commissioned anyway, making one stack cheaper than two | Project planning |
-| Option B is found to require a server-side capability in `apps/web` | Observed during Phase 1 |
-
 **Reconsider toward Option B if:**
 
 | Condition | Source of the signal |
 |---|---|
-| U1 and U4 both resolve against indexability and against a first-release public site | Business decision |
-| U7 shows limited capacity for a server-capable framework's operational load | Team reality |
+| R2 materialises — the operating model cannot sustain Option A's learning and maintenance load | Team reality |
+| R6 materialises — the D2/CI guardrail cannot be sustained, and business logic migrates into `apps/web` | Observed enforcement difficulty |
 | U3 requires no server rendering, and the public site is deferred | Technical planning |
-| The framework's server features prove actively harmful to the A3 guardrail | Observed enforcement difficulty |
-
-**Reconsider toward Option C only if** both conditions hold: U1 requires indexability
-**and** there is a demonstrated, sustained need for a server-capable frontend in the
-application surface. Absent both, Option C duplicates tooling for no documented gain.
 
 **Standing triggers — reconsider if:**
 
-- `Innvntory.md.txt` is revised and gains an explicit SEO, SSR, or rendering
+- `Innvntory.md.txt` is revised in a way that contradicts the now-decided public-site
   requirement. This record is valid only against v1.0.
 - ADR 0001 is superseded and the frontend is permitted direct data access — which
-  would change the D1/D2 calculus entirely.
-- A server-side rendering requirement is introduced for the application surface
-  rather than only the public site.
+  would change the D1/D2 calculus entirely and weaken the case for a server-capable
+  frontend.
 - An offline/PWA requirement (U6) is adopted, despite §45's caution.
-- Brand identity (U9) introduces a visual direction incompatible with either
-  candidate's component ecosystem — unlikely, since both use the same design-system
-  foundation.
+- Brand identity (U9) introduces a visual direction incompatible with the chosen
+  component ecosystem.
+- Hosting constraints (U10) make the required server rendering unviable or
+  uneconomic at the required indexability.
 
 ---
 
 ## Open Questions
 
-Recorded rather than answered. **None of these may be resolved by an agent.**
+### Resolved by human product decision — 2026-10-03
 
-**Blocking — required before approval:**
+These three blocked the decision and were **not** answerable from project documents.
+They are now answered by the human owner, and U1/U4 together establish a product
+requirement that `Innvntory.md.txt` v1.0 does not contain.
 
-1. **U1 — must the public marketing site be indexed by search engines?** The
-   specification is silent. This is the deciding question.
-2. **U4 — is the public marketing site in scope for the first production release?**
-3. **U7 — team size, composition, and React/framework experience.** Unavailable, as
-   with ADR 0001 P1.
+| # | Question | Resolution |
+|---|---|---|
+| **U1** | Must the public marketing site be indexed by search engines? | **RESOLVED — YES. Public marketing pages must be indexable.** |
+| **U4** | Is the public marketing site part of the first production release? | **RESOLVED — YES. It is part of the first production release.** |
+| **U7** | Team size, composition and framework experience | **RESOLVED for the initial operating model — founder/product team + AI coding agents.** |
 
-**Required before implementation, not before approval:**
+**Consequence of U1 + U4:** public search-indexable marketing capability is an
+**explicit Innvntory product requirement**. `docs/DESIGN-SYSTEM.md` §11's split
+between marketing-site and application density now has a hard constraint behind it,
+and ADR 0002's Option C is **rejected** — constraint 15 below forbids splitting into
+two frontend applications without a future documented requirement and decision.
 
-4. **U2 — rendering strategy per route class**, if a server-capable option is chosen.
-5. **U5 — framework versions**, resolved at install time.
-6. **U10 — hosting platform**, which affects the viability of server rendering.
-7. **U3 — real-time transport** for §12 "real-time stock".
-8. **U6 — whether offline capability is wanted**, noting §45's warning.
-9. **U8 — web barcode-scanning approach** (§44, future capability).
+### Still open — required before implementation, not before this decision
+
+| # | Question | Note |
+|---|---|---|
+| **U2** | Rendering strategy per route class — SSR, static, or client | Now required, since a server-capable framework is chosen. Constraint 3 restricts server use to presentation concerns. |
+| **U5** | Framework versions | Resolve at install time; do not pre-commit here. |
+| **U10** | Hosting platform | Must support the server runtime (consequence A1). |
+| **U3** | Real-time transport for §12 "real-time stock" | Specification states the capability, not the transport. |
+| **U6** | Whether offline capability is wanted | §45 warns against casual offline implementation. |
+| **U8** | Web barcode-scanning approach | §44 — future capability. |
+| **R10** | **A measurable indexability target** | New gap created by U1 = YES. See Risks. A requirement with no verification criterion cannot be shown to be met. |
+| **U9** | Design token values | Blocked on the brand decision, not on this one. **Still blocks all visual work.** |
 
 **Explicitly not questions for this ADR:**
 
-- The design token values — blocked on the brand decision (U9), not on the framework.
 - The database, auth, RBAC, or queue technologies — separate ADRs, per
   `docs/ARCHITECTURE.md` §15.
+- The design token values — blocked on brand identity (U9), not on the framework.
 
 ---
 
 ## Decision
 
-**PENDING HUMAN APPROVAL**
+**ACCEPTED — 2026-10-03.**
 
-This ADR is **Proposed**. No frontend framework has been selected. No dependency has
-been installed, no project scaffolded, no component or route created, and no
-configuration written.
+Innvntory adopts **Option A: Next.js + React** as the frontend framework.
 
-To activate a decision, a human must:
-
-1. Answer the three blocking questions in `## Open Questions` — U1, U4, U7.
-2. Accept, modify, or reject the recommendation.
-3. Change `## Status` to `Accepted` and record the decider and date.
-4. Update `docs/decisions/README.md`, `docs/ARCHITECTURE.md` §15 row 2, and
-   `docs/KNOWN-ISSUES.md` §1.2.
+### Decision
 
 ```text
-Frontend framework:  OPEN — proposed in ADR 0002, awaiting human approval
+Frontend framework:  Next.js + React
+Status:              Accepted
+Date:                2026-10-03
+Decision authority:  Human-approved architectural decision
 ```
+
+**Human approval:** Approved as the frontend framework decision for Innvntory.
+
+**Grounds:** the human owner answered the three questions this analysis could not —
+U1 = YES, U4 = YES, U7 = founder/product team + AI coding agents — and approved
+Option A on that basis. U1 = YES makes public search-indexable marketing capability
+an explicit product requirement, which Option B could not have satisfied without a
+second frontend build.
+
+**Nature of the change to this record.** The conditional recommendation in
+`## Recommendation` was **resolved** by those product answers, not overruled on the
+merits. It had predicted Option A would be correct if indexability were required.
+That condition is now met.
+
+### Adopted Architectural Constraints
+
+These are binding on all future work. They exist because ADR 0001 made the frontend
+**non-authoritative**, and Next.js supplies server capabilities that could erode that.
+Constraints 3–13 restate and enforce ADR 0001 from the frontend side.
+
+| # | Constraint |
+|---|---|
+| 1 | **Next.js is the frontend/web framework.** |
+| 2 | **React + TypeScript are the application foundation.** |
+| 3 | **Next.js server capabilities are restricted to presentation and web concerns** — rendering, routing, asset and SEO concerns. They are not a business-logic surface. |
+| 4 | **No business logic in `apps/web`.** Business rules live in `apps/api` (ADR 0001 D2). |
+| 5 | **No direct database access from `apps/web`.** |
+| 6 | **No database credentials, database drivers, or migration tooling in `apps/web`.** |
+| 7 | **`/api/v1` business endpoints belong to the dedicated backend**, not to `apps/web` route handlers (ADR 0001 D4). |
+| 8 | **Business rules remain in the backend business-service layer.** |
+| 9 | **Authentication and authorization remain server-enforced.** The frontend reflects permission state; it never enforces it. |
+| 10 | **Tenant isolation remains server-enforced** and must not depend on frontend behaviour (ADR 0001 C5). |
+| 11 | **AI business tools use controlled backend business services**, never direct data access (ADR 0001 D3, `AGENTS.md` §6). |
+| 12 | **The backend remains the authoritative business-service layer.** |
+| 13 | **The worker remains part of the backend architecture**, not the frontend (ADR 0001). |
+| 14 | **Marketing and application surfaces use one coherent design system**, sharing tokens per `docs/DESIGN-SYSTEM.md` §11. |
+| 15 | **Do not create a separate frontend application merely to separate marketing and application density.** Option C is rejected. One Next.js application serves Class A, B and C. |
+| 16 | **A second frontend application requires a future documented requirement and an architectural decision**, recorded as an ADR. |
+| 17 | **Do not introduce microservices merely because Next.js permits server capabilities.** ADR 0001's `NOT ADOPTED` list stands. |
+
+### Enforcement
+
+Constraint 4 is the one that fails silently if unguarded. Consequence A3 applies: it
+**must be enforced in CI** — lint rules, architectural tests, and an import/dependency
+bar on database packages in `apps/web` — not by code review alone. Risk R6 records
+that this is harder to sustain under the resolved operating model (R2).
+
+### Sub-decisions this does not settle
+
+```text
+TBD — requires architectural decision
+  · U2  rendering strategy per route class (now required, not optional)
+  · U5  framework versions, at install time
+  · U10 hosting platform, must support the server runtime
+  · Repository and workspace layout, and the ADR 0001 D7 contracts sync mechanism
+```
+
+The frontend framework decision being settled **does not unblock implementation**.
+The design tokens remain blocked on the brand identity decision (U9).
+
+### Records updated with this decision
+
+```text
+docs/decisions/0002-frontend-framework.md   Status → Accepted; constraints recorded
+docs/decisions/README.md                    index → Accepted
+docs/ARCHITECTURE.md                        §15 row 2 → DECIDED
+docs/KNOWN-ISSUES.md                        §1.2 closed; §7 next step updated
+docs/DEPENDENCIES.md                        frontend row updated
+README.md                                   open item removed
+```
+
+### Scope of this decision
+
+Approving this architecture authorises **no implementation work**. It does not permit
+scaffolding, dependency installation, configuration, components, or routes. Those
+remain separately gated.
 
 ---
 
@@ -597,6 +718,13 @@ safety model); `docs/CODE-STYLE.md` §1, §3.
 
 **Decision records** — `docs/decisions/0001-backend-architecture.md` (`Accepted`);
 constraints D1–D8, C2–C5, and residual risk P1–P4.
+
+**Human product decisions — 2026-10-03** — supplied by the repository owner and
+decisive for this record: **U1** public marketing pages must be indexable (**YES**);
+**U4** the public marketing site is part of the first production release (**YES**);
+**U7** initial operating model is **founder/product team + AI coding agents**. These
+established a product requirement absent from `Innvntory.md.txt` v1.0 and resolved the
+framework to Option A.
 
 **Skills registry** — `skills/SKILLS-REGISTRY.md`, consulted **only** to confirm that
 `nextjs-saas` is conditional and must not drive this decision. Its content was not used
