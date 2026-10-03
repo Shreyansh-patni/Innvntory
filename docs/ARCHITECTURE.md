@@ -215,8 +215,9 @@ details, which remain open and are listed in §15:
 
 ```text
 TBD — architectural decision required
-  · Frontend framework and rendering strategy (§15 row 2) — now a prerequisite
-  · Database isolation mechanism and access layer (row 3)
+  · Frontend framework and rendering strategy (§15 row 2)
+  · ORM / query builder and migration tooling (ADR 0003 Q4)
+  · Connection pooling mode (ADR 0003 Q5)
   · Auth provider and session strategy (row 4)
   · RBAC storage and enforcement model (row 5)
   · Queue technology and worker hosting (row 6)
@@ -240,12 +241,33 @@ integrity, transactions, indexing, auditability, tenant isolation, migration saf
 **Core entity groups** are enumerated in spec §34 and repeated in
 `docs/DATABASE.md`.
 
+**Isolation mechanism: DECIDED.** [ADR
+0003](decisions/0003-database-isolation-access-layer.md) (`Accepted`, 2026-10-04) —
+**Option C, hybrid**:
+
+```text
+Shared PostgreSQL schema and tables
+Every tenant-owned record: organization_id NOT NULL
+Application data-access layer: explicit tenant scope required
+Business services: own authorization and RBAC
+PostgreSQL RLS: database-level backstop via SET LOCAL app.organization_id
+One authoritative TenantContext, established inside the authenticated backend
+  boundary — the filter and the RLS context both derive from it
+Runtime DB role must not own tenant tables; migration privileges separate
+System-level tables (e.g. plans) explicitly distinguished from tenant data
+Isolation tests are release-gate requirements
+```
+
+Schema-per-tenant was **excluded** on specification grounds: §35 puts
+`organization_id` on every tenant-owned record, which makes per-tenant schemas
+redundant, and §60's 100,000-organization target rules out per-tenant migration
+fan-out.
+
 ```text
 TBD — architectural decision required
-  · Schema-per-tenant vs shared-schema-with-RLS vs hybrid (spec §35 requires
-    "application-level authorization and database-level safeguards" but does not
-    choose a mechanism)
-  · ORM / query layer and migration tooling
+  · ORM / query builder and migration tooling (ADR 0003 Q4)
+  · Connection pooling mode (ADR 0003 Q5) — required before schema work
+  · Support/platform cross-tenant access model (ADR 0003 Q2)
   · Numeric and money representation (INR is required; multi-currency "possible
     later" per spec §73 — representation is a schema decision, not a UI one)
   · Timezone and fiscal-calendar handling for an India-first market
@@ -254,7 +276,7 @@ TBD — architectural decision required
   · Read replica / caching strategy
 ```
 
-No tables, migrations, or schema have been created.
+No tables, migrations, schema, or RLS policies have been created.
 
 ---
 
@@ -518,7 +540,7 @@ All architectural decisions, in one place. Each requires an ADR in `docs/decisio
 |---|---|---|
 | 1 | **Backend architecture** — Next.js API vs dedicated service | **DECIDED** — dedicated backend service, modular monolith. [ADR 0001](decisions/0001-backend-architecture.md), Accepted 2026-10-03 |
 | 2 | Frontend framework and rendering strategy | **DECIDED** — Next.js + React. [ADR 0002](decisions/0002-frontend-framework.md), Accepted 2026-10-03. Per-route rendering strategy (U2) still open |
-| 3 | Database isolation mechanism and access layer | Open |
+| 3 | Database isolation mechanism and access layer | **DECIDED** — Option C, hybrid: application data-access scoping + PostgreSQL RLS backstop. [ADR 0003](decisions/0003-database-isolation-access-layer.md), Accepted 2026-10-04. ORM/query policy (Q4) and pooling mode (Q5) still open |
 | 4 | Auth provider and session strategy | Open |
 | 5 | RBAC storage and enforcement model | Open |
 | 6 | Queue / worker implementation | Open — worker process shape fixed by ADR 0001; technology is not |

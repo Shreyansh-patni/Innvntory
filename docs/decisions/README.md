@@ -6,18 +6,17 @@ This directory holds Innvntory's architectural decision records (ADRs).
 
 ## Status
 
-**Two decisions accepted.**
+**Three decisions accepted.**
 
 | # | Decision | Status | Date |
 |---|---|---|---|
 | [0001](0001-backend-architecture.md) | Backend architecture — dedicated backend service (modular monolith) | **Accepted** | 2026-10-03 |
 | [0002](0002-frontend-framework.md) | Frontend framework — **Next.js + React** | **Accepted** | 2026-10-03 |
+| [0003](0003-database-isolation-access-layer.md) | Database isolation & access layer — **Option C, hybrid application + PostgreSQL RLS** | **Accepted** | 2026-10-04 |
 
-The decisions that still need records are listed in `docs/ARCHITECTURE.md` §15.
-
-The next open decision is the **database isolation mechanism and access layer**
-(`docs/KNOWN-ISSUES.md` §1.3), followed by the auth provider, the RBAC model, and the
-queue technology.
+The decisions that still need records are listed in `docs/ARCHITECTURE.md` §15. The
+next open decision is the **ORM / query-access policy (Q4)**, followed by the
+connection-pooling mode (Q5).
 
 ### A note on ADR 0001
 
@@ -52,6 +51,24 @@ not invent a requirement to justify a preferred framework, and the recommendatio
 did make was resolved rather than overruled.
 
 **A decision record that hides its assumptions is worse than no record.**
+
+### A note on ADR 0003
+
+The decision the specification declined to make in §35 — which layer enforces tenant
+isolation — was resolved as **Option C, hybrid**: an explicit application filter plus
+PostgreSQL RLS as a backstop, both driven by one `TenantContext`.
+
+Its most useful finding is an asymmetry. Application-level isolation fails **open** — a
+forgotten filter returns another tenant's rows with no error. Database-level isolation
+fails **closed** — missing context returns nothing. For the one property the
+specification elevates to a named critical test scenario (§58), failing closed is
+worth real cost, and the backstop makes the guarantee provable by a test rather than
+by convention.
+
+The same record is explicit about the cost: RLS inherits connection-pooling hazards
+and requires a non-owner runtime role, against a team operating model recorded as
+*founder + product team + AI coding agents*. Option A remains a defensible fallback,
+and choosing it should be a recorded decision rather than quiet drift.
 
 ---
 
@@ -126,3 +143,4 @@ Maintain this list as records are added.
 |---|---|---|---|
 | [0001](0001-backend-architecture.md) | Backend architecture | **Accepted** | 2026-10-03 |
 | [0002](0002-frontend-framework.md) | Frontend framework — Next.js + React | **Accepted** | 2026-10-03 |
+| [0003](0003-database-isolation-access-layer.md) | Database isolation & access layer — Option C (hybrid) | **Accepted** | 2026-10-04 |

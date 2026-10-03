@@ -107,8 +107,33 @@ scope — `TBD — requires architectural decision`.
   and alertable, not merely fixed.
 - Isolation must be testable, with a dedicated test that fails loudly on regression.
 
-**Open:** isolation mechanism — `TBD — architectural decision required`
-(`docs/DATABASE.md` §4).
+**Mechanism: DECIDED.** `ADR 0003` (`Accepted`, 2026-10-04) adopted **Option C —
+hybrid**:
+
+- `organization_id NOT NULL` on every tenant-owned table.
+- The application data-access layer requires explicit tenant scope.
+- **PostgreSQL RLS** provides a database-level backstop via
+  `SET LOCAL app.organization_id`.
+- Both layers derive from **one** `TenantContext`, established inside the
+  authenticated backend boundary. The RLS layer is a backstop against **omitted or
+  widened query scope** — it is not a second authority for selecting a tenant.
+- The runtime DB role must not own tenant tables; migration privileges are separate.
+- AI tools use the invoking user's context; workers fail closed if `organizationId`
+  is missing from durable job context.
+
+**Why the backstop matters.** Application-level filtering alone fails **open** — a
+forgotten filter returns another tenant's rows with no error. RLS fails **closed** —
+missing context returns no rows. For the one property the specification elevates to a
+named critical test scenario (spec §58), that asymmetry is the point.
+
+**Isolation tests are a release gate** (ADR 0003 `## Testing implications`): T3
+missing-filter returns zero rows, T4 pooled-connection context reset, T5 runtime
+role is not owner, T6 every tenant table has an active policy, T7 worker isolation,
+T8 AI-tool isolation.
+
+**Still open:** `ADR 0003` Q2 (support/platform cross-tenant access), Q5
+(connection pooling mode), Q6 (`users` ownership details), Q7 (operator/migration
+bypass and its auditing), and Q4 (ORM/query policy). See `docs/DATABASE.md` §4.
 
 ---
 

@@ -35,6 +35,28 @@ products
 └── created_at
 ```
 
+**Mechanism: DECIDED.** The specification says only that both safeguards should be
+*considered*, and names no mechanism.
+[`ADR 0003`](decisions/0003-database-isolation-access-layer.md) (`Accepted`,
+2026-10-04) adopted **Option C — hybrid**: an explicit application-layer tenant
+filter **plus PostgreSQL RLS** as a backstop, with `organization_id NOT NULL` on every
+tenant-owned table and both layers driven by a single `TenantContext` established
+inside the authenticated backend boundary.
+
+Schema-per-tenant was excluded: §35's `organization_id` column makes it redundant,
+and §60's 100,000-organization target rules out per-tenant migration fan-out.
+
+**Two data-model questions were also resolved (ADR 0003):**
+
+```text
+Q1  A user MAY belong to multiple organizations. Membership is the relationship.
+    The active organization lives in the session, NOT as one permanent
+    organization_id on `users`.
+
+Q3  roles / permissions / role_permissions = platform-level definitions
+    organization_memberships               = user + organization + assigned role
+```
+
 **Reliability requirements that constrain schema design:**
 
 - Inventory updates must be **atomic**; a failed critical operation must not leave
@@ -251,10 +273,16 @@ This is recorded as an open area, not a schema.
 
 ## 4. Open decisions
 
+The isolation mechanism itself is **no longer open**. See
+[`docs/decisions/0003-database-isolation-access-layer.md`](decisions/0003-database-isolation-access-layer.md)
+(`Accepted`, 2026-10-04): **shared schema, `organization_id NOT NULL` on every
+tenant-owned table, explicit application scoping, and PostgreSQL RLS as a backstop**,
+both driven by one `TenantContext`.
+
 ```text
 TBD — architectural decision required
-  · Schema-per-tenant vs shared-schema-with-row-level-security vs hybrid
-  · ORM / query builder / raw SQL policy
+  · ORM / query builder / raw-SQL policy (ADR 0003 Q4)
+  · Connection pooling mode (ADR 0003 Q5) — required before schema work
   · Migration tool and review process
   · Money representation (integer minor units vs decimal) and currency column
   · Timezone, fiscal year, and financial period handling for an India-first market
@@ -265,7 +293,25 @@ TBD — architectural decision required
   · Idempotency-key storage design
   · Audit log retention and archival
   · Data residency (unaddressed in the specification)
+  · Support/platform cross-tenant access model (ADR 0003 Q2)
+  · `users` table ownership details (ADR 0003 Q6)
 ```
+
+**Resolved and closed here:**
+
+```text
+✓ Isolation mechanism — Option C, hybrid (ADR 0003)
+✓ Multi-organization membership — YES; membership is the relationship, and the
+  active organization lives in the session, not as a single permanent
+  organization_id on `users` (ADR 0003 Q1)
+✓ Roles/permissions ownership — platform-level definitions, organization-scoped
+  assignments via membership (ADR 0003 Q3)
+```
+
+**Note.** RLS is now adopted, so schema migrations must land table + policy +
+`FORCE ROW LEVEL SECURITY` + index atomically, and the runtime role must not own
+tenant tables — otherwise enforcement is silently inert. See ADR 0003
+`## Migration implications`.
 
 ---
 

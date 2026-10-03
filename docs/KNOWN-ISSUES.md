@@ -90,18 +90,44 @@ confirms the skill was **not** used as evidence for the decision.
 Blocks: rendering strategy (U2) only. The framework decision unblocks nothing on its
 own — design tokens remain blocked by §3.1.
 
-### 1.3 Database isolation mechanism
+### 1.3 Database isolation mechanism — **RESOLVED (mechanism)**
 
-**Status:** Open.
+**Status:** Isolation mechanism **DECIDED** — Option C, hybrid. [ADR
+0003](decisions/0003-database-isolation-access-layer.md) (`Accepted`, 2026-10-04).
+**Follow-on questions remain open.**
 
-Specification §35 requires both application-level authorization *and*
-database-level safeguards, without choosing a mechanism. Shared schema with
-`organization_id`, row-level security, or schema-per-tenant each have different
-operational and performance consequences.
+Specification §35 required both application-level authorization *and* database-level
+safeguards without choosing a mechanism. Adopted:
 
-Also open: ORM/query layer, migration tooling, money representation, timezone and
-fiscal-calendar handling, and fractional-quantity support (implied but not decided
-— spec §10 lists "Unit" as a product attribute).
+```text
+Shared PostgreSQL schema
+organization_id NOT NULL on every tenant-owned record
+Application data-access layer requires explicit tenant scope
+Business services own authorization and RBAC
+PostgreSQL RLS as a database-level backstop (SET LOCAL app.organization_id)
+One authoritative TenantContext from the authenticated backend boundary
+```
+
+Schema-per-tenant was **excluded on spec grounds** — §35's `organization_id` makes it
+redundant, and §60's 100,000-organization target rules out per-tenant migration
+fan-out.
+
+**Two blocking data-model questions were also resolved:**
+
+- **Q1 — multi-organization membership: YES.** Membership is the user↔organization
+  relationship; the active organization lives in the session, **not** as one permanent
+  `organization_id` on `users`.
+- **Q3 — roles/permissions ownership:** platform-level *definitions*
+  (`roles`, `permissions`, `role_permissions`), with *assignments* organization-scoped
+  via `organization_memberships`. No additional role model beyond this.
+
+**Still open from ADR 0003:** Q2 support/platform cross-tenant access · **Q4 ORM /
+query policy** · **Q5 connection pooling mode** · Q6 `users` ownership details · Q7
+operator/migration bypass auditing. Q4 and Q5 are required before schema work.
+
+Also open elsewhere: money representation, timezone and fiscal-calendar handling,
+and fractional-quantity support (implied but not decided — spec §10 lists "Unit" as a
+product attribute).
 
 See `docs/DATABASE.md` §4.
 
