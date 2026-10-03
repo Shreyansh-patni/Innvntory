@@ -153,10 +153,23 @@ Open questions for the maintainer:
 
 - Should the foundation documents be committed, and with what message?
 - Where should the remote live, and under which account?
-- Is `develop` actually used (spec §64 lists it), or is a trunk-based variant
-  preferred?
+- ~~Is `develop` actually used, or is a trunk-based variant preferred?~~
+  **RESOLVED — a `main` / `develop` model is adopted**, consistent with spec §64.
+  `main` is a protected release branch, `develop` is the integration branch, and
+  `feature/*` branches are cut from and merged back into `develop`. Defined in
+  `AGENTS.md` §Git and GitHub Workflow. `develop` has **not** been created yet — see
+  the note below.
 
 **No commit was made** because committing was not requested.
+
+> **Superseded in part (Phase 0.3–0.3.5).** Since this section was written: a
+> baseline commit was created (`1300f63`), the repository was connected to
+> `https://github.com/Shreyansh-patni/innvntory.git` and `main` pushed, and the
+> branch strategy above was decided. Two items remain open here: whether to **create
+> `develop`** — the repository is still on `main`, so work currently lands on `main`
+> against the stated policy — and **branch protection**, which needs to be configured
+> in GitHub. Both require explicit instruction. The questions about committing the
+> foundation documents and locating the remote are answered.
 
 ### 2.2 Exact repository conventions pending
 

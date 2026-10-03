@@ -477,8 +477,11 @@ Push → Lint → Type Check → Unit Tests → Integration Tests → Build
      → Security Checks → Deploy Staging → Smoke Tests → Production
 ```
 
-**Git strategy** (spec §64): `main`, `develop`, `feature/*`, `fix/*`, `hotfix/*`.
-Production deployments must be traceable to a commit.
+**Git strategy** (spec §64): a `main` / `develop` model — `main` is a protected
+release branch receiving only reviewed merges, `develop` is the integration branch,
+and `feature/*` branches are cut from and merged back into `develop`. Defined in
+`AGENTS.md` §Git and GitHub Workflow. Production deployments must be traceable to a
+commit.
 
 **Feature flags** (spec §65) for beta features, experimental AI, new UI, gradual
 rollout, internal testing.
@@ -489,7 +492,8 @@ TBD — architectural decision required
   · Hosting/deployment platform and infrastructure-as-code approach
   · Release and rollback procedure
   · Database migration deployment strategy (expand/contract, zero-downtime rules)
-  · Whether `develop` is actually used, or a trunk-based variant is preferred
+  · Branch protection and required checks on `main` / `develop` (needs a remote and
+    CI; see docs/KNOWN-ISSUES.md §2.4)
 ```
 
 Git is now initialised on `main` with **no remote configured**. No CI exists.

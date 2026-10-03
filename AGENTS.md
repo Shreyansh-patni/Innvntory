@@ -196,24 +196,75 @@ separate manual activity. For every **meaningful, self-contained task**, an agen
 follows this sequence to completion:
 
 ```text
-Plan → Implement → Validate → Review diff → Commit → Push → Report → Stop
+Plan → Implement → Validate → Review diff → Commit → Push → Review/merge → Stop
 ```
+
+### Branch strategy
+
+Innvntory uses a `main` / `develop` model, consistent with specification §64.
+
+```text
+main       protected release branch. Release-ready history only.
+           No routine development commits. Changes arrive by reviewed merge.
+
+develop    normal integration branch. Ongoing development merges here.
+
+feature/*  focused branches for substantial or isolated work.
+           Created from develop. Merged back into develop after validation
+           and review.
+```
+
+- **`main` is not a routine development branch.** Do not commit development work to
+  it. It changes only by reviewed merge from `develop`, or by an explicitly requested
+  release action.
+- **Routine development work targets `develop`**, directly or via a `feature/*`
+  branch.
+- Specification §64 also lists `fix/*` and `hotfix/*`. These remain available for
+  their purposes, and are carved from the appropriate base branch.
+- Production deployments remain traceable to a commit (spec §64).
+
+> **Note on the current repository state.** The repository was initialised on `main`
+> during Phase 0.3, before this strategy was adopted, and `develop` does not yet
+> exist. Until it is created by explicit instruction, work continues on `main`. See
+> `docs/KNOWN-ISSUES.md` §2.1.
 
 ### Sequence
 
 1. **Implement only the requested scope.** No adjacent improvements, no unrequested
-   files.
+   files, and no silent scope expansion.
 2. **Run the appropriate validation** per §7.
 3. **Do not commit if validation fails.** Fix the cause, or report the failure and
    stop. Never weaken or skip a check to make a change look green.
-4. **Review `git diff`.** Read every changed line before committing.
-5. **Review `git status`.** Confirm no unrelated file changed and nothing untracked
-   was overlooked.
-6. **Commit the completed task** with a concise conventional commit message.
-7. **Push** the commit to the configured GitHub remote.
-8. **Report**: commit hash, commit message, push result, branch, validation
-   performed, and final `git status`.
-9. **Stop.** Do not begin the next task automatically.
+4. **Verify the working tree** — `git status --short` — before committing.
+5. **Review `git diff`.** Read every changed line before committing.
+6. **Verify the staged set** — `git diff --cached --name-only` — contains only the
+   intended files and no secret, no `.env`, and no generated artefact.
+   `.gitignore` is the safety net, not the check.
+7. **Commit the completed task** with a concise conventional commit message.
+8. **Push** to the configured GitHub remote, **after** validation has passed.
+9. **Surface the change for review** — report the commit, branch, and push result,
+   and state that review/merge is the next step. For substantial work on a
+   `feature/*` branch, open or update a pull request targeting `develop`.
+10. **Stop.** Do not begin the next task automatically.
+
+### Flow for feature work
+
+```text
+develop → feature branch → implementation → validation → push → review → merge to develop
+```
+
+### Flow for a release
+
+```text
+develop → review → main → production/release
+```
+
+### Small documentation and configuration changes
+
+For a very small documentation or configuration change where a feature branch
+would be pointless overhead, a **direct commit to `develop`** is acceptable, subject
+to the same validation, diff review and staged-file checks as any other commit. This
+exception never applies to `main`.
 
 ### What counts as a meaningful task
 
@@ -238,13 +289,15 @@ push secrets, credentials, or real .env files
 push node_modules, build output, or generated/temporary artefacts
 amend a previous commit unless explicitly requested
 rewrite history
-force push
+force push or force-with-lease
 create unrelated or empty commits
+bundle multiple unrelated tasks into one commit
+expand scope silently
 continue into a further task after pushing
 ```
 
-Before committing, confirm the staged set contains no secret, no `.env`, and no
-generated artefact. `.gitignore` is the safety net, not the check.
+Verify the working tree before committing, verify the staged files before
+committing, validate before pushing, and inspect the diff before any merge.
 
 ### GitHub remote
 
@@ -253,15 +306,11 @@ GitHub URL. A remote is connected only by explicit human instruction.
 
 - **Until a remote is configured**, commit locally only and report exactly:
   `GitHub remote not configured; commit locally only.`
-- **Once a remote is configured**, push automatically as step 7 above, and include
+- **Once a remote is configured**, push automatically as step 8 above, and include
   the push result in the report. If a push fails, report the failure — never retry
   destructively and never force-push to get green.
-
-### Branches
-
-Specification §64 suggests `main`, `develop`, `feature/*`, `fix/*`, `hotfix/*`.
-Never commit directly to `main` without an explicit instruction. Production
-deployments remain traceable to a commit (spec §64).
+- The remote for this repository is `origin`:
+  `https://github.com/Shreyansh-patni/innvntory.git`. No other remote is configured.
 
 ---
 

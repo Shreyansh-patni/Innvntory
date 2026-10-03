@@ -113,8 +113,8 @@ Check, at minimum:
 
 - One coherent change per commit, with a message describing what changed and why.
 - Stage only intended files.
-- Follow the branch strategy in specification §64 (`main`, `develop`, `feature/*`,
-  `fix/*`, `hotfix/*`).
+- Branch on `develop` (or a `feature/*` branch cut from it), never on `main`
+  (`AGENTS.md` Git and GitHub Workflow; spec §64).
 - Never commit directly to `main` without an explicit instruction.
 - Never force-push, rewrite published history, or commit secrets.
 
