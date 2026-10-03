@@ -18,7 +18,9 @@ leaves open.
 >
 > **Not yet decided:** the frontend framework, the database isolation mechanism, the
 > auth provider, the RBAC model, the queue technology, and several other items in
-> §15. Those remain:
+> §15. The frontend framework has a **proposal** — [ADR
+> 0002](decisions/0002-frontend-framework.md) (`Proposed`) — but it is **not
+> decided**; it remains **pending human approval**.
 >
 > ```text
 > TBD — architectural decision required
@@ -509,7 +511,7 @@ All architectural decisions, in one place. Each requires an ADR in `docs/decisio
 | # | Decision | Status |
 |---|---|---|
 | 1 | **Backend architecture** — Next.js API vs dedicated service | **DECIDED** — dedicated backend service, modular monolith. [ADR 0001](decisions/0001-backend-architecture.md), Accepted 2026-10-03 |
-| 2 | Frontend framework and rendering strategy | Open — **now the prerequisite for all implementation work** |
+| 2 | Frontend framework and rendering strategy | Open — proposal in [ADR 0002](decisions/0002-frontend-framework.md) (`Proposed`, pending human approval). **Still the prerequisite for all implementation work** |
 | 3 | Database isolation mechanism and access layer | Open |
 | 4 | Auth provider and session strategy | Open |
 | 5 | RBAC storage and enforcement model | Open |

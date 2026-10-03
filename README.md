@@ -114,7 +114,11 @@ hosting provider, so no setup steps follow from it yet.
 
 The following remain unresolved and must be decided before setup can be documented:
 
-- Frontend framework and rendering strategy — *TBD — now the blocking decision*
+- Frontend framework and rendering strategy — **pending human approval**. A proposal
+  exists in [ADR 0002](docs/decisions/0002-frontend-framework.md), recommending
+  **React + Vite**, but it is **not decided**. It turns on a question the
+  specification never answers: must the public marketing site be indexed by search
+  engines?
 - Backend server framework and runtime — *TBD — requires architectural decision*
 - Repository and workspace layout details, contracts sync mechanism — *TBD*
 - Database access layer / ORM — *TBD — requires architectural decision*

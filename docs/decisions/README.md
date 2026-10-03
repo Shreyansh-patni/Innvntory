@@ -6,16 +6,21 @@ This directory holds Innvntory's architectural decision records (ADRs).
 
 ## Status
 
-**One decision accepted.**
+**One accepted, one proposed.**
 
 | # | Decision | Status | Date |
 |---|---|---|---|
 | [0001](0001-backend-architecture.md) | Backend architecture — dedicated backend service (modular monolith) | **Accepted** | 2026-10-03 |
+| [0002](0002-frontend-framework.md) | Frontend framework — Next.js + React, React + Vite, or split | **Proposed — awaiting human approval** | 2026-10-03 |
 
-The decisions that still need records are listed in `docs/ARCHITECTURE.md` §15. The
-**highest-priority** one is now the **frontend framework and rendering strategy**
+The decisions that still need records are listed in `docs/ARCHITECTURE.md` §15.
+
+**The frontend framework is the highest-priority open decision**
 (`docs/KNOWN-ISSUES.md` §1.2), because ADR 0001 defines the backend boundary
-*relative to* the frontend.
+*relative to* it. ADR 0002 now exists and recommends **Option B (React + Vite)**, but
+**it is not decided.** Three questions must be answered by a human first — chiefly
+whether the public marketing site must be indexed by search engines, which the
+specification never addresses.
 
 ### A note on ADR 0001
 
@@ -30,6 +35,16 @@ Two things about that record are worth reading rather than skimming:
 - It records **residual risk** honestly, including that the "team requirements" half of
   §61's criterion could not be evaluated, and that its analysis was agent-authored and
   not independently reviewed by a second engineer.
+
+### A note on ADR 0002
+
+It applies the same evidence-labelling discipline, and its most consequential finding
+is negative: **the specification never mentions SEO, SSR, static generation or
+hydration.** The usual reason to adopt a server-capable React framework therefore has
+no documented basis in Innvntory's own material. Combined with ADR 0001's rule that
+business logic lives only in the backend, that points away from a server-capable
+frontend — which is why Option B is recommended, and why the unanswered SEO question
+is recorded as decisive.
 
 **A decision record that hides its assumptions is worse than no record.**
 
@@ -105,3 +120,4 @@ Maintain this list as records are added.
 | # | Title | Status | Date |
 |---|---|---|---|
 | [0001](0001-backend-architecture.md) | Backend architecture | **Accepted** | 2026-10-03 |
+| [0002](0002-frontend-framework.md) | Frontend framework | **Proposed — awaiting human approval** | 2026-10-03 |

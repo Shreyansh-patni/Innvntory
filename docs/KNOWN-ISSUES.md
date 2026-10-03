@@ -59,14 +59,32 @@ relative to it.
 
 ### 1.2 Frontend framework and rendering strategy
 
-**Status:** Open.
+**Status:** Open — **proposal written, pending human approval.** See
+[`docs/decisions/0002-frontend-framework.md`](decisions/0002-frontend-framework.md)
+(`Proposed`).
 
 Specification §61 names Next.js / React / TypeScript / Tailwind CSS as a *possible*
 stack. That is not a decision. Rendering strategy (SSR / SSG / ISR / client, per
 route class), the data-fetching layer, and the route structure are all undecided.
 
+ADR 0002 evaluates Next.js + React against React + Vite, plus a split option, and
+recommends **Option B (React + Vite)** on documented requirements — because the
+specification never states an SEO, SSR or rendering requirement, and ADR 0001's D2
+structurally prevents a client-only frontend from hosting business logic.
+
+**It is not decided.** Three questions must be answered by a human before approval,
+and ADR 0002 deliberately leaves them open:
+
+- **U1** — must the public marketing site be indexed by search engines?
+- **U4** — is the public marketing site in scope for the first production release?
+- **U7** — team size, composition and React/framework experience.
+
+U1 is decisive: it is the one question that would flip the recommendation to
+Next.js. The specification is silent on it.
+
 **Note:** `docs/UI-LIBRARIES.md` and `skills/SKILLS-REGISTRY.md` both flag that the
-`nextjs-saas` skill is conditional on this decision, and must not drive it.
+`nextjs-saas` skill is conditional on this decision, and must not drive it. ADR 0002
+confirms it was not used as evidence.
 
 Blocks: any UI work, and the shadcn/ui installation.
 
@@ -318,25 +336,32 @@ Reference files .................. 3 groups preserved, byte-identical
 
 ## 7. Recommended next smallest step
 
-**Decide the frontend framework and rendering strategy (§1.2) by writing ADR 0002.**
+**Answer the three blocking questions in ADR 0002, then approve or reject it.**
 
-This replaces the previous recommendation, which was to resolve the backend
-architecture. That is now done — §1.1 is closed by
-[`docs/decisions/0001-backend-architecture.md`](decisions/0001-backend-architecture.md).
+This replaces the previous recommendation, which was to write ADR 0002. That is now
+done — the record exists at
+[`docs/decisions/0002-frontend-framework.md`](decisions/0002-frontend-framework.md)
+as **`Proposed`**. Writing it was the previous step; reviewing it is this one.
 
-The frontend framework is now the **blocking** decision, because ADR 0001 defines the
-backend boundary *relative to* it. Until it is settled, neither unit's shape is fully
-determined, and no implementation work can begin. It requires no code, installs
-nothing, and changes no preserved file.
+No further analysis is needed before a decision can be made. What is needed is
+**human input** on questions no agent can answer from the project documents:
 
-It must be decided deliberately, and specifically **not** resolved by whichever
-framework is easiest to scaffold. The live options are the specification's own §61
-stack (Next.js / React / TypeScript / Tailwind CSS / shadcn/ui) versus alternatives —
-and note that the `nextjs-saas` skill in the registry must not drive the choice, since
-it assumes the conclusion (`skills/SKILLS-REGISTRY.md`, Conditional-skill warning).
+```text
+U1  Must the public marketing site be indexed by search engines?
+U4  Is the public marketing site in scope for the first production release?
+U7  Team size, composition and React/framework experience
+```
+
+U1 is decisive — it is the only question that would change the recommendation.
+U7 is the same class of gap already recorded as ADR 0001 P1.
+
+**The frontend framework decision remains pending human approval.** It must not be
+resolved by default, and it must not be resolved by whichever framework is easiest to
+scaffold, or by the presence of the `nextjs-saas` skill.
 
 Second, and independent of that: finalise the brand identity (§3.1), which blocks all
-visual work.
+visual work. Note that resolving the framework does **not** unblock visual work — the
+design tokens are gated on brand identity, not on this decision.
 
 Third: ADR 0001 recommends an architecture review of its own reasoning, since that
 analysis was agent-authored and not independently reviewed.
