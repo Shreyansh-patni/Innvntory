@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import { PageHeader } from '@/components/shared/page-header';
-import { getSalesReportData } from '@/lib/reports/reports';
+import { getSalesReportData, SalesReportOrderRow } from '@/lib/reports/reports';
 import { getUserContext } from '@/lib/auth/session';
 import { ShoppingCart, TrendingUp, RotateCcw, CheckCircle2 } from 'lucide-react';
 
@@ -91,7 +91,7 @@ export default async function SalesReportsPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-border-subtle">
-              {(data?.orders || []).slice(0, 15).map((o: any) => (
+              {(data?.orders || []).slice(0, 15).map((o: SalesReportOrderRow) => (
                 <tr key={o.id} className="hover:bg-surface-muted/40 transition-colors">
                   <td className="px-4 py-3 font-mono font-medium text-text-primary">{o.order_number}</td>
                   <td className="px-4 py-3 font-mono text-[11px] text-text-muted">{o.order_date}</td>

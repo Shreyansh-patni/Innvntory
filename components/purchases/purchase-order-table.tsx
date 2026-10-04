@@ -1,8 +1,9 @@
 'use client';
 
 import { StatusBadge } from '@/components/shared/status-badge';
+import { PurchaseOrderItem } from '@/types/operations.types';
 
-export function PurchaseOrderTable({ orders }: { orders: any[] }) {
+export function PurchaseOrderTable({ orders }: { orders: PurchaseOrderItem[] }) {
   return (
     <div className="rounded-xl border border-border-subtle bg-surface overflow-hidden">
       <div className="overflow-x-auto">

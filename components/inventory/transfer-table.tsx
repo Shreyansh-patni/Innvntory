@@ -2,8 +2,9 @@
 
 import { StatusBadge } from '@/components/shared/status-badge';
 import { ArrowRightLeft } from 'lucide-react';
+import { TransferItem } from '@/types/operations.types';
 
-export function TransferTable({ transfers }: { transfers: any[] }) {
+export function TransferTable({ transfers }: { transfers: TransferItem[] }) {
   return (
     <div className="rounded-xl border border-border-subtle bg-surface overflow-hidden">
       <div className="overflow-x-auto">

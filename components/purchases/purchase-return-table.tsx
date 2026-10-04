@@ -1,8 +1,9 @@
 'use client';
 
 import { StatusBadge } from '@/components/shared/status-badge';
+import { PurchaseReturnItem } from '@/types/operations.types';
 
-export function PurchaseReturnTable({ returns }: { returns: any[] }) {
+export function PurchaseReturnTable({ returns }: { returns: PurchaseReturnItem[] }) {
   return (
     <div className="rounded-xl border border-border-subtle bg-surface overflow-hidden">
       <div className="overflow-x-auto">

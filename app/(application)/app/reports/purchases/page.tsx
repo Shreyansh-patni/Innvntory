@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import { PageHeader } from '@/components/shared/page-header';
-import { getPurchasesReportData } from '@/lib/reports/reports';
+import { getPurchasesReportData, PurchaseReportOrderRow } from '@/lib/reports/reports';
 import { getUserContext } from '@/lib/auth/session';
 import { Truck, CheckCircle2, AlertCircle } from 'lucide-react';
 
@@ -80,7 +80,7 @@ export default async function PurchasesReportsPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-border-subtle">
-              {(data?.purchaseOrders || []).slice(0, 15).map((p: any) => (
+              {(data?.purchaseOrders || []).slice(0, 15).map((p: PurchaseReportOrderRow) => (
                 <tr key={p.id} className="hover:bg-surface-muted/40 transition-colors">
                   <td className="px-4 py-3 font-mono font-medium text-text-primary">{p.po_number}</td>
                   <td className="px-4 py-3 font-mono text-[11px] text-text-muted">{p.order_date}</td>

@@ -2,8 +2,9 @@
 
 import { Building2, CheckCircle2 } from 'lucide-react';
 import { StatusBadge } from '@/components/shared/status-badge';
+import { WarehouseItem } from '@/types/operations.types';
 
-export function WarehouseTable({ warehouses }: { warehouses: any[] }) {
+export function WarehouseTable({ warehouses }: { warehouses: WarehouseItem[] }) {
   return (
     <div className="rounded-xl border border-border-subtle bg-surface overflow-hidden">
       <div className="overflow-x-auto">

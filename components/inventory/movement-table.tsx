@@ -1,6 +1,8 @@
 'use client';
 
-export function MovementTable({ movements }: { movements: any[] }) {
+import { MovementItem } from '@/types/operations.types';
+
+export function MovementTable({ movements }: { movements: MovementItem[] }) {
   return (
     <div className="rounded-xl border border-border-subtle bg-surface overflow-hidden">
       <div className="overflow-x-auto">
@@ -24,7 +26,7 @@ export function MovementTable({ movements }: { movements: any[] }) {
                 <tr key={m.id} className="hover:bg-surface-muted/40 transition-colors">
                   <td className="px-4 py-3 font-mono font-medium text-text-primary">{m.reference_number}</td>
                   <td className="px-4 py-3">
-                    <span className="font-mono text-[11px] rounded bg-surface-muted px-2 py-0.5 text-text-secondary">
+                    <span className="font-mono text-[10px] rounded bg-surface-muted px-2 py-0.5 text-text-secondary">
                       {m.movement_type}
                     </span>
                   </td>

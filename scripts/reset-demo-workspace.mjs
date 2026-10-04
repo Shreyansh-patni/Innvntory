@@ -56,7 +56,7 @@ const adminClient = createClient(SUPABASE_URL, SERVICE_ROLE_KEY, {
 
 const DEMO_ORG_SLUG = 'innvntory-demo';
 
-console.log('[RESET] Initiating comprehensive demo workspace reset...');
+console.log(`[RESET] Initiating comprehensive demo workspace reset for '${DEMO_ORG_SLUG}'...`);
 
 const result = await resetDemoWorkspace(adminClient);
 

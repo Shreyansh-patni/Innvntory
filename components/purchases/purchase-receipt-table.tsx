@@ -1,8 +1,9 @@
 'use client';
 
 import { StatusBadge } from '@/components/shared/status-badge';
+import { PurchaseReceiptItem } from '@/types/operations.types';
 
-export function PurchaseReceiptTable({ receipts }: { receipts: any[] }) {
+export function PurchaseReceiptTable({ receipts }: { receipts: PurchaseReceiptItem[] }) {
   return (
     <div className="rounded-xl border border-border-subtle bg-surface overflow-hidden">
       <div className="overflow-x-auto">

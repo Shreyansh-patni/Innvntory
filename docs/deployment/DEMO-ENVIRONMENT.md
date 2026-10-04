@@ -2,7 +2,7 @@
 
 **Project:** Innvntory
 **Company:** Sahaya Technologies Pvt. Ltd.
-**Setup:** SETUP 11.5 (ACTIVATED & VERIFIED)
+**Setup:** SETUP 11.6 (COMPLETE BUSINESS DATASET FOUNDATION)
 **Last Updated:** October 2026
 
 ---
@@ -14,13 +14,14 @@ explore the product without creating an account.
 
 The Demo Workspace is:
 - A real Supabase Auth user
-- A dedicated, isolated `organizations` row with slug `innvntory-demo`
+- A dedicated, isolated `organizations` row with slug `innvntory-demo` (`85ac679b-a96b-4218-9b97-c2d4f1f5bc51`)
 - A real `memberships` + `membership_roles` record (viewer role)
-- Real seeded `categories` and `products` data
+- Complete, interconnected operational records across Business, Inventory, Sales, Purchases, and Reports domains.
 
 It is **NOT**:
 - A fake/mocked authentication flow
 - A frontend-only bypass
+- A set of hardcoded dashboard/report figures
 - A shared tenancy with any real customer organization
 
 ---
@@ -42,16 +43,32 @@ for a disposable sandbox, not as protected authentication material.
 
 ---
 
-## Demo Workspace
+## Demo Workspace Baseline
 
-| Property        | Value                        |
-|-----------------|------------------------------|
-| Organization    | Innvntory Demo Workspace     |
-| Slug            | `innvntory-demo`             |
-| Role            | `viewer` (read-only)         |
-| Catalog         | 5 categories, 33 products    |
-| Billing access  | None                         |
-| Admin access    | None                         |
+| Property             | Canonical Value              |
+|----------------------|------------------------------|
+| Organization         | Innvntory Demo Workspace     |
+| Slug                 | `innvntory-demo`             |
+| Role                 | `viewer` (read-only)         |
+| Warehouses           | 3 warehouses                 |
+| Categories           | 8 categories                 |
+| Products             | 50 products                  |
+| Stock Balances       | 150 stock records            |
+| Customers            | 20 B2B/B2C customers         |
+| Suppliers            | 10 verified vendors          |
+| Sales Orders         | 50 orders (149 line items)   |
+| Invoices             | 50 invoices                  |
+| Sales Payments       | 44 payment records           |
+| Sales Returns        | 5 return records             |
+| Purchase Orders      | 25 orders (74 line items)    |
+| Purchase Receipts    | 23 receipt records           |
+| Purchase Payments    | 20 payment records           |
+| Purchase Returns     | 4 return records             |
+| Inventory Transfers  | 10 warehouse transfers       |
+| Inventory Adjustments| 12 adjustment records        |
+| Inventory Movements  | 242 movement ledger entries  |
+| Billing access       | None                         |
+| Admin access         | None                         |
 
 ---
 
@@ -84,13 +101,13 @@ SUPABASE_SERVICE_ROLE_KEY=...   # used by provisioning script only
 ```bash
 npm run demo:provision
 ```
-Runs `scripts/provision-demo-account.mjs` to idempotently create the demo user, workspace, viewer role, 5 categories, and 33 products.
+Runs `scripts/provision-demo-account.mjs` to idempotently ensure the demo user, workspace, viewer role, and the complete 17-table canonical business dataset are seeded.
 
 ### 2. Manual Baseline Reset
 ```bash
 npm run demo:reset
 ```
-Runs `scripts/reset-demo-workspace.mjs` to restore the demo workspace to canonical baseline, pruning any visitor-created transient products or categories while preserving the demo auth identity and organization.
+Runs `scripts/reset-demo-workspace.mjs` to restore the demo workspace to canonical baseline, pruning any visitor-created transient records across all 17 operational tables while preserving the demo auth identity and organization.
 
 ---
 
@@ -118,58 +135,26 @@ Vercel Cron triggers the reset job on the 2-hour cadence:
 - **Fail-Safe:** Validates organization identity before performing any mutations.
 - **Audit:** Logs safe operational telemetry (restored counts, pruned counts, duration) without exposing secrets.
 
-### 3. Reset Engine (`lib/demo/reset.ts`)
-- **Deterministic Baseline:** 5 canonical categories and 33 canonical products.
-- **Upsert / Restore:** Updates modified canonical records back to their pristine baseline.
-- **Transient Cleanup:** Prunes any categories or products created during visitor exploration.
+### 3. Reset Engine (`lib/demo/reset.ts` & `lib/demo/reset-engine.mjs`)
+- **Deterministic Baseline:** 8 categories, 50 products, 3 warehouses, 150 stock balances, 20 customers, 10 suppliers, 25 purchase orders, 74 PO line items, 23 purchase receipts, 20 purchase payments, 4 purchase returns, 50 sales orders, 149 SO line items, 50 invoices, 44 sales payments, 5 sales returns, 10 transfers, 12 adjustments, and 242 ledger movements.
+- **Controlled Deletion Order:** Deletes in reverse foreign key order (payments, returns, receipts/invoices, order items, orders, movements, adjustments, transfers, stock balances, customers, suppliers, products, categories, warehouses) scoped strictly by `organization_id`.
+- **Full Restoration:** Re-inserts the pristine canonical rows with preserved UUIDs and relational integrity.
 - **Identity Preservation:** Leaves `auth.users`, `organizations`, `memberships`, and `membership_roles` intact so demo sessions remain stable.
 
 ---
 
-## Real DB Demo Data vs Dashboard Fixture Data
+## Real DB Demo Data Architecture
 
-Innvntory Demo uses two distinct types of demo data:
+All authenticated pages in the demo workspace are powered directly by live Supabase PostgreSQL queries:
 
-### Real Demo Database Records (Supabase)
+- **Dashboard:** Queries `sales_orders`, `stock_balances`, `inventory_movements`, and `purchase_orders` to calculate real revenue, stock valuation, low-stock alerts, and activity feed in real time.
+- **Business:** `products`, `categories`, `customers`, `suppliers`
+- **Inventory:** `stock_balances`, `warehouses`, `inventory_transfers`, `inventory_adjustments`, `inventory_movements`
+- **Sales:** `sales_orders`, `invoices`, `sales_payments`, `sales_returns`
+- **Purchases:** `purchase_orders`, `purchase_receipts`, `purchase_payments`, `purchase_returns`
+- **Reports:** Aggregate sales, purchase, inventory, and financial summaries computed dynamically from transaction tables.
 
-These records exist in Supabase and are served via authenticated RLS queries:
-
-- `auth.users` — the demo auth user
-- `organizations` — Demo Workspace row
-- `memberships` — demo user ↔ Demo Workspace link
-- `membership_roles` — viewer role assignment
-- `categories` — 5 demo categories (Apparel, Footwear, etc.)
-- `products` — 33 realistic demo products
-
-These records are **real database data**. They appear in `/app/products`,
-`/app/categories`, etc. just like any real workspace would.
-
-### Dashboard Fixture Data (In-memory)
-
-These values are defined in `lib/demo/dashboard-data.ts` and returned by
-`getDashboardData(orgSlug)`. They represent **not-yet-implemented domains**:
-
-- Monthly Revenue (Sales domain — not yet built)
-- Stock Valuation (Inventory domain — not yet built)
-- Open Orders (Sales domain — not yet built)
-- Low Stock Alerts (Inventory domain — not yet built)
-- Recent Activity feed (multi-domain — not yet built)
-
-**These values never go through Supabase.** They are in-memory fixtures for
-demonstration only. They are clearly labelled in the UI with the "Demo Workspace"
-amber badge.
-
----
-
-## Demo Data Activation
-
-Dashboard fixture data activates when either:
-
-1. `NEXT_PUBLIC_DEMO_MODE=true` (env-wide, affects all users), or
-2. The authenticated user's organization slug is `innvntory-demo`
-
-Condition (2) is the primary production path — the real demo account uses it
-automatically without needing `DEMO_MODE=true`.
+**Zero hardcoded fake figures exist on individual pages.** All dashboard KPIs and report analytics reconcile with the underlying database tables.
 
 ---
 

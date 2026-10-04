@@ -1,8 +1,9 @@
 'use client';
 
 import { StatusBadge } from '@/components/shared/status-badge';
+import { InvoiceItem } from '@/types/operations.types';
 
-export function InvoiceTable({ invoices }: { invoices: any[] }) {
+export function InvoiceTable({ invoices }: { invoices: InvoiceItem[] }) {
   return (
     <div className="rounded-xl border border-border-subtle bg-surface overflow-hidden">
       <div className="overflow-x-auto">

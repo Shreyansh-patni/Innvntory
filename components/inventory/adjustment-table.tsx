@@ -2,8 +2,9 @@
 
 import { StatusBadge } from '@/components/shared/status-badge';
 import { PlusCircle, MinusCircle } from 'lucide-react';
+import { AdjustmentItem } from '@/types/operations.types';
 
-export function AdjustmentTable({ adjustments }: { adjustments: any[] }) {
+export function AdjustmentTable({ adjustments }: { adjustments: AdjustmentItem[] }) {
   return (
     <div className="rounded-xl border border-border-subtle bg-surface overflow-hidden">
       <div className="overflow-x-auto">
