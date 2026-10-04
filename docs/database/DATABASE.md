@@ -1,7 +1,9 @@
 # DATABASE & MULTI-TENANT ARCHITECTURE
 
-**Status:** EXPANDED WITH CATALOG DOMAIN (SETUP 11)
+**Status:** HOSTED SUPABASE CONNECTED & MIGRATIONS APPLIED (SETUP 09.2)
 **Selected Backend Platform:** Supabase (PostgreSQL 15+)
+**Hosted Project Reference:** `qwsdusjpidhwdxoztepu` (Region: South Asia / Mumbai - `ap-south-1`)
+**CLI Link & Push Workflow:** Linked via `supabase link --project-ref qwsdusjpidhwdxoztepu`, migrations deployed via `supabase db push`.
 **Migration Directory:** `supabase/migrations/`
 
 ---

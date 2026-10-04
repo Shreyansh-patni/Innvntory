@@ -101,7 +101,7 @@ export async function getUserContext(): Promise<UserContext | null> {
     membership: membershipData
       ? {
           id: membershipData.id,
-          status: membershipData.status,
+          status: membershipData.status as 'active' | 'invited' | 'suspended' | 'deactivated',
         }
       : null,
     roles,

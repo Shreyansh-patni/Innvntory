@@ -47,13 +47,15 @@ Innvntory uses Vercel's native GitHub integration with the official repository `
 
 Vercel environments are strictly isolated between **Production**, **Preview**, and **Development**.
 
-| Variable Name | Scope | Environment(s) | Description | Example / Format |
+| Variable Name | Scope | Environment(s) | Description | Target Value / Reference |
 | :--- | :--- | :--- | :--- | :--- |
-| `NEXT_PUBLIC_APP_URL` | Public / Client | Production | Canonical production domain URL | `https://innvntory.com` (or production Vercel domain) |
-| `NEXT_PUBLIC_APP_URL` | Public / Client | Preview | Automatically supplied or configured for preview | `https://<project>-git-develop-<team>.vercel.app` |
-| `NEXT_PUBLIC_SUPABASE_URL` | Public / Client | Production & Preview | Supabase Project REST API URL | `https://<project-ref>.supabase.co` |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Public / Client | Production & Preview | Supabase public anonymous API key | Standard Supabase JWT anon key |
-| `SUPABASE_SERVICE_ROLE_KEY` | Server-Only | Production & Preview | Elevated service role key for migrations / admin tasks | Server-only JWT (NEVER prefix with `NEXT_PUBLIC_`) |
+| `NEXT_PUBLIC_APP_URL` | Public / Client | Production | Canonical production domain URL | `https://innvntory.sahaya.tech` (or `https://innvntory.vercel.app`) |
+| `NEXT_PUBLIC_APP_URL` | Public / Client | Preview | Automatically supplied or configured for preview | `https://<preview-branch-url>.vercel.app` |
+| `NEXT_PUBLIC_SUPABASE_URL` | Public / Client | Production & Preview | Supabase Project REST API URL | `https://qwsdusjpidhwdxoztepu.supabase.co` |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Public / Client | Production & Preview | Supabase public anonymous API key | Public JWT anon key |
+| `NEXT_PUBLIC_DEMO_MODE` | Public / Client | Production & Preview | Controlled simulated dashboard toggle | `false` |
+| `NEXT_PUBLIC_DEMO_EMAIL` | Public / Client | Production & Preview | Public demo account username | `demo@innvntory.sahaya.tech` |
+| `SUPABASE_SERVICE_ROLE_KEY` | Server-Only | Production & Preview | Elevated service role key for migrations / admin tasks | Server-only key (NEVER prefix with `NEXT_PUBLIC_`) |
 | `POLAR_ACCESS_TOKEN` | Server-Only | Production & Preview | Polar SaaS billing API access token | `polar_at_...` (Planned) |
 | `POLAR_ORGANIZATION_ID` | Server-Only | Production & Preview | Polar organization ID | UUID (Planned) |
 | `POLAR_WEBHOOK_SECRET` | Server-Only | Production & Preview | Webhook signature verification secret | Secret token (Planned) |

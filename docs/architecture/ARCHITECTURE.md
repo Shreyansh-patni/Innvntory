@@ -3,7 +3,7 @@
 ## Direction
 - **Frontend:** Next.js (App Router), React 19, TypeScript, Tailwind CSS v4
 - **UI Libraries:** shadcn/ui (Primary).
-- **Backend / Platform:** Supabase (PostgreSQL 15+, Supabase Auth, Storage, Realtime)
+- **Backend / Platform:** Supabase (PostgreSQL 15+, Supabase Auth, Storage, Realtime) — Hosted project `qwsdusjpidhwdxoztepu` (ap-south-1 / Mumbai)
 - **Billing:** Polar
 
 ## Next.js Architecture & Route Groups

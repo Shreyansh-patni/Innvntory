@@ -1,13 +1,15 @@
 # SECURITY & AUTHENTICATION POLICY
 
-**Status:** IMPLEMENTED & ENFORCED (SETUP 10)
+**Status:** IMPLEMENTED & ENFORCED (SETUP 10 / SETUP 09.2)
 **Authentication Engine:** Supabase Auth (`auth.users`) + `@supabase/ssr`
+**Hosted Project Reference:** `qwsdusjpidhwdxoztepu` (ap-south-1)
 
 ---
 
 ## 1. Core Security Policies & Non-Negotiables
 - **Zero Secrets in Source Control:** `.env.example` contains only non-sensitive templates. Real secrets are managed via local `.env.local` or secure platform variables.
 - **Vercel Environment Isolation:** Production, Preview, and Development environment variables are strictly isolated in Vercel. Secret tokens (`SUPABASE_SERVICE_ROLE_KEY`, `POLAR_*`) are server-only and never exposed to the client.
+- **Publishable / Anon vs Secret Key Boundary:** The browser client uses strictly the public anonymous key (`NEXT_PUBLIC_SUPABASE_ANON_KEY`). Server-only administrative tasks use the elevated `SUPABASE_SERVICE_ROLE_KEY` exclusively inside trusted backend scripts or edge functions.
 - **Server-Side Authentication & Authorization:** Next.js `middleware.ts` interceptor continuously verifies JWT sessions on `/app/*`. Server Components resolve `getUserContext()` before executing database transactions.
 - **Strict Tenant Isolation:** PostgreSQL Row Level Security (RLS) is active on every table. Users cannot select, mutate, or traverse records across tenant boundaries.
 - **Safe Redirection & Open Redirect Prevention:** Auth callbacks and login redirects validate destination paths (must start with `/` and not `//` or external schemas). Supabase Redirect URLs are restricted to authorized preview and production patterns.
