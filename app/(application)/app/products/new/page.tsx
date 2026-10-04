@@ -1,15 +1,15 @@
 import { Metadata } from 'next';
 import { PageHeader } from '@/components/shared/page-header';
-import { CategoryManager } from '@/components/catalog/category-manager';
+import { ProductForm } from '@/components/catalog/product-form';
 import { getCategories } from '@/lib/catalog/categories';
 import { getUserContext } from '@/lib/auth/session';
 
 export const metadata: Metadata = {
-  title: 'Categories & Tax Codes — Innvntory',
-  description: 'Manage item classification, HSN/SAC codes, and GST rates.',
+  title: 'Create Product — Innvntory',
+  description: 'Add a new product or inventory SKU to the master catalog.',
 };
 
-export default async function CategoriesPage() {
+export default async function NewProductPage() {
   const userContext = await getUserContext();
   const orgId = userContext?.organization?.id || '00000000-0000-0000-0000-000000000000';
 
@@ -18,16 +18,16 @@ export default async function CategoriesPage() {
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Product Categories"
-        description="Statutory tax classification, HSN/SAC mappings, and catalog grouping across warehouses."
+        title="Create Product"
+        description="Define a new inventory catalog item with unique SKU, optional barcode, and base pricing."
         breadcrumbs={[
           { label: 'Application', href: '/app/dashboard' },
-          { label: 'Business', href: '/app/products' },
-          { label: 'Categories' },
+          { label: 'Products', href: '/app/products' },
+          { label: 'New Product' },
         ]}
       />
 
-      <CategoryManager categories={categories} />
+      <ProductForm categories={categories} isEditing={false} />
     </div>
   );
 }

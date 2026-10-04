@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
-import { Search, Plus, Filter, ChevronLeft, ChevronRight, Inbox, Edit3 } from 'lucide-react';
+import { Search, Plus, ChevronLeft, ChevronRight, Inbox, Edit3 } from 'lucide-react';
 import { ProductRow } from '@/lib/catalog/products';
 import { CategoryRow } from '@/lib/catalog/categories';
 import { StatusBadge } from '@/components/shared/status-badge';
@@ -153,7 +153,6 @@ export function ProductTable({
               ) : (
                 products.map((p) => {
                   const categoryName = p.categories?.name || 'Uncategorized';
-                  const statusVariant = p.status === 'active' ? 'success' : p.status === 'inactive' ? 'warning' : 'neutral';
 
                   return (
                     <tr key={p.id} className="hover:bg-surface-muted/40 transition-colors">
@@ -172,7 +171,7 @@ export function ProductTable({
                         ₹{Number(p.cost_price).toFixed(2)}
                       </td>
                       <td className="px-4 py-3 text-center">
-                        <StatusBadge status={p.status} variant={statusVariant} />
+                        <StatusBadge status={p.status} />
                       </td>
                       <td className="px-4 py-3 text-right">
                         <Link

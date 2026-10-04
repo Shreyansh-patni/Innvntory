@@ -2,15 +2,16 @@
 
 This document defines the major business domains for Innvntory. These represent logical boundaries of responsibility.
 
-## 1. Identity & Access (FOUNDATION IMPLEMENTED - SETUP 09)
+## 1. Identity & Access (FOUNDATION IMPLEMENTED - SETUP 09 & 10)
 - **Responsibilities:** Authentication, user management, organization (tenant) membership, role-based access control (RBAC).
 - **Entities:** Organizations, Users (`auth.users`), Memberships, Roles, Permissions, RolePermissions, MembershipRoles.
-- **Implementation Status:** Schema, indexes, security functions, and RLS policies created in `supabase/migrations/20261004000000_multi_tenant_core.sql`.
+- **Implementation Status:** Schema, indexes, security functions, RLS policies, and SSR session handlers implemented.
 - **Dependencies:** Supabase Auth (`auth.users`).
 
-## 2. Catalog (PLANNED)
+## 2. Catalog (IMPLEMENTED - SETUP 11)
 - **Responsibilities:** Definition of what can be bought or sold.
-- **Entities:** Products, Variants, Categories, Brands, Units of Measure.
+- **Entities:** Products, Categories, Units of Measure.
+- **Implementation Status:** Real database schema, unique SKU/barcode constraints, Zod validation, Server Actions, pagination/filtering, and frontend CRUD implemented.
 - **Dependencies:** Identity (tenant isolation).
 
 ## 3. Inventory (PLANNED)

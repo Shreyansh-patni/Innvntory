@@ -1,6 +1,6 @@
 # INNVNTORY DATABASE SCHEMA & TENANCY OVERVIEW
 
-**Status:** ESTABLISHED & MIGRATION-FIRST (SETUP 09)
+**Status:** EXPANDED WITH CATALOG DOMAIN (SETUP 11)
 **Platform:** PostgreSQL via Supabase
 **Primary Target:** Multi-tenant SaaS with Strict Row Level Security (RLS)
 
@@ -24,14 +24,15 @@ public.organizations               public.audit_logs   public.membership_roles
         +----------------------------+                         v
         | (organization_id)          |                   public.roles
         v                            v                         |
-public.roles (Custom)       public.audit_logs                  | (role_id)
-                                                               v
-                                                    public.role_permissions
-                                                               |
-                                                               | (permission_id)
-                                                               v
-                                                    public.permissions
-                                                    (Granular Catalog)
+public.categories              public.products                 | (role_id)
+  (Tax & Classification)         (Master Catalog)              v
+        ^                            |                   public.role_permissions
+        | (category_id)              |                         |
+        +----------------------------+                         | (permission_id)
+                                     |                         v
+                                     v                   public.permissions
+                               public.units              (Granular Catalog)
+                             (Units of Measure)
 ```
 
 ---
@@ -47,39 +48,23 @@ public.roles (Custom)       public.audit_logs                  | (role_id)
 | `public.role_permissions`| UUID (`id`) | Inherited via `role_id` | **Yes** | Maps permissions to system & custom roles. |
 | `public.membership_roles`| UUID (`id`) | Inherited via `membership_id` | **Yes** | Assigns roles to tenant members. |
 | `public.audit_logs` | UUID (`id`) | **Yes** | **Yes** | Cryptographic/timestamped immutable audit ledger. Updates/deletions blocked. |
+| `public.categories` | UUID (`id`) | **Yes** | **Yes** | Product classification, HSN/SAC codes, and GST rates. |
+| `public.units` | UUID (`id`) | **Yes** (or `NULL` for System Standards) | **Yes** | Units of measurement (`PCS`, `BOX`, `KG`, `LTR`, etc.). |
+| `public.products` | UUID (`id`) | **Yes** | **Yes** | Master catalog items with unique SKU and barcode per organization. |
 
 ---
 
-## 3. Multi-Tenant Isolation & RLS Security
+## 3. Planned Future Domain Attachments (Deferred)
 
-### Isolation Principle
-Every tenant-owned record in Innvntory belongs directly to an `organization_id`. Database queries performed by an authenticated user are evaluated against the `public.is_org_member(organization_id)` and `public.has_org_permission(organization_id, permission_key)` security functions.
-
-### Security Functions (`SECURITY DEFINER` + `SET search_path = public`):
-1. `public.is_org_member(lookup_org_id UUID)`:
-   Validates if `auth.uid()` has an active membership record in `lookup_org_id`.
-2. `public.has_org_permission(lookup_org_id UUID, required_permission TEXT)`:
-   Traverses `memberships` → `membership_roles` → `roles` → `role_permissions` → `permissions` to verify whether the actor has the required permission (or is an Organization Owner).
-
----
-
-## 4. Planned Future Domain Attachments (Deferred)
-
-All future business tables will inherit tenant isolation by referencing `public.organizations(id)`:
+All future operational tables will reference `public.products` and `public.organizations`:
 
 ```
-public.organizations (Root Tenant)
+public.products (Master Catalog)
    |
-   +---> [FUTURE] public.products (Catalog Domain)
-   +---> [FUTURE] public.categories (Tax & HSN Classification)
-   +---> [FUTURE] public.warehouses (Multi-Location Storage)
-   +---> [FUTURE] public.stock_balances (Quantity On-Hand & Reserved)
-   +---> [FUTURE] public.stock_movements (Double-entry Stock Journal)
-   +---> [FUTURE] public.suppliers (Procurement Directory)
-   +---> [FUTURE] public.purchase_orders (Procurement POs)
-   +---> [FUTURE] public.goods_receipts (Inbound GRNs)
-   +---> [FUTURE] public.customers (Customer Ledger)
-   +---> [FUTURE] public.sales_orders (Fulfillment Pipeline)
-   +---> [FUTURE] public.invoices (GST Tax Invoices)
-   +---> [FUTURE] public.payments (Disbursements & Receipts)
+   +---> [FUTURE] public.stock_balances (Multi-warehouse stock levels)
+   +---> [FUTURE] public.stock_movements (Double-entry movement ledger)
+   +---> [FUTURE] public.purchase_order_items (Procurement items)
+   +---> [FUTURE] public.goods_receipt_items (GRN put-away items)
+   +---> [FUTURE] public.sales_order_items (Sales fulfillment items)
+   +---> [FUTURE] public.invoice_items (GST invoice line items)
 ```

@@ -10,15 +10,17 @@ export type StatusType =
   | "cancelled"
   | "awaiting-data"
   | "active"
+  | "inactive"
+  | "archived"
   | "scheduled";
 
 interface StatusBadgeProps {
-  status: StatusType;
+  status: StatusType | string;
   label?: string;
   className?: string;
 }
 
-const statusConfig: Record<StatusType, { label: string; dotClass: string; containerClass: string }> = {
+const statusConfig: Record<string, { label: string; dotClass: string; containerClass: string }> = {
   reconciled: {
     label: "Reconciled",
     dotClass: "bg-emerald-500",
@@ -33,6 +35,16 @@ const statusConfig: Record<StatusType, { label: string; dotClass: string; contai
     label: "Active",
     dotClass: "bg-emerald-500",
     containerClass: "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/20",
+  },
+  inactive: {
+    label: "Inactive",
+    dotClass: "bg-amber-500",
+    containerClass: "bg-amber-500/10 text-amber-700 dark:text-amber-400 border-amber-500/20",
+  },
+  archived: {
+    label: "Archived",
+    dotClass: "bg-neutral-500",
+    containerClass: "bg-neutral-500/10 text-neutral-600 dark:text-neutral-400 border-neutral-500/20",
   },
   "in-transit": {
     label: "In Transit",

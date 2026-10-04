@@ -1,6 +1,6 @@
 # INNVNTORY COMPONENT REGISTRY
 
-**Status:** IMPLEMENTED & REFINED (SETUP 10)
+**Status:** EXPANDED WITH CATALOG COMPONENTS (SETUP 11)
 **Last Updated:** October 2026
 
 ---
@@ -35,7 +35,19 @@ Interactive authentication forms implementing client-side validation, server act
 
 ---
 
-## 3. Authenticated Application Shell (`components/layout/`)
+## 3. Catalog & Products Components (`components/catalog/`)
+
+Data-dense product and category management components connecting to Server Actions with audit logging.
+
+| Component | Path | Description | Client/Server |
+| :--- | :--- | :--- | :--- |
+| `ProductTable` | `components/catalog/product-table.tsx` | Paginated, searchable, filterable master product table with prices, status pills, and empty states. | Client |
+| `ProductForm` | `components/catalog/product-form.tsx` | Product creation and edit form with SKU, barcode, category selector, UOM, and price inputs. | Client |
+| `CategoryManager` | `components/catalog/category-manager.tsx` | Category table with HSN codes, default GST rates, and inline create/edit drawer form. | Client |
+
+---
+
+## 4. Authenticated Application Shell (`components/layout/`)
 
 Layout and navigation components providing the persistent operational application shell for `/app/*`.
 
@@ -50,7 +62,7 @@ Layout and navigation components providing the persistent operational applicatio
 
 ---
 
-## 4. Shared Application Primitives (`components/shared/`)
+## 5. Shared Application Primitives (`components/shared/`)
 
 High-density, reusable operational UI primitives designed for data-dense business workflows across all `/app/*` modules.
 
@@ -65,7 +77,7 @@ High-density, reusable operational UI primitives designed for data-dense busines
 
 ---
 
-## 5. UI Primitives (`components/ui/`)
+## 6. UI Primitives (`components/ui/`)
 
 Foundational UI primitives built on Radix UI / shadcn/ui.
 

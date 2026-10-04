@@ -1,6 +1,6 @@
 # INNVNTORY ROUTING ARCHITECTURE
 
-**Status:** IMPLEMENTED & EXPANDED (SETUP 10)
+**Status:** EXPANDED WITH PRODUCTS & CATEGORIES (SETUP 11)
 **Last Updated:** October 2026
 
 ---
@@ -41,10 +41,12 @@ The authenticated application is protected server-side via Next.js `middleware.t
 | :--- | :--- | :--- | :--- |
 | `/app` | Application Root | **Implemented** | Redirects to `/app/dashboard` |
 | `/app/dashboard` | Operational Dashboard Shell | **Implemented** | High-density operational KPI cards, ledger state, reorder alerts, quick actions |
-| `/app/products` | Product Master Catalog | **Implemented (UI Foundation)** | SKU/barcode search toolbar, status filters, high-density data placeholder |
+| `/app/products` | Product Master Catalog | **Implemented (Full CRUD)** | Server-side pagination, search, category filter, operational table, and status pills |
+| `/app/products/new` | Create Product Record | **Implemented (Full CRUD)** | Form for item name, SKU, barcode, category, UOM, and price points |
+| `/app/products/[id]` | Edit & Inspect Product Details | **Implemented (Full CRUD)** | Edit master item details, price adjustments, and archive lifecycle management |
+| `/app/categories` | Product Tax & Category Codes | **Implemented (Full CRUD)** | Category management with HSN/SAC codes and default GST percentage rates |
 | `/app/customers` | Customer Directory & Ledger | **Implemented (UI Foundation)** | Customer type filters, credit ledger headers, search toolbar |
 | `/app/suppliers` | Supplier Directory & Ratings | **Implemented (UI Foundation)** | Vendor search, lead-time/rating column headers, placeholder table |
-| `/app/categories` | Product Tax & Category Codes | **Implemented (UI Foundation)** | Category classification, GST rate and HSN code column structure |
 | `/app/inventory/stock` | Multi-Warehouse Stock Ledger | **Implemented (UI Foundation)** | Multi-warehouse balance ledger, reorder levels, reserved inventory slots |
 | `/app/inventory/warehouses`| Warehouse Facilities & Bins | **Implemented (UI Foundation)** | Warehouse facility cards, bin management, capacity indicators |
 | `/app/inventory/transfers` | Inter-Facility Transfers | **Implemented (UI Foundation)** | Inter-warehouse dispatch/receipt tracking, status filters |
