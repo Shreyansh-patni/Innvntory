@@ -11,8 +11,20 @@
 - **Filtering & Sorting:** Standardized query parameters.
 - **Search:** Dedicated search query support.
 - **Rate Limiting:** Protect endpoints against abuse.
-- **Idempotency:** Idempotency keys for mutations.
-- **Structured Errors:** Consistent error shapes and codes.
+- **Idempotency:** Idempotency keys required for mutations (payments, webhooks, orders, inventory movements).
 - **Request IDs:** Tracing across services.
+
+## Error Model
+Errors should be structured, safe, actionable, and free of internal secrets.
+Categories include:
+- `Validation` (400)
+- `Authentication` (401)
+- `Authorization` (403)
+- `Not Found` (404)
+- `Conflict` (409)
+- `Rate Limited` (429)
+- `External Service` (502)
+- `Internal` (500)
+- `Unavailable` (503)
 
 External integrations must sit behind service boundaries inside `lib/`.

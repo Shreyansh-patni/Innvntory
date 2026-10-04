@@ -23,6 +23,14 @@
 - **Auditability:** Keep audit trails for important records.
 - **Tenant Isolation:** Row Level Security (RLS) must enforce organization-level isolation. Every tenant-owned record should have an organization boundary.
 - **Data Consistency:** Inventory correctness is paramount. Inventory operations should be atomic. No partial inventory state. Database correctness is higher priority than convenience.
+- **Transaction Boundaries:** Transactions must be used where workflows change multiple business states. Examples include:
+  - Receiving stock
+  - Selling stock
+  - Stock adjustment
+  - Stock transfer
+  - Invoice creation
+  - Payment recording
+  - Refunds/returns
 - **Idempotency:** Webhook processing and sensitive mutations must be idempotent.
 
 *(Note: Do not implement any of these yet).*
