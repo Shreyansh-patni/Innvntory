@@ -1,9 +1,17 @@
 import { MobileNavigation } from "@/components/layout/mobile-navigation";
 import { CommandCenterTrigger } from "@/components/layout/command-center-trigger";
+import { UserAccountMenu } from "@/components/layout/user-account-menu";
 import { Separator } from "@/components/ui/separator";
 import { Building2, Warehouse, Bell, ChevronDown } from "lucide-react";
+import { getUserContext } from "@/lib/auth/session";
 
-export function AppHeader() {
+export async function AppHeader() {
+  const userContext = await getUserContext();
+
+  const orgName = userContext?.organization?.name || "Sahaya Technologies";
+  const userEmail = userContext?.user?.email;
+  const userFullName = userContext?.user?.fullName;
+
   return (
     <header className="flex h-14 shrink-0 items-center border-b border-border-subtle bg-background px-4 lg:px-6 z-10">
       {/* Mobile nav trigger + wordmark (mobile only) */}
@@ -15,12 +23,12 @@ export function AppHeader() {
         </span>
       </div>
 
-      {/* Desktop: Organization & Warehouse Context Switchers (Placeholders) */}
+      {/* Desktop: Organization & Warehouse Context Switchers */}
       <div className="hidden lg:flex items-center gap-3">
         {/* Org Switcher */}
         <div className="flex items-center gap-2 rounded-md border border-border-subtle bg-surface px-2.5 py-1 text-xs text-text-secondary hover:border-border transition-colors cursor-pointer">
           <Building2 className="h-3.5 w-3.5 text-text-muted" />
-          <span className="font-medium text-text-primary">Sahaya Technologies</span>
+          <span className="font-medium text-text-primary">{orgName}</span>
           <span className="rounded bg-surface-muted px-1.5 py-0.2 text-[10px] font-mono text-text-muted">
             Workspace
           </span>
@@ -53,16 +61,12 @@ export function AppHeader() {
           <Bell className="h-3.5 w-3.5" />
         </button>
 
-        {/* User Account Menu Placeholder */}
-        <div className="flex items-center gap-2.5 pl-2 border-l border-border-subtle">
-          <div className="flex h-7 w-7 items-center justify-center rounded-full bg-surface-muted border border-border-subtle text-[11px] font-mono font-bold text-text-primary">
-            ST
-          </div>
-          <div className="hidden xl:block text-left leading-tight">
-            <p className="text-xs font-medium text-text-primary">Operations Admin</p>
-            <p className="text-[10px] text-text-muted">Sahaya Technologies</p>
-          </div>
-        </div>
+        {/* Authenticated User Account Menu */}
+        <UserAccountMenu
+          email={userEmail}
+          fullName={userFullName}
+          organizationName={orgName}
+        />
       </div>
     </header>
   );

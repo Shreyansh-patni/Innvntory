@@ -1,13 +1,13 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { SignupForm } from '@/components/auth/signup-form';
+import { ForgotPasswordForm } from '@/components/auth/forgot-password-form';
 
 export const metadata: Metadata = {
-  title: 'Create Account — Innvntory',
-  description: 'Start with a free organization workspace on Innvntory.',
+  title: 'Forgot Password — Innvntory',
+  description: 'Reset your Innvntory account password.',
 };
 
-export default function SignupPage() {
+export default function ForgotPasswordPage() {
   return (
     <div className="flex min-h-[calc(100vh-16rem)] items-center justify-center py-16 px-4 sm:px-6 lg:px-8">
       <div className="w-full max-w-md space-y-6 rounded-2xl border border-border-subtle bg-surface p-8 sm:p-10 shadow-sm">
@@ -19,19 +19,19 @@ export default function SignupPage() {
             </span>
           </Link>
           <h1 className="text-xl font-heading font-bold text-text-primary">
-            Create your organization workspace
+            Reset your password
           </h1>
           <p className="mt-1.5 text-xs text-text-secondary">
-            Get started with multi-warehouse inventory and GST billing operations.
+            Enter your work email address and we will send you instructions to reset your password.
           </p>
         </div>
 
-        {/* Interactive Signup Form */}
-        <SignupForm />
+        {/* Interactive Forgot Password Form */}
+        <ForgotPasswordForm />
 
-        {/* Switch to Signin */}
+        {/* Switch to Login */}
         <div className="text-center text-xs text-text-secondary pt-2 border-t border-border-subtle">
-          Already have an organization account?{' '}
+          Remembered your credentials?{' '}
           <Link
             href="/login"
             className="font-semibold text-text-primary hover:underline"

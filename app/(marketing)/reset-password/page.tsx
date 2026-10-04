@@ -1,13 +1,13 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { SignupForm } from '@/components/auth/signup-form';
+import { ResetPasswordForm } from '@/components/auth/reset-password-form';
 
 export const metadata: Metadata = {
-  title: 'Create Account — Innvntory',
-  description: 'Start with a free organization workspace on Innvntory.',
+  title: 'Set New Password — Innvntory',
+  description: 'Choose a new password for your Innvntory account.',
 };
 
-export default function SignupPage() {
+export default function ResetPasswordPage() {
   return (
     <div className="flex min-h-[calc(100vh-16rem)] items-center justify-center py-16 px-4 sm:px-6 lg:px-8">
       <div className="w-full max-w-md space-y-6 rounded-2xl border border-border-subtle bg-surface p-8 sm:p-10 shadow-sm">
@@ -19,26 +19,15 @@ export default function SignupPage() {
             </span>
           </Link>
           <h1 className="text-xl font-heading font-bold text-text-primary">
-            Create your organization workspace
+            Set a new password
           </h1>
           <p className="mt-1.5 text-xs text-text-secondary">
-            Get started with multi-warehouse inventory and GST billing operations.
+            Ensure your account remains secure with a strong password.
           </p>
         </div>
 
-        {/* Interactive Signup Form */}
-        <SignupForm />
-
-        {/* Switch to Signin */}
-        <div className="text-center text-xs text-text-secondary pt-2 border-t border-border-subtle">
-          Already have an organization account?{' '}
-          <Link
-            href="/login"
-            className="font-semibold text-text-primary hover:underline"
-          >
-            Sign in
-          </Link>
-        </div>
+        {/* Interactive Reset Password Form */}
+        <ResetPasswordForm />
       </div>
     </div>
   );
