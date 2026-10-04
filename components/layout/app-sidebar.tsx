@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { navigation, isNavSection, type NavItem } from "@/content/navigation";
 import { cn } from "@/lib/utils";
+import { ExternalLink } from "lucide-react";
 
 function NavLink({ item }: { item: NavItem }) {
   const pathname = usePathname();
@@ -30,11 +31,19 @@ export function AppSidebar() {
   return (
     <aside className="hidden lg:flex lg:w-[240px] lg:flex-col lg:border-r lg:border-border-subtle bg-background-subtle">
       {/* Wordmark */}
-      <div className="flex h-14 items-center px-5 border-b border-border-subtle">
-        <Link href="/" className="flex items-center gap-2">
+      <div className="flex h-14 items-center justify-between px-5 border-b border-border-subtle">
+        <Link href="/app/dashboard" className="flex items-center gap-2">
           <span className="text-lg font-heading font-bold tracking-tight text-text-primary">
             Innvntory
           </span>
+        </Link>
+        <Link
+          href="/"
+          className="text-text-muted hover:text-text-primary transition-colors p-1"
+          title="Visit Public Website"
+          aria-label="Visit Public Website"
+        >
+          <ExternalLink className="h-3.5 w-3.5" />
         </Link>
       </div>
 

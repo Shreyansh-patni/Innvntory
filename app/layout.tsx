@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import { fontPrimary, fontSecondary } from "@/lib/fonts";
-import { AppShell } from "@/components/layout/app-shell";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Innvntory",
-  description: "A modern business operating system for inventory-driven businesses.",
+  title: "Innvntory — Modern Business Operating System",
+  description:
+    "A high-precision inventory and business management SaaS engineered for multi-warehouse businesses. Built by Sahaya Technologies Pvt. Ltd.",
 };
 
 export default function RootLayout({
@@ -16,9 +16,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${fontPrimary.variable} ${fontSecondary.variable} font-sans antialiased`}
+        className={`${fontPrimary.variable} ${fontSecondary.variable} font-sans bg-background text-text-primary antialiased min-h-screen flex flex-col`}
       >
-        <AppShell>{children}</AppShell>
+        {children}
       </body>
     </html>
   );
