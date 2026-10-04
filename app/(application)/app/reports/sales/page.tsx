@@ -16,7 +16,6 @@ export default async function SalesReportsPage() {
 
   const grossSales = data?.totalGrossSales || 0;
   const collected = data?.totalCollected || 0;
-  const netRev = data?.netRevenue || 0;
   const aov = data && data.totalOrders > 0 ? grossSales / data.totalOrders : 0;
 
   return (

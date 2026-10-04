@@ -1,8 +1,8 @@
 import { Metadata } from 'next';
 import { PageHeader } from '@/components/shared/page-header';
-import { getInventoryReportData } from '@/lib/reports/reports';
+import { getInventoryReportData, StockReportBalanceRow } from '@/lib/reports/reports';
 import { getUserContext } from '@/lib/auth/session';
-import { Boxes, Building2, AlertTriangle, ArrowRightLeft } from 'lucide-react';
+import { Boxes, Building2, AlertTriangle } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Inventory Reports & Valuation — Innvntory',
@@ -90,7 +90,7 @@ export default async function InventoryReportsPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-border-subtle">
-              {(data?.stock || []).slice(0, 15).map((s: any, idx: number) => {
+              {(data?.stock || []).slice(0, 15).map((s: StockReportBalanceRow, idx: number) => {
                 const qty = Number(s.quantity);
                 const cost = Number(s.products?.cost_price || 0);
                 return (

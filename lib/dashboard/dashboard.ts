@@ -38,6 +38,35 @@ export interface DashboardData {
   lowStockItems: LowStockItem[];
 }
 
+interface StockProductRecord {
+  id: string;
+  name: string;
+  sku: string;
+  cost_price: number;
+  unit_code: string | null;
+  categories: {
+    name: string;
+  } | null;
+}
+
+interface StockBalanceQueryRow {
+  quantity: number;
+  reorder_level: number;
+  products: StockProductRecord | null;
+}
+
+interface MovementQueryRow {
+  id: string;
+  movement_type: string;
+  quantity: number;
+  reference_number: string;
+  notes: string | null;
+  created_at: string;
+  products: {
+    name: string;
+  } | null;
+}
+
 export async function getLiveDashboardData(organizationId: string, orgSlug?: string): Promise<DashboardData> {
   const supabase = await createClient();
   const isDemo = orgSlug === 'innvntory-demo' || process.env.NEXT_PUBLIC_DEMO_MODE === 'true';
@@ -82,10 +111,10 @@ export async function getLiveDashboardData(organizationId: string, orgSlug?: str
   let lowStockCount = 0;
   const lowStockMap = new Map<string, LowStockItem>();
 
-  for (const s of stockData || []) {
+  for (const s of (stockData || []) as unknown as StockBalanceQueryRow[]) {
     const qty = Number(s.quantity) || 0;
     const reorder = Number(s.reorder_level) || 0;
-    const prod: any = s.products;
+    const prod = s.products;
     const cost = Number(prod?.cost_price) || 0;
     totalValuation += qty * cost;
 
@@ -154,7 +183,9 @@ export async function getLiveDashboardData(organizationId: string, orgSlug?: str
     .order('created_at', { ascending: false })
     .limit(5);
 
-  const recentActivity: OperationalActivityItem[] = (movements || []).map((m: any, idx: number) => {
+  const recentActivity: OperationalActivityItem[] = (
+    (movements || []) as unknown as MovementQueryRow[]
+  ).map((m, idx: number) => {
     let type: OperationalActivityItem['type'] = 'grn';
     let title = 'Goods Receipt (GRN)';
     let status: OperationalActivityItem['status'] = 'reconciled';
@@ -181,7 +212,16 @@ export async function getLiveDashboardData(organizationId: string, orgSlug?: str
       status = 'completed';
     }
 
-    const timeAgo = idx === 0 ? '12 mins ago' : idx === 1 ? '35 mins ago' : idx === 2 ? '1 hour ago' : idx === 3 ? '3 hours ago' : '5 hours ago';
+    const timeAgo =
+      idx === 0
+        ? '12 mins ago'
+        : idx === 1
+        ? '35 mins ago'
+        : idx === 2
+        ? '1 hour ago'
+        : idx === 3
+        ? '3 hours ago'
+        : '5 hours ago';
 
     return {
       id: m.id,

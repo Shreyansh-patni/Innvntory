@@ -1,5 +1,59 @@
 import { createClient } from '@/lib/supabase/server';
 
+export interface SalesReportOrderRow {
+  id: string;
+  order_number: string;
+  status: string;
+  subtotal: number;
+  tax_amount: number;
+  total_amount: number;
+  order_date: string;
+}
+
+export interface SalesReportPaymentRow {
+  amount: number;
+  payment_method: string;
+  status: string;
+  payment_date: string;
+}
+
+export interface SalesReportReturnRow {
+  quantity: number;
+  refund_amount: number;
+  reason: string;
+}
+
+export interface PurchaseReportOrderRow {
+  id: string;
+  po_number: string;
+  status: string;
+  subtotal: number;
+  tax_amount: number;
+  total_amount: number;
+  order_date: string;
+}
+
+export interface StockReportProduct {
+  cost_price: number;
+  selling_price: number;
+  name: string;
+  sku: string;
+  categories: {
+    name: string;
+  } | null;
+}
+
+export interface StockReportBalanceRow {
+  quantity: number;
+  reorder_level: number;
+  reserved_quantity: number;
+  products: StockReportProduct | null;
+  warehouses: {
+    name: string;
+    code: string;
+  } | null;
+}
+
 export async function getSalesReportData(organizationId: string) {
   const supabase = await createClient();
   if (!supabase) return null;
@@ -19,9 +73,9 @@ export async function getSalesReportData(organizationId: string) {
       .eq('organization_id', organizationId),
   ]);
 
-  const orders = ordersRes.data || [];
-  const payments = paymentsRes.data || [];
-  const returns = returnsRes.data || [];
+  const orders = (ordersRes.data || []) as unknown as SalesReportOrderRow[];
+  const payments = (paymentsRes.data || []) as unknown as SalesReportPaymentRow[];
+  const returns = (returnsRes.data || []) as unknown as SalesReportReturnRow[];
 
   const totalGrossSales = orders
     .filter((o) => o.status !== 'cancelled')
@@ -62,8 +116,8 @@ export async function getPurchasesReportData(organizationId: string) {
       .eq('organization_id', organizationId),
   ]);
 
-  const pos = poRes.data || [];
-  const payments = paymentsRes.data || [];
+  const pos = (poRes.data || []) as unknown as PurchaseReportOrderRow[];
+  const payments = (paymentsRes.data || []) as unknown as SalesReportPaymentRow[];
   const returns = returnsRes.data || [];
 
   const totalCommitted = pos
@@ -103,7 +157,7 @@ export async function getInventoryReportData(organizationId: string) {
     supabase.from('inventory_movements').select('*').eq('organization_id', organizationId),
   ]);
 
-  const stock = stockRes.data || [];
+  const stock = (stockRes.data || []) as unknown as StockReportBalanceRow[];
   const warehouses = whRes.data || [];
   const movements = movRes.data || [];
 
@@ -114,7 +168,7 @@ export async function getInventoryReportData(organizationId: string) {
 
   for (const s of stock) {
     const qty = Number(s.quantity) || 0;
-    const prod: any = s.products;
+    const prod = s.products;
     const cost = Number(prod?.cost_price) || 0;
     const retail = Number(prod?.selling_price) || 0;
     totalValuation += qty * cost;

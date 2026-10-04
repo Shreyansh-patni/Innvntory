@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { PageHeader } from '@/components/shared/page-header';
 import { getFinancialReportData } from '@/lib/reports/reports';
 import { getUserContext } from '@/lib/auth/session';
-import { Landmark, TrendingUp, ArrowDownLeft, ArrowUpRight, Scale } from 'lucide-react';
+import { Landmark, TrendingUp, Scale } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: 'Financial Reports & P&L Summary — Innvntory',
