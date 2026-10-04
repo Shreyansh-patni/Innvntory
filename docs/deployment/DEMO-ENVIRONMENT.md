@@ -2,7 +2,8 @@
 
 **Project:** Innvntory
 **Company:** Sahaya Technologies Pvt. Ltd.
-**Setup:** SETUP 11.4
+**Setup:** SETUP 11.5 (ACTIVATED & VERIFIED)
+**Last Updated:** October 2026
 
 ---
 
@@ -236,3 +237,8 @@ If Preview and Production use the **same Supabase project**:
 If they use **separate Supabase projects**:
 - Run `npm run demo:provision` for each project separately
 - Use the appropriate `NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` each time
+
+### Vercel Preview Deployment Protection Notice
+- By default, Vercel enables **Deployment Protection** (Vercel Authentication) on preview URLs (`*.vercel.app`), issuing a `302 Found` redirect to Vercel SSO (`vercel.com/sso-api`).
+- For public access to the preview demo workspace without a Vercel account, configure **Deployment Protection: Disabled or Password Protected** under *Vercel Project Settings → Deployment Protection*.
+- For authenticated team members, signing in to Vercel SSO allows immediate access to `/login` and the "Use Demo Account" flow.

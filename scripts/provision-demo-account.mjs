@@ -121,25 +121,20 @@ if (existingUser) {
   demoUserId = existingUser.id;
   ok('Auth user found', demoUserId);
 
-  // Ensure email is confirmed
-  if (!existingUser.email_confirmed_at) {
-    const { error: confirmErr } = await adminClient.auth.admin.updateUserById(demoUserId, {
-      email_confirm: true,
-    });
-    if (confirmErr) warn('Email confirmation', confirmErr.message);
-    else ok('Email confirmed', 'yes');
-  } else {
-    ok('Email confirmed', 'already confirmed');
-  }
-
-  // Update user metadata to mark as demo
-  const { error: metaErr } = await adminClient.auth.admin.updateUserById(demoUserId, {
+  // Update password, email_confirm, and metadata to ensure credentials sync/recovery
+  const { error: updateErr } = await adminClient.auth.admin.updateUserById(demoUserId, {
+    password: DEMO_PASSWORD,
+    email_confirm: true,
     user_metadata: {
       full_name: 'Demo User',
       is_demo_account: true,
     },
   });
-  if (metaErr) warn('Metadata update', metaErr.message);
+  if (updateErr) {
+    warn('Auth user update', updateErr.message);
+  } else {
+    ok('Auth user synced (password, email confirmed, metadata)', 'yes');
+  }
 } else {
   // Create new demo user
   const { data: created, error: createErr } = await adminClient.auth.admin.createUser({
