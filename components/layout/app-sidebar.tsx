@@ -8,7 +8,9 @@ import { ExternalLink } from "lucide-react";
 
 function NavLink({ item }: { item: NavItem }) {
   const pathname = usePathname();
-  const isActive = pathname === item.href;
+  const isActive =
+    pathname === item.href ||
+    (item.href !== "/app/dashboard" && pathname.startsWith(item.href));
   const Icon = item.icon;
 
   return (
@@ -17,7 +19,7 @@ function NavLink({ item }: { item: NavItem }) {
       className={cn(
         "flex items-center gap-2.5 rounded-md px-2.5 py-1.5 text-[13px] font-secondary font-medium transition-colors",
         isActive
-          ? "bg-surface-muted text-text-primary"
+          ? "bg-surface-muted text-text-primary font-semibold border-l-2 border-text-primary pl-2"
           : "text-text-secondary hover:bg-surface-muted/60 hover:text-text-primary"
       )}
     >
@@ -30,11 +32,14 @@ function NavLink({ item }: { item: NavItem }) {
 export function AppSidebar() {
   return (
     <aside className="hidden lg:flex lg:w-[240px] lg:flex-col lg:border-r lg:border-border-subtle bg-background-subtle">
-      {/* Wordmark */}
+      {/* Brand Wordmark + Public site shortcut */}
       <div className="flex h-14 items-center justify-between px-5 border-b border-border-subtle">
         <Link href="/app/dashboard" className="flex items-center gap-2">
           <span className="text-lg font-heading font-bold tracking-tight text-text-primary">
             Innvntory
+          </span>
+          <span className="rounded bg-surface-muted px-1.5 py-0.2 text-[10px] font-mono text-text-muted border border-border-subtle/50">
+            OS
           </span>
         </Link>
         <Link
@@ -48,7 +53,7 @@ export function AppSidebar() {
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-5" aria-label="Main navigation">
+      <nav className="flex-1 overflow-y-auto px-3 py-4 space-y-5" aria-label="Application navigation">
         {navigation.map((entry) => {
           if (isNavSection(entry)) {
             return (

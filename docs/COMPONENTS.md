@@ -1,6 +1,6 @@
 # INNVNTORY COMPONENT REGISTRY
 
-**Status:** IMPLEMENTED (SETUP 06)
+**Status:** IMPLEMENTED & REFINED (SETUP 08)
 **Last Updated:** October 2026
 
 ---
@@ -22,23 +22,38 @@ Reusable components engineered specifically for the public marketing website (`/
 
 ---
 
-## 2. Authenticated Application Components (`components/layout/`)
+## 2. Authenticated Application Shell (`components/layout/`)
 
-Layout and navigation components providing the persistent application shell for `/app/*`.
+Layout and navigation components providing the persistent operational application shell for `/app/*`.
 
 | Component | Path | Description | Client/Server |
 | :--- | :--- | :--- | :--- |
 | `AppShell` | `components/layout/app-shell.tsx` | Top-level layout container composing sidebar, header, and scrollable content area with max-width container. | Server |
-| `AppSidebar` | `components/layout/app-sidebar.tsx` | Persistent desktop left navigation with Innvntory wordmark, grouped navigation sections, and public site link. | Client |
-| `AppHeader` | `components/layout/app-header.tsx` | Restrained top application header containing workspace context, mobile nav trigger, and command center entry point. | Server |
-| `MobileNavigation` | `components/layout/mobile-navigation.tsx` | Accessible slide-out sheet drawer for mobile and tablet navigation. | Client |
+| `AppSidebar` | `components/layout/app-sidebar.tsx` | Persistent desktop left navigation with active route highlights, section groups, and public site return link. | Client |
+| `AppHeader` | `components/layout/app-header.tsx` | Operational top header with organization context, warehouse switcher, notifications, profile menu, and command center entry. | Server |
+| `MobileNavigation` | `components/layout/mobile-navigation.tsx` | Accessible slide-out sheet drawer for mobile and tablet navigation with active route indicators. | Client |
 | `CommandCenterTrigger`| `components/layout/command-center-trigger.tsx` | Visual entry point button for the command center showing platform-aware `⌘K` or `Ctrl+K`. | Client |
 
 ---
 
-## 3. UI Primitives (`components/ui/`)
+## 3. Shared Application Primitives (`components/shared/`)
 
-Foundational UI primitives built on shadcn/ui and base-ui.
+High-density, reusable operational UI primitives designed for data-dense business workflows across all `/app/*` modules.
+
+| Component | Path | Description | Client/Server |
+| :--- | :--- | :--- | :--- |
+| `PageHeader` | `components/shared/page-header.tsx` | Standardized page title, description, operational status badge, breadcrumb trail, and contextual action buttons. | Server |
+| `MetricCard` | `components/shared/metric-card.tsx` | High-density operational KPI card supporting status pills, trend indicators, neutral unavailable states, and footer metadata. | Server |
+| `EmptyState` | `components/shared/empty-state.tsx` | Standardized truthful empty state container with icon, title, description, and optional primary CTA. | Server |
+| `StatusBadge` | `components/shared/status-badge.tsx` | Operational status indicator pill with semantic variants (success, warning, error, info, neutral, outline). | Server |
+| `PageToolbar` | `components/shared/page-toolbar.tsx` | Standardized table/module search bar with multi-category filter dropdowns, sort buttons, and secondary actions. | Client |
+| `DataPlaceholderTable`| `components/shared/data-placeholder-table.tsx` | High-density table scaffolding with column headers, alignment support, and integrated truthful empty state. | Server |
+
+---
+
+## 4. UI Primitives (`components/ui/`)
+
+Foundational UI primitives built on Radix UI / shadcn/ui.
 
 | Primitive | Path | Description |
 | :--- | :--- | :--- |

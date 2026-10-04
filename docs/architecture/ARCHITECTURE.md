@@ -9,19 +9,20 @@
 ## Next.js Architecture & Route Groups
 - **App Router Structure:**
   - `app/(marketing)/...`: Public website owning `/`, `/features`, `/pricing`, `/docs`, `/articles`, `/about`, `/contact`, `/login`, `/signup`, `/privacy`, `/terms`, `/cookie-policy`, `/disclaimer`.
-  - `app/(application)/app/...`: Authenticated operational SaaS owning `/app/dashboard`, `/app/products`, `/app/inventory/*`, etc.
-  - `app/layout.tsx`: Root shell defining HTML, typography fonts (`NewBlack` and `LT-amber`), and global CSS.
-- **Default:** Server Components.
-- **Client Components:** Used strictly where required for interactive state (e.g. mobile drawer sheet, accordion toggle, platform detection).
-- **Data vs Rendering:** Reusable structured static content in `content/` (e.g. `content/marketing/`, `content/navigation.ts`).
-- **Loading & Errors:** Handled via `loading.tsx`, `error.tsx`, and `not-found.tsx`.
+  - `app/(application)/app/...`: Authenticated operational SaaS owning `/app/dashboard`, `/app/products`, `/app/inventory/*`, `/app/sales/*`, `/app/purchases/*`, `/app/reports/*`, `/app/settings/*`.
+  - `app/layout.tsx`: Root shell defining HTML, typography fonts (`NewBlack` and `LT-amber`), and global CSS tokens.
+- **Default:** Server Components for zero-bundle overhead and maximum rendering performance.
+- **Client Components:** Used strictly where required for interactive state (e.g. mobile drawer sheet, search toolbar filter interaction, platform shortcut detection).
+- **Data vs Rendering:** Structured static content in `content/` (e.g. `content/marketing/`, `content/navigation.ts`).
+- **Loading & Errors:** Handled via dedicated `app/(application)/app/loading.tsx`, `error.tsx`, and `not-found.tsx`.
 
 ## Project Structure
 - `app/(marketing)/`: Marketing routes with dedicated `MarketingHeader` and `MarketingFooter`.
 - `app/(application)/app/`: Application routes wrapped with `AppShell`, `AppSidebar`, and `AppHeader`.
 - `components/marketing/`: High-level marketing composition components.
-- `components/layout/`: Application shell and navigation layout primitives.
-- `components/ui/`: Reusable primitives (shadcn/ui & base-ui).
+- `components/layout/`: Application shell and persistent navigation layout primitives.
+- `components/shared/`: High-density operational primitives (`PageHeader`, `MetricCard`, `EmptyState`, `StatusBadge`, `PageToolbar`, `DataPlaceholderTable`).
+- `components/ui/`: Foundational UI primitives (shadcn/ui & base-ui).
 - `content/marketing/`: Structured copy and data for marketing pages.
 - `lib/`: Utilities, font registration (`lib/fonts.ts`), and future integration modules.
 - `public/`: Static font files and assets.

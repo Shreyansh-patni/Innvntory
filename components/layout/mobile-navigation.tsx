@@ -10,7 +10,9 @@ import { cn } from "@/lib/utils";
 
 function MobileNavLink({ item, onNavigate }: { item: NavItem; onNavigate: () => void }) {
   const pathname = usePathname();
-  const isActive = pathname === item.href;
+  const isActive =
+    pathname === item.href ||
+    (item.href !== "/app/dashboard" && pathname.startsWith(item.href));
   const Icon = item.icon;
 
   return (
@@ -20,7 +22,7 @@ function MobileNavLink({ item, onNavigate }: { item: NavItem; onNavigate: () => 
       className={cn(
         "flex items-center gap-3 rounded-md px-3 py-2.5 text-sm font-secondary font-medium transition-colors",
         isActive
-          ? "bg-surface-muted text-text-primary"
+          ? "bg-surface-muted text-text-primary font-semibold border-l-2 border-text-primary pl-2.5"
           : "text-text-secondary hover:bg-surface-muted/60 hover:text-text-primary"
       )}
     >
@@ -38,7 +40,7 @@ export function MobileNavigation() {
       <SheetTrigger
         render={
           <button
-            className="lg:hidden flex items-center justify-center h-9 w-9 rounded-md text-text-secondary hover:bg-surface-muted hover:text-text-primary transition-colors"
+            className="lg:hidden flex items-center justify-center h-9 w-9 rounded-md text-text-secondary hover:bg-surface-muted hover:text-text-primary transition-colors cursor-pointer"
             aria-label="Open navigation menu"
           />
         }
@@ -54,10 +56,13 @@ export function MobileNavigation() {
               <span className="text-lg font-heading font-bold tracking-tight text-text-primary">
                 Innvntory
               </span>
+              <span className="rounded bg-surface-muted px-1.5 py-0.2 text-[10px] font-mono text-text-muted">
+                App
+              </span>
             </Link>
             <button
               onClick={() => setOpen(false)}
-              className="flex items-center justify-center h-8 w-8 rounded-md text-text-muted hover:bg-surface-muted hover:text-text-primary transition-colors"
+              className="flex items-center justify-center h-8 w-8 rounded-md text-text-muted hover:bg-surface-muted hover:text-text-primary transition-colors cursor-pointer"
               aria-label="Close navigation menu"
             >
               <X className="h-4 w-4" />
