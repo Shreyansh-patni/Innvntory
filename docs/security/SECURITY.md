@@ -22,7 +22,7 @@
 
 | Component | Path | Function |
 | :--- | :--- | :--- |
-| Next.js Middleware | `middleware.ts` | Intercepts requests, refreshes JWT tokens, enforces `/app/*` protection, redirects authenticated users from `/login`. |
+| Next.js Proxy / Interceptor | `proxy.ts` | Intercepts requests, refreshes JWT tokens, enforces `/app/*` protection, redirects authenticated users from `/login`. |
 | Auth Callback | `app/auth/callback/route.ts` | Exchanges auth codes for sessions (email verification, magic links, password resets). |
 | User Context Helper | `lib/auth/session.ts` | Server-side resolver for `user`, `organization`, `membership`, and assigned roles. |
 | Server Actions | `lib/auth/actions.ts` | Safe mutations for `loginAction`, `signupAction`, `logoutAction`, `forgotPasswordAction`, and `resetPasswordAction`. |
