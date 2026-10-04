@@ -14,5 +14,7 @@
 - **UI Primitives:** shadcn/ui & base-ui
 - **Typography:** `NewBlack` (Primary / Display) and `LT-amber` (Secondary / UI)
 - **Backend / Platform:** Supabase (PostgreSQL 15+, Auth, Storage, Realtime)
-- **Analytics / Observability:** Vercel Web Analytics (`@vercel/analytics`)
-- **SaaS Billing:** Polar (Planned)
+## Deployment
+- **Platform:** Vercel (Native Next.js App Router integration)
+- **Environments:** `develop` branch -> Vercel Preview | `main` branch -> Vercel Production
+- **Specification:** See [`docs/deployment/VERCEL-DEPLOYMENT.md`](docs/deployment/VERCEL-DEPLOYMENT.md)

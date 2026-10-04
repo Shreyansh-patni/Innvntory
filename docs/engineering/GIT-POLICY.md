@@ -21,10 +21,14 @@ Do not push when: validation failed, working tree contains unexplained changes, 
 ## 4. Focused Commits
 Use focused commits. Preferred prefixes: `feat:`, `fix:`, `docs:`, `style:`, `perf:`, `refactor:`, `test:`, `chore:`. Do not combine unrelated work into a single commit.
 
-## 5. Branch Discipline
+## 5. Branch Discipline & Vercel Environments
 Use the agreed workflow:
-`stable branch → feature/[small-outcome] → implementation → validation → diff review → commit → push → preview → merge`
-Do not work directly on the stable branch for meaningful feature work unless authorized. For setup phases, use an appropriate setup/chore branch when practical.
+`main (Production)` ← PR / Merge ← `develop (Vercel Preview)` ← `feature/[small-outcome]`
+
+- **`main` (Production):** Stable production baseline. Linked to Vercel Production deployment. Direct commits to `main` are restricted.
+- **`develop` (Preview):** Active integration branch. Every push automatically generates a Vercel Preview deployment for multi-device live QA.
+- **`feature/*`:** Ephemeral feature branches for isolated changes before merging into `develop`.
+- **Release Boundary:** `develop` is NEVER deployed directly to the production domain. Promotion to production requires testing on Vercel Preview followed by an approved merge to `main`.
 
 ## 6. No Unrelated Changes
 Run Git status/diff before every commit. Commits must contain ONLY changes related to the current phase. Do not silently include, delete, or overwrite unrelated changes.

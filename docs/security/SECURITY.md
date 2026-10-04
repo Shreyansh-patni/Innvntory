@@ -7,9 +7,10 @@
 
 ## 1. Core Security Policies & Non-Negotiables
 - **Zero Secrets in Source Control:** `.env.example` contains only non-sensitive templates. Real secrets are managed via local `.env.local` or secure platform variables.
+- **Vercel Environment Isolation:** Production, Preview, and Development environment variables are strictly isolated in Vercel. Secret tokens (`SUPABASE_SERVICE_ROLE_KEY`, `POLAR_*`) are server-only and never exposed to the client.
 - **Server-Side Authentication & Authorization:** Next.js `middleware.ts` interceptor continuously verifies JWT sessions on `/app/*`. Server Components resolve `getUserContext()` before executing database transactions.
 - **Strict Tenant Isolation:** PostgreSQL Row Level Security (RLS) is active on every table. Users cannot select, mutate, or traverse records across tenant boundaries.
-- **Safe Redirection & Open Redirect Prevention:** Auth callbacks and login redirects validate destination paths (must start with `/` and not `//` or external schemas).
+- **Safe Redirection & Open Redirect Prevention:** Auth callbacks and login redirects validate destination paths (must start with `/` and not `//` or external schemas). Supabase Redirect URLs are restricted to authorized preview and production patterns.
 - **Service-Role Isolation:** `SUPABASE_SERVICE_ROLE_KEY` is strictly server-only. It is never imported into client components or exposed in browser network payloads.
 - **Error Normalization:** Technical SQL, Supabase error messages, or stack traces are never exposed in user-facing UI. Errors are sanitized into friendly, non-leaking messages.
 - **Password Policies:** Minimum 8 characters enforced on both client forms and server actions.
