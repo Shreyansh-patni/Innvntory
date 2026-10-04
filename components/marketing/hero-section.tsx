@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, Layers, ShieldCheck, Zap, Warehouse, Boxes, RefreshCw } from "lucide-react";
+import { ArrowRight, Layers, ShieldCheck, Zap, Warehouse, Boxes, RefreshCw, ArrowUpRight, CheckCircle2 } from "lucide-react";
 
 export function HeroSection() {
   return (
@@ -38,6 +38,7 @@ export function HeroSection() {
               className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-md border border-border bg-surface px-6 py-3 text-base font-medium text-text-primary hover:bg-surface-muted transition-colors"
             >
               Preview App Shell
+              <ArrowUpRight className="h-4 w-4 text-text-muted" />
             </Link>
           </div>
 
@@ -60,9 +61,9 @@ export function HeroSection() {
 
         {/* Structural UI Abstraction Preview (Aoutive Card Style) */}
         <div className="mt-16 sm:mt-20">
-          <div className="relative rounded-xl border border-border-subtle bg-surface p-2 sm:p-4 shadow-sm">
+          <div className="relative rounded-2xl border border-border-subtle bg-surface p-2 sm:p-4 shadow-sm">
             {/* Mock App Shell Window Frame */}
-            <div className="rounded-lg border border-border-subtle bg-background overflow-hidden">
+            <div className="rounded-xl border border-border-subtle bg-background overflow-hidden">
               {/* Top status bar */}
               <div className="flex items-center justify-between border-b border-border-subtle px-4 py-3 bg-surface-muted/40">
                 <div className="flex items-center gap-2">
@@ -79,8 +80,8 @@ export function HeroSection() {
                 </div>
               </div>
 
-              {/* Structural Content Layout inside Preview */}
-              <div className="p-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+              {/* Structural Metric Cards */}
+              <div className="p-6 grid grid-cols-1 md:grid-cols-3 gap-4 border-b border-border-subtle/70">
                 {/* Metric Card 1 */}
                 <div className="rounded-lg border border-border-subtle bg-surface p-4">
                   <div className="flex items-center justify-between text-xs text-text-muted mb-2">
@@ -109,6 +110,44 @@ export function HeroSection() {
                   </div>
                   <div className="text-2xl font-bold font-heading text-text-primary">3-Way Match</div>
                   <p className="text-xs text-text-secondary mt-1">Automated PO to Goods Receipt verification</p>
+                </div>
+              </div>
+
+              {/* Simulated Event Ledger Stream inside Preview */}
+              <div className="p-6 bg-surface-muted/20">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="text-xs font-mono font-semibold uppercase tracking-wider text-text-muted">
+                    Recent Stock Event Log (Simulated Sample)
+                  </div>
+                  <div className="text-[11px] font-mono text-text-muted">
+                    Zero Partial State Engine
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between rounded-md border border-border-subtle/80 bg-surface p-3 text-xs">
+                    <div className="flex items-center gap-3">
+                      <CheckCircle2 className="h-4 w-4 text-emerald-600 flex-shrink-0" />
+                      <span className="font-mono font-medium text-text-primary">GRN-8942</span>
+                      <span className="text-text-secondary">Goods Receipt Verified (+500 Units)</span>
+                    </div>
+                    <div className="flex items-center gap-4 text-text-muted font-mono">
+                      <span>Warehouse: Bengaluru Hub</span>
+                      <span className="rounded bg-surface-muted px-2 py-0.5 text-text-primary font-medium">Reconciled</span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between rounded-md border border-border-subtle/80 bg-surface p-3 text-xs">
+                    <div className="flex items-center gap-3">
+                      <RefreshCw className="h-4 w-4 text-text-muted flex-shrink-0" />
+                      <span className="font-mono font-medium text-text-primary">TRF-1029</span>
+                      <span className="text-text-secondary">Inter-Warehouse Transfer (In Transit)</span>
+                    </div>
+                    <div className="flex items-center gap-4 text-text-muted font-mono">
+                      <span>Mumbai → Pune Hub</span>
+                      <span className="rounded bg-surface-muted px-2 py-0.5 text-text-primary font-medium">In Transit</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

@@ -1,6 +1,6 @@
 # INNVNTORY ROUTING ARCHITECTURE
 
-**Status:** IMPLEMENTED (SETUP 06)
+**Status:** IMPLEMENTED & REFINED (SETUP 07)
 **Last Updated:** October 2026
 
 ---
@@ -26,7 +26,7 @@ The public website provides product information, documentation, publications, an
 | `/terms` | Terms & Conditions | **Implemented** | `MarketingLayout` + Legal Draft Guidelines |
 | `/cookie-policy` | Cookie & Local Storage Policy | **Implemented** | `MarketingLayout` + Session Token Documentation |
 | `/disclaimer` | Operational & Tax Disclaimer | **Implemented** | `MarketingLayout` + Legal & Computation Notice |
-| `/404` | Global Not Found | **Implemented** | Centered 404 Error State with Navigation Links |
+| `/404` | Global Not Found (Explicit & Fallback) | **Implemented** | Centered 404 Error State with Navigation Links |
 
 ---
 
