@@ -17,8 +17,9 @@
 
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { createClient } from '@supabase/supabase-js';
+import { resetDemoWorkspace } from '../lib/demo/reset-engine.mjs';
 
-// 1. Bootstrap environment from .env.local if present
 function loadEnv() {
   try {
     const raw = readFileSync(resolve(process.cwd(), '.env.local'), 'utf8');
@@ -49,15 +50,41 @@ if (!SERVICE_ROLE_KEY || SERVICE_ROLE_KEY === 'TBD') {
   process.exit(1);
 }
 
-const { createClient } = await import('@supabase/supabase-js');
 const adminClient = createClient(SUPABASE_URL, SERVICE_ROLE_KEY, {
   auth: { autoRefreshToken: false, persistSession: false },
 });
 
 console.log('[RESET] Initiating comprehensive demo workspace reset...');
 
-const DEMO_ORG_SLUG = 'innvntory-demo';
+const result = await resetDemoWorkspace(adminClient);
 
-// Dynamic import of resetDemoWorkspace from typescript compiled or direct js/ts
-// To ensure maximum compatibility with node without ts-node/tsx, we can either use tsx or run a direct node runner.
-// Let's check how resetDemoWorkspace is executed or call it via tsx or inline.
+if (!result.success) {
+  console.error(`\n[RESET ERROR] ${result.error}`);
+  process.exit(1);
+}
+
+console.log('\n' + '─'.repeat(60));
+console.log('RESET COMPLETE — CANONICAL DEMO DATASET RESTORED');
+console.log('─'.repeat(60));
+console.log(`  Organization:         ${result.organizationSlug} (${result.organizationId})`);
+console.log(`  Warehouses:           ${result.counts.warehouses}`);
+console.log(`  Categories:           ${result.counts.categories}`);
+console.log(`  Products:             ${result.counts.products}`);
+console.log(`  Stock Balances:       ${result.counts.stockBalances}`);
+console.log(`  Customers:            ${result.counts.customers}`);
+console.log(`  Suppliers:            ${result.counts.suppliers}`);
+console.log(`  Purchase Orders:      ${result.counts.purchaseOrders}`);
+console.log(`  PO Line Items:        ${result.counts.purchaseOrderItems}`);
+console.log(`  Purchase Receipts:    ${result.counts.purchaseReceipts}`);
+console.log(`  Purchase Payments:    ${result.counts.purchasePayments}`);
+console.log(`  Purchase Returns:     ${result.counts.purchaseReturns}`);
+console.log(`  Sales Orders:         ${result.counts.salesOrders}`);
+console.log(`  SO Line Items:        ${result.counts.salesOrderItems}`);
+console.log(`  Invoices:             ${result.counts.invoices}`);
+console.log(`  Sales Payments:       ${result.counts.salesPayments}`);
+console.log(`  Sales Returns:        ${result.counts.salesReturns}`);
+console.log(`  Transfers:            ${result.counts.inventoryTransfers}`);
+console.log(`  Adjustments:          ${result.counts.inventoryAdjustments}`);
+console.log(`  Inventory Movements:  ${result.counts.inventoryMovements}`);
+console.log(`  Duration:             ${result.durationMs}ms`);
+console.log('─'.repeat(60) + '\n');
