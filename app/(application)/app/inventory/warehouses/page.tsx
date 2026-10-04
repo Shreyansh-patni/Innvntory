@@ -1,46 +1,32 @@
-import type { Metadata } from "next";
-import { Plus } from "lucide-react";
-import { PageHeader } from "@/components/shared/page-header";
-import { PageToolbar } from "@/components/shared/page-toolbar";
-import { DataPlaceholderTable } from "@/components/shared/data-placeholder-table";
+import { Metadata } from 'next';
+import { PageHeader } from '@/components/shared/page-header';
+import { WarehouseTable } from '@/components/inventory/warehouse-table';
+import { getWarehouses } from '@/lib/inventory/inventory';
+import { getUserContext } from '@/lib/auth/session';
 
 export const metadata: Metadata = {
-  title: "Warehouses — Innvntory",
-  description: "Facility locations, bin assignments, and warehouse management.",
+  title: 'Warehouses & Locations — Innvntory',
+  description: 'Logistics hubs, fulfillment centers, and regional depot locations.',
 };
 
-export default function WarehousesPage() {
+export default async function WarehousesPage() {
+  const userContext = await getUserContext();
+  const orgId = userContext?.organization?.id || '00000000-0000-0000-0000-000000000000';
+  const warehouses = await getWarehouses(orgId);
+
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Warehouse Facilities"
-        description="Configure physical warehouse locations, fulfillment zones, and storage bins."
-        breadcrumbs={[{ label: "Inventory" }, { label: "Warehouses" }]}
-        badge="Locations"
-        actions={
-          <button
-            type="button"
-            className="inline-flex items-center gap-1.5 rounded-md bg-text-primary px-3 py-1.5 text-xs font-medium text-background hover:bg-text-primary/90 transition-colors cursor-pointer"
-          >
-            <Plus className="h-3.5 w-3.5" />
-            Add Warehouse
-          </button>
-        }
-      />
-
-      <PageToolbar searchPlaceholder="Search warehouse name, city, code…" />
-
-      <DataPlaceholderTable
-        moduleName="Warehouse"
-        columns={[
-          { header: "Warehouse Name", width: "25%" },
-          { header: "Code / Tag", width: "15%" },
-          { header: "Location / State", width: "25%" },
-          { header: "Bin Capacity", width: "15%", align: "center" },
-          { header: "Managed SKUs", width: "10%", align: "right" },
-          { header: "Status", width: "10%", align: "right" },
+        title="Warehouses & Locations"
+        description="Active logistics hubs, fulfillment depots, and physical storage locations."
+        breadcrumbs={[
+          { label: 'Application', href: '/app/dashboard' },
+          { label: 'Inventory', href: '/app/inventory/warehouses' },
+          { label: 'Warehouses' },
         ]}
       />
+
+      <WarehouseTable warehouses={warehouses} />
     </div>
   );
 }

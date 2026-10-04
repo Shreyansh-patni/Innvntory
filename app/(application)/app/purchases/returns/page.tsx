@@ -1,53 +1,43 @@
 import { Metadata } from 'next';
 import { PageHeader } from '@/components/shared/page-header';
-import { PageToolbar } from '@/components/shared/page-toolbar';
-import { DataPlaceholderTable } from '@/components/shared/data-placeholder-table';
+import { PurchaseReturnTable } from '@/components/purchases/purchase-return-table';
+import { getPurchaseReturns } from '@/lib/purchases/purchases';
+import { getUserContext } from '@/lib/auth/session';
 
 export const metadata: Metadata = {
-  title: 'Purchase Returns (Debit Notes) — Innvntory',
-  description: 'Manage returns to suppliers, damaged goods claims, and debit note accounting.',
+  title: 'Purchase Returns & Debit Notes — Innvntory',
+  description: 'Supplier debit notes, defect dispatches, and vendor return tracking.',
 };
 
-export default function PurchaseReturnsPage() {
+export default async function PurchaseReturnsPage(props: {
+  searchParams: Promise<{
+    page?: string;
+  }>;
+}) {
+  const searchParams = await props.searchParams;
+  const userContext = await getUserContext();
+  const orgId = userContext?.organization?.id || '00000000-0000-0000-0000-000000000000';
+  const page = parseInt(searchParams.page || '1', 10);
+
+  const data = await getPurchaseReturns({
+    organizationId: orgId,
+    page,
+    pageSize: 25,
+  });
+
   return (
     <div className="space-y-6">
       <PageHeader
         title="Purchase Returns"
-        description="Initiate returns of defective or non-conforming items back to suppliers and issue debit notes."
+        description="Supplier returns, defective item outward dispatches, and debit note reconciliations."
         breadcrumbs={[
           { label: 'Application', href: '/app/dashboard' },
-          { label: 'Purchases', href: '/app/purchases/orders' },
+          { label: 'Purchases', href: '/app/purchases/returns' },
           { label: 'Returns' },
         ]}
       />
 
-      <PageToolbar
-        searchPlaceholder="Search returns by debit note # or supplier..."
-        filterOptions={[
-          {
-            label: 'Status',
-            options: [
-              { label: 'All Returns', value: 'all' },
-              { label: 'Awaiting Pickup', value: 'pickup' },
-              { label: 'Dispatched to Supplier', value: 'dispatched' },
-              { label: 'Settled / Credit Received', value: 'settled' },
-            ],
-          },
-        ]}
-      />
-
-      <DataPlaceholderTable
-        columns={[
-          { key: 'returnNumber', label: 'Return #' },
-          { key: 'supplier', label: 'Supplier' },
-          { key: 'poReference', label: 'PO Reference' },
-          { key: 'reason', label: 'Return Reason' },
-          { key: 'debitAmount', label: 'Debit Amount' },
-          { key: 'status', label: 'Status' },
-        ]}
-        emptyTitle="No purchase returns recorded"
-        emptyDescription="Manage supplier return authorisations and decrement stock upon physical return dispatch."
-      />
+      <PurchaseReturnTable returns={data.items} />
     </div>
   );
 }

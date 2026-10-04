@@ -1,55 +1,43 @@
 import { Metadata } from 'next';
 import { PageHeader } from '@/components/shared/page-header';
-import { PageToolbar } from '@/components/shared/page-toolbar';
-import { DataPlaceholderTable } from '@/components/shared/data-placeholder-table';
+import { SalesPaymentTable } from '@/components/sales/sales-payment-table';
+import { getSalesPayments } from '@/lib/sales/sales';
+import { getUserContext } from '@/lib/auth/session';
 
 export const metadata: Metadata = {
-  title: 'Customer Payments — Innvntory',
-  description: 'Record customer payments, bank transfers, UPI receipts, and credit allocations.',
+  title: 'Sales Receipts & Payments — Innvntory',
+  description: 'Customer payment settlements, UTR tracking, and account credits.',
 };
 
-export default function SalesPaymentsPage() {
+export default async function SalesPaymentsPage(props: {
+  searchParams: Promise<{
+    page?: string;
+  }>;
+}) {
+  const searchParams = await props.searchParams;
+  const userContext = await getUserContext();
+  const orgId = userContext?.organization?.id || '00000000-0000-0000-0000-000000000000';
+  const page = parseInt(searchParams.page || '1', 10);
+
+  const data = await getSalesPayments({
+    organizationId: orgId,
+    page,
+    pageSize: 25,
+  });
+
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Customer Payments"
-        description="Record incoming payments, settle outstanding invoices, and reconcile accounts receivable."
+        title="Sales Payments"
+        description="Reconciled customer collections, NEFT/UPI settlements, and bank references."
         breadcrumbs={[
           { label: 'Application', href: '/app/dashboard' },
-          { label: 'Sales', href: '/app/sales/orders' },
+          { label: 'Sales', href: '/app/sales/payments' },
           { label: 'Payments' },
         ]}
       />
 
-      <PageToolbar
-        searchPlaceholder="Search payments by transaction ID or customer..."
-        filterOptions={[
-          {
-            label: 'Method',
-            options: [
-              { label: 'All Methods', value: 'all' },
-              { label: 'Bank Transfer (NEFT/RTGS)', value: 'neft' },
-              { label: 'UPI / QR', value: 'upi' },
-              { label: 'Cheque', value: 'cheque' },
-              { label: 'Cash', value: 'cash' },
-            ],
-          },
-        ]}
-      />
-
-      <DataPlaceholderTable
-        columns={[
-          { key: 'paymentId', label: 'Payment ID' },
-          { key: 'customer', label: 'Customer' },
-          { key: 'amount', label: 'Amount' },
-          { key: 'method', label: 'Payment Method' },
-          { key: 'date', label: 'Received Date' },
-          { key: 'allocatedInvoices', label: 'Settled Invoices' },
-          { key: 'reconciliation', label: 'Bank Status' },
-        ]}
-        emptyTitle="No customer payments recorded"
-        emptyDescription="Log customer payments against open invoices to maintain accurate debtor ledgers and cash flow projections."
-      />
+      <SalesPaymentTable payments={data.items} />
     </div>
   );
 }

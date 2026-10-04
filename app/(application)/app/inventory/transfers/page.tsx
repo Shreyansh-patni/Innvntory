@@ -1,46 +1,43 @@
-import type { Metadata } from "next";
-import { Plus } from "lucide-react";
-import { PageHeader } from "@/components/shared/page-header";
-import { PageToolbar } from "@/components/shared/page-toolbar";
-import { DataPlaceholderTable } from "@/components/shared/data-placeholder-table";
+import { Metadata } from 'next';
+import { PageHeader } from '@/components/shared/page-header';
+import { TransferTable } from '@/components/inventory/transfer-table';
+import { getInventoryTransfers } from '@/lib/inventory/inventory';
+import { getUserContext } from '@/lib/auth/session';
 
 export const metadata: Metadata = {
-  title: "Stock Transfers — Innvntory",
-  description: "Inter-facility transfer orders, dispatch tracking, and receiving.",
+  title: 'Inventory Transfers — Innvntory',
+  description: 'Inter-facility inventory stock transfers and dispatch tracking.',
 };
 
-export default function TransfersPage() {
+export default async function TransfersPage(props: {
+  searchParams: Promise<{
+    page?: string;
+  }>;
+}) {
+  const searchParams = await props.searchParams;
+  const userContext = await getUserContext();
+  const orgId = userContext?.organization?.id || '00000000-0000-0000-0000-000000000000';
+  const page = parseInt(searchParams.page || '1', 10);
+
+  const data = await getInventoryTransfers({
+    organizationId: orgId,
+    page,
+    pageSize: 25,
+  });
+
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Inter-Warehouse Transfers"
-        description="Initiate, track in-transit items, and safely reconcile transfers between fulfillment hubs."
-        breadcrumbs={[{ label: "Inventory" }, { label: "Transfers" }]}
-        badge="Movements"
-        actions={
-          <button
-            type="button"
-            className="inline-flex items-center gap-1.5 rounded-md bg-text-primary px-3 py-1.5 text-xs font-medium text-background hover:bg-text-primary/90 transition-colors cursor-pointer"
-          >
-            <Plus className="h-3.5 w-3.5" />
-            New Transfer Request
-          </button>
-        }
-      />
-
-      <PageToolbar searchPlaceholder="Search transfer ID, source, destination…" />
-
-      <DataPlaceholderTable
-        moduleName="Transfer"
-        columns={[
-          { header: "Transfer #", width: "15%" },
-          { header: "Source Facility", width: "20%" },
-          { header: "Destination Facility", width: "20%" },
-          { header: "Item Count", width: "15%", align: "center" },
-          { header: "Dispatch Date", width: "15%" },
-          { header: "Status", width: "15%", align: "right" },
+        title="Inter-Facility Transfers"
+        description="Transfer stock between fulfillment centers, retail outlets, and regional depots."
+        breadcrumbs={[
+          { label: 'Application', href: '/app/dashboard' },
+          { label: 'Inventory', href: '/app/inventory/transfers' },
+          { label: 'Transfers' },
         ]}
       />
+
+      <TransferTable transfers={data.items} />
     </div>
   );
 }

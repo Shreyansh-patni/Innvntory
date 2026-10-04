@@ -1,53 +1,43 @@
 import { Metadata } from 'next';
 import { PageHeader } from '@/components/shared/page-header';
-import { PageToolbar } from '@/components/shared/page-toolbar';
-import { DataPlaceholderTable } from '@/components/shared/data-placeholder-table';
+import { SalesReturnTable } from '@/components/sales/sales-return-table';
+import { getSalesReturns } from '@/lib/sales/sales';
+import { getUserContext } from '@/lib/auth/session';
 
 export const metadata: Metadata = {
-  title: 'Sales Returns & RMA — Innvntory',
-  description: 'Manage customer returns, return merchandise authorizations (RMA), and restocking workflows.',
+  title: 'Sales Returns & Credit Notes — Innvntory',
+  description: 'Customer returns, inventory restocks, and refund credits.',
 };
 
-export default function SalesReturnsPage() {
+export default async function SalesReturnsPage(props: {
+  searchParams: Promise<{
+    page?: string;
+  }>;
+}) {
+  const searchParams = await props.searchParams;
+  const userContext = await getUserContext();
+  const orgId = userContext?.organization?.id || '00000000-0000-0000-0000-000000000000';
+  const page = parseInt(searchParams.page || '1', 10);
+
+  const data = await getSalesReturns({
+    organizationId: orgId,
+    page,
+    pageSize: 25,
+  });
+
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Sales Returns (RMA)"
-        description="Process customer returns, inspect received goods, and issue credit notes or inventory restocking."
+        title="Sales Returns"
+        description="Customer RMA exchanges, return restocks, and credit note adjustments."
         breadcrumbs={[
           { label: 'Application', href: '/app/dashboard' },
-          { label: 'Sales', href: '/app/sales/orders' },
+          { label: 'Sales', href: '/app/sales/returns' },
           { label: 'Returns' },
         ]}
       />
 
-      <PageToolbar
-        searchPlaceholder="Search returns by RMA # or invoice reference..."
-        filterOptions={[
-          {
-            label: 'Disposition',
-            options: [
-              { label: 'All Dispositions', value: 'all' },
-              { label: 'Pending Inspection', value: 'pending' },
-              { label: 'Restocked', value: 'restocked' },
-              { label: 'Damaged / Scrapped', value: 'scrapped' },
-            ],
-          },
-        ]}
-      />
-
-      <DataPlaceholderTable
-        columns={[
-          { key: 'rmaNumber', label: 'RMA #' },
-          { key: 'customer', label: 'Customer' },
-          { key: 'originalOrder', label: 'Original SO' },
-          { key: 'returnDate', label: 'Return Date' },
-          { key: 'disposition', label: 'Disposition' },
-          { key: 'creditStatus', label: 'Credit Note' },
-        ]}
-        emptyTitle="No customer returns logged"
-        emptyDescription="When customers initiate product returns or replacements, manage inspection and stock restoration here."
-      />
+      <SalesReturnTable returns={data.items} />
     </div>
   );
 }

@@ -1,55 +1,50 @@
 import { Metadata } from 'next';
 import { PageHeader } from '@/components/shared/page-header';
-import { PageToolbar } from '@/components/shared/page-toolbar';
-import { DataPlaceholderTable } from '@/components/shared/data-placeholder-table';
+import { InvoiceTable } from '@/components/sales/invoice-table';
+import { getInvoices } from '@/lib/sales/sales';
+import { getUserContext } from '@/lib/auth/session';
 
 export const metadata: Metadata = {
-  title: 'Tax Invoices — Innvntory',
-  description: 'Manage GST-compliant sales invoices, credit notes, and e-way bill references.',
+  title: 'Invoices & Billing — Innvntory',
+  description: 'GST-compliant tax invoices, credit terms, and payment reconciliation.',
 };
 
-export default function SalesInvoicesPage() {
+export default async function InvoicesPage(props: {
+  searchParams: Promise<{
+    search?: string;
+    status?: string;
+    page?: string;
+  }>;
+}) {
+  const searchParams = await props.searchParams;
+  const userContext = await getUserContext();
+  const orgId = userContext?.organization?.id || '00000000-0000-0000-0000-000000000000';
+
+  const page = parseInt(searchParams.page || '1', 10);
+  const search = searchParams.search || '';
+  const status = searchParams.status || 'all';
+
+  const data = await getInvoices({
+    organizationId: orgId,
+    search,
+    status,
+    page,
+    pageSize: 25,
+  });
+
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Tax Invoices"
-        description="Generate, track, and reconcile GST-compliant invoices for customer orders."
+        title="GST Tax Invoices"
+        description="Commercial sales invoices, GST computations, and receivable statuses."
         breadcrumbs={[
           { label: 'Application', href: '/app/dashboard' },
-          { label: 'Sales', href: '/app/sales/orders' },
+          { label: 'Sales', href: '/app/sales/invoices' },
           { label: 'Invoices' },
         ]}
       />
 
-      <PageToolbar
-        searchPlaceholder="Search invoices by INV number or customer..."
-        filterOptions={[
-          {
-            label: 'Payment Status',
-            options: [
-              { label: 'All Invoices', value: 'all' },
-              { label: 'Paid', value: 'paid' },
-              { label: 'Partially Paid', value: 'partial' },
-              { label: 'Unpaid / Due', value: 'unpaid' },
-              { label: 'Overdue', value: 'overdue' },
-            ],
-          },
-        ]}
-      />
-
-      <DataPlaceholderTable
-        columns={[
-          { key: 'invoiceNumber', label: 'Invoice #' },
-          { key: 'customer', label: 'Billed To' },
-          { key: 'issueDate', label: 'Issue Date' },
-          { key: 'dueDate', label: 'Due Date' },
-          { key: 'amount', label: 'Taxable Amount' },
-          { key: 'gst', label: 'GST Total' },
-          { key: 'status', label: 'Status' },
-        ]}
-        emptyTitle="No invoices generated"
-        emptyDescription="Invoices created from fulfilled sales orders or direct billing will be listed here with automated GST calculations."
-      />
+      <InvoiceTable invoices={data.items} />
     </div>
   );
 }

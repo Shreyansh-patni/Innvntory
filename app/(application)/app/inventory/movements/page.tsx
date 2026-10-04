@@ -1,63 +1,50 @@
 import { Metadata } from 'next';
 import { PageHeader } from '@/components/shared/page-header';
-import { PageToolbar } from '@/components/shared/page-toolbar';
-import { DataPlaceholderTable } from '@/components/shared/data-placeholder-table';
+import { MovementTable } from '@/components/inventory/movement-table';
+import { getInventoryMovements } from '@/lib/inventory/inventory';
+import { getUserContext } from '@/lib/auth/session';
 
 export const metadata: Metadata = {
-  title: 'Stock Movements — Innvntory',
-  description: 'Audited log of all stock increases, decreases, transfers, and reconciliations.',
+  title: 'Stock Movement Ledger — Innvntory',
+  description: 'Immutable ledger of all stock receipts, dispatches, transfers, and reconciliations.',
 };
 
-export default function StockMovementsPage() {
+export default async function MovementsPage(props: {
+  searchParams: Promise<{
+    search?: string;
+    type?: string;
+    page?: string;
+  }>;
+}) {
+  const searchParams = await props.searchParams;
+  const userContext = await getUserContext();
+  const orgId = userContext?.organization?.id || '00000000-0000-0000-0000-000000000000';
+
+  const page = parseInt(searchParams.page || '1', 10);
+  const search = searchParams.search || '';
+  const type = searchParams.type || 'all';
+
+  const data = await getInventoryMovements({
+    organizationId: orgId,
+    search,
+    movementType: type,
+    page,
+    pageSize: 50,
+  });
+
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Stock Movements"
-        description="Immutable, double-entry ledger of all historical stock movements across warehouses."
+        title="Stock Movement Ledger"
+        description="Immutable chronological ledger of physical stock entries, dispatches, and transfers."
         breadcrumbs={[
           { label: 'Application', href: '/app/dashboard' },
-          { label: 'Inventory', href: '/app/inventory/stock' },
+          { label: 'Inventory', href: '/app/inventory/movements' },
           { label: 'Movements' },
         ]}
       />
 
-      <PageToolbar
-        searchPlaceholder="Filter movements by reference, SKU, or batch..."
-        filterOptions={[
-          {
-            label: 'Type',
-            options: [
-              { label: 'All Types', value: 'all' },
-              { label: 'Receipt', value: 'receipt' },
-              { label: 'Dispatch', value: 'dispatch' },
-              { label: 'Transfer', value: 'transfer' },
-              { label: 'Adjustment', value: 'adjustment' },
-            ],
-          },
-          {
-            label: 'Location',
-            options: [
-              { label: 'All Locations', value: 'all' },
-              { label: 'Central Hub', value: 'central' },
-              { label: 'Regional Depot', value: 'regional' },
-            ],
-          },
-        ]}
-      />
-
-      <DataPlaceholderTable
-        columns={[
-          { key: 'timestamp', label: 'Timestamp' },
-          { key: 'type', label: 'Type' },
-          { key: 'reference', label: 'Reference Document' },
-          { key: 'item', label: 'Item & SKU' },
-          { key: 'location', label: 'From / To' },
-          { key: 'delta', label: 'Quantity Delta' },
-          { key: 'reconciled', label: 'Reconciliation' },
-        ]}
-        emptyTitle="No stock movements recorded"
-        emptyDescription="All incoming goods receipts, order dispatches, transfers, and write-offs will append to this ledger automatically."
-      />
+      <MovementTable movements={data.items} />
     </div>
   );
 }

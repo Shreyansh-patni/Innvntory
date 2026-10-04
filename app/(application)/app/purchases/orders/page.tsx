@@ -1,19 +1,42 @@
 import { Metadata } from 'next';
 import { PageHeader } from '@/components/shared/page-header';
-import { PageToolbar } from '@/components/shared/page-toolbar';
-import { DataPlaceholderTable } from '@/components/shared/data-placeholder-table';
+import { PurchaseOrderTable } from '@/components/purchases/purchase-order-table';
+import { getPurchaseOrders } from '@/lib/purchases/purchases';
+import { getUserContext } from '@/lib/auth/session';
 
 export const metadata: Metadata = {
   title: 'Purchase Orders — Innvntory',
-  description: 'Manage procurement orders, supplier replenishment requests, and delivery timelines.',
+  description: 'Manage procurement vendor orders, delivery schedules, and committed spend.',
 };
 
-export default function PurchaseOrdersPage() {
+export default async function PurchaseOrdersPage(props: {
+  searchParams: Promise<{
+    search?: string;
+    status?: string;
+    page?: string;
+  }>;
+}) {
+  const searchParams = await props.searchParams;
+  const userContext = await getUserContext();
+  const orgId = userContext?.organization?.id || '00000000-0000-0000-0000-000000000000';
+
+  const page = parseInt(searchParams.page || '1', 10);
+  const search = searchParams.search || '';
+  const status = searchParams.status || 'all';
+
+  const data = await getPurchaseOrders({
+    organizationId: orgId,
+    search,
+    status,
+    page,
+    pageSize: 25,
+  });
+
   return (
     <div className="space-y-6">
       <PageHeader
         title="Purchase Orders"
-        description="Issue and track purchase orders with suppliers to replenish warehouse stock."
+        description="Vendor procurement orders, scheduled consignments, and committed commitments."
         breadcrumbs={[
           { label: 'Application', href: '/app/dashboard' },
           { label: 'Purchases', href: '/app/purchases/orders' },
@@ -21,36 +44,7 @@ export default function PurchaseOrdersPage() {
         ]}
       />
 
-      <PageToolbar
-        searchPlaceholder="Search POs by order number, supplier, or SKU..."
-        filterOptions={[
-          {
-            label: 'Status',
-            options: [
-              { label: 'All Orders', value: 'all' },
-              { label: 'Draft', value: 'draft' },
-              { label: 'Sent to Supplier', value: 'sent' },
-              { label: 'Partially Received', value: 'partial' },
-              { label: 'Fully Received', value: 'received' },
-              { label: 'Cancelled', value: 'cancelled' },
-            ],
-          },
-        ]}
-      />
-
-      <DataPlaceholderTable
-        columns={[
-          { key: 'poNumber', label: 'PO Number' },
-          { key: 'supplier', label: 'Supplier' },
-          { key: 'destination', label: 'Destination Warehouse' },
-          { key: 'orderDate', label: 'Order Date' },
-          { key: 'expectedDate', label: 'Expected Date' },
-          { key: 'status', label: 'PO Status' },
-          { key: 'total', label: 'Total Value' },
-        ]}
-        emptyTitle="No purchase orders created"
-        emptyDescription="Create purchase orders manually or generate them automatically based on minimum reorder level thresholds."
-      />
+      <PurchaseOrderTable orders={data.items} />
     </div>
   );
 }
