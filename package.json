@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "test": "node --test tests/unit/*.test.mjs",
+    "test": "node --test tests/unit/*.test.mjs tests/integration/*.test.mjs tests/security/*.test.mjs tests/e2e/*.test.mjs",
     "demo:provision": "node scripts/provision-demo-account.mjs",
     "demo:reset": "node scripts/reset-demo-workspace.mjs"
   },
