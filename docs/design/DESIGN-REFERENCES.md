@@ -7,6 +7,7 @@ The Innvntory visual design is a synthesis of two primary inspirations, heavily 
 ```text
 Aoutive AI (Visual Language)
 + Cursor (Design Principles)
++ Supplied Palettes (Light Mode / Dark Mode)
 + Innvntory (Product Requirements)
 = Final Design System
 ```
@@ -43,7 +44,19 @@ Aoutive AI (Visual Language)
 - CursorGothic (unless we specifically license or choose a direct open-source equivalent like Geist/Inter).
 - The dark "IDE" panes (Innvntory defaults to light-mode business operations, unless dark mode is specifically toggled).
 
-## 4. Innvntory (The Product Authority)
+## 4. Innvntory (The Palette Authority)
+
+**Role:** Defines the exact application colors and neutral scales.
+**Location:** `docs/design/reference-images/Light Mode.md` and `docs/design/reference-images/Dark Mode.md`
+
+**What we inherit:**
+- The explicit Light Mode and Dark Mode neutral scales provided by the product owner.
+- The dual-mode definition for the application UI (distinct from the Aoutive-inspired `#f7f7f7` marketing canvas).
+
+**What we reject/exclude:**
+- Generic Tailwind scales (e.g. `zinc`, `slate`) in favor of these precise values.
+
+## 5. Innvntory (The Product Authority)
 
 **Role:** The ultimate arbiter of design choices.
 **Location:** `docs/source-of-truth/INNVNTORY-PRODUCT-DEFINITION.md`

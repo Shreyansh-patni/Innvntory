@@ -5,8 +5,8 @@ This document lists architectural, design, and product decisions that are genuin
 Do not prematurely choose technologies or values to fill these gaps.
 
 ## Design & UI
-- Final Innvntory color tokens (including Primary CTA color)
-- Dark Mode token strategy (Is it required for MVP?)
+- Exact semantic mapping of the Light/Dark palettes for specific components.
+- Primary Brand Color / Accent Color.
 - Exact responsive breakpoints
 
 ## Architecture & Engineering

@@ -16,24 +16,65 @@ A premium, modern, disciplined inventory/business SaaS.
 
 ## 2. Color System
 
-*Note: The base palette avoids pure white backgrounds and pure black text to reduce eye strain, mimicking editorial printing.*
+*Note: The base palette avoids pure white backgrounds and pure black text to reduce eye strain, mimicking editorial printing where appropriate.*
 
-| Token | Proposed Value | Purpose | Status |
-|-------|----------------|---------|--------|
-| `canvas` | `#f7f7f7` | The base page background (warm/cool off-white). | ADAPTED |
-| `surface-card` | `#ffffff` | Elevated cards, data tables, modals. | OBSERVED |
-| `surface-strong` | `#f0f0f0` | Badge backgrounds, secondary button fills. | PROPOSED |
-| `ink` | `#1a1a1a` | Primary display and heading text. | OBSERVED |
-| `body` | `#4d4d4d` | Default reading text. | OBSERVED |
-| `muted` | `#737373` | Subtitles, disabled text, placeholder text. | OBSERVED |
-| `hairline` | `#e2e2e2` | 1px dividers, card borders, table borders. | PROPOSED |
-| `primary` | TBD | Primary CTA button background. | TBD |
-| `primary-active`| TBD | Primary CTA hover/active state. | TBD |
-| `on-primary` | `#ffffff` | Text on top of the primary CTA. | PROPOSED |
-| `success` | `#10b261` | Confirmation, stock received, payment successful. | OBSERVED |
-| `warning` | `#f08519` | Low stock, pending payments. | OBSERVED |
-| `error` | `#ea6118` (or red) | Validation errors, deletion warnings. | PROPOSED |
-| `info` | TBD | Neutral informational alerts. | TBD |
+### Source Palettes (Product UI)
+These are the explicit source scales supplied by the product owner. 
+
+**LIGHT MODE PALETTE**
+- `#FFFFFF`
+- `#F8F8F8`
+- `#F0F1F2`
+- `#DDDEE1`
+- `#B7B9BE`
+- `#8C8F97`
+- `#7D818A`
+- `#6B6E76`
+- `#505258`
+- `#3B3D42`
+- `#292A2E`
+- `#1E1F21`
+- `#000000`
+
+**DARK MODE PALETTE**
+- `#111213`
+- `#18191A`
+- `#1F1F21`
+- `#242528`
+- `#2B2C2F`
+- `#303134`
+- `#3D3F43`
+- `#4B4D51`
+- `#63666B`
+- `#7E8188`
+- `#96999E`
+- `#A9ABAF`
+- `#BFC1C4`
+- `#CECFD2`
+- `#E2E3E4`
+- `#FFFFFF`
+
+### Semantic Tokens (Product UI vs Marketing)
+Marketing elements use the Aoutive-inspired `#f7f7f7` canvas, while the internal application UI leans on the stricter supplied Light/Dark palettes. Exact mappings are partially TBD pending implementation.
+
+| Token | Light Value | Dark Value | Purpose / Evidence | Status |
+|-------|-------------|------------|--------------------|--------|
+| `--color-canvas` | `#f7f7f7` | TBD | Marketing/Editorial base background. Derived from Aoutive. | ADAPTED |
+| `--color-background` | `#FFFFFF` | `#111213` | Application base background. | PROPOSED |
+| `--color-background-subtle` | `#F8F8F8` | `#18191A` | Secondary background, sidebars, nested containers. | PROPOSED |
+| `--color-surface` | `#FFFFFF` | `#1F1F21` | Elevated cards, dialogs, dropdowns. | PROPOSED |
+| `--color-surface-muted` | `#F0F1F2` | `#242528` | Badge backgrounds, secondary button fills. | PROPOSED |
+| `--color-border-subtle` | `#DDDEE1` | `#2B2C2F` | Hairline dividers, subtle card borders. | PROPOSED |
+| `--color-border` | `#B7B9BE` | `#3D3F43` | Inputs, interactive elements borders. | PROPOSED |
+| `--color-text-primary` | `#1E1F21` | `#E2E3E4` | Primary display and heading text. | PROPOSED |
+| `--color-text-secondary` | `#505258` | `#A9ABAF` | Default reading text, body text. | PROPOSED |
+| `--color-text-muted` | `#7D818A` | `#7E8188` | Subtitles, disabled text, placeholder text. | PROPOSED |
+| `--color-primary-action` | TBD | TBD | Primary CTA button background. | TBD |
+| `--color-success` | `#10b261` | `#10b261` | Confirmation, stock received, success states. | OBSERVED |
+| `--color-warning` | `#f08519` | `#f08519` | Low stock, pending payments. | OBSERVED |
+| `--color-error` | `#ea6118` | `#ea6118` | Validation errors, deletion warnings. | OBSERVED |
+
+*Implementation Note: Do not implement CSS variables until authorized by an implementation phase.*
 
 ---
 
@@ -148,9 +189,10 @@ All interactive components must define predictable states: `Default`, `Hover`, `
 - **SECONDARY:** Watermelon UI, Aceternity UI, Magic UI, Motion Primitives, HeroUI. (Conditional usage only).
 
 ## 11. Dark Mode
-**Status:** TBD.
-The primary visual extraction is based on a light, editorial theme. A full dark mode inversion will be documented later if required by product specs.
+**Status:** RESOLVED (Source Palette Level).
+The product owner supplied the explicit Dark Mode palette (`docs/design/reference-images/Dark Mode.md`). 
 
 ## 12. Unresolved / TBD Decisions
+- Exact semantic mapping of the Light/Dark palettes for specific components.
 - Primary Brand Color / Accent Color.
-- Dark Mode Token Strategy.
+- Component-specific dark-mode behavior, image treatment, chart colors.
