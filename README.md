@@ -4,33 +4,15 @@
 **Description:** A modern business operating system for inventory-driven businesses. Making inventory and everyday business operations simple, reliable, and accessible from anywhere.
 
 ## Current Status
-**SETUP 06 Completed:** Public marketing website architecture and authenticated application shell established.
+- **Public Website & Auth:** Public landing page, documentation, publications, legal pages, and Supabase Authentication workflows established.
+- **Application Shell:** High-density authenticated application layout (`/app/*`) with persistent navigation, breadcrumbs, search/filter toolbars, and truthful empty states.
+- **Database & Multitenancy:** Supabase PostgreSQL migrations, Row Level Security (RLS), RBAC permissions catalog, and immutable audit logs established.
+- **Observability:** Vercel Web Analytics integrated at the application root layout (`app/layout.tsx`). No custom event tracking is currently enabled. Production metrics are available through the Vercel project dashboard after deployment.
 
 ## Architecture
 - **Frontend:** Next.js (App Router), React 19, TypeScript, Tailwind CSS v4
 - **UI Primitives:** shadcn/ui & base-ui
 - **Typography:** `NewBlack` (Primary / Display) and `LT-amber` (Secondary / UI)
-- **Backend / DB:** Supabase (PostgreSQL, Auth, Storage) — *To be connected in future setup phases*
-- **SaaS Billing:** Polar — *To be connected in future setup phases*
-
-## Routing Structure
-- **Public Marketing Website (`/`):**
-  - `/` — Product Landing Page (Aoutive-adapted layout)
-  - `/features` — Categorized Platform Capabilities
-  - `/pricing` — Multi-tier Plan Matrix (Free, Starter, Growth, Business, Enterprise)
-  - `/docs` & `/docs/[slug]` — User-facing Documentation Hub
-  - `/articles` & `/articles/[slug]` — Editorial Publications & Notes
-  - `/about` — Company Vision & Long-Term Roadmap
-  - `/contact` — Enterprise Solutions & Inquiries
-  - `/login` & `/signup` — Authentication Entry Points
-  - `/privacy`, `/terms`, `/cookie-policy`, `/disclaimer` — Legal & Governance Guidelines
-- **Authenticated Application (`/app/*`):**
-  - `/app/dashboard` — Application Shell Preview
-  - Collapsible persistent navigation, command-center trigger (`⌘K`), and mobile drawer.
-
-## What is NOT Implemented Yet
-- Live database queries and mutations
-- Real authentication flows (Supabase Auth)
-- Products CRUD, Inventory Movements, Sales, Purchases, Reports
-- SaaS billing integrations (Polar)
-- Business logic / real transaction records
+- **Backend / Platform:** Supabase (PostgreSQL 15+, Auth, Storage, Realtime)
+- **Analytics / Observability:** Vercel Web Analytics (`@vercel/analytics`)
+- **SaaS Billing:** Polar (Planned)

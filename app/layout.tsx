@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import { fontPrimary, fontSecondary } from "@/lib/fonts";
 import "./globals.css";
 
@@ -19,6 +20,7 @@ export default function RootLayout({
         className={`${fontPrimary.variable} ${fontSecondary.variable} font-sans bg-background text-text-primary antialiased min-h-screen flex flex-col`}
       >
         {children}
+        <Analytics />
       </body>
     </html>
   );
