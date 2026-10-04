@@ -273,6 +273,161 @@ export interface Database {
           }
         ];
       };
+      categories: {
+        Row: {
+          id: string;
+          organization_id: string;
+          name: string;
+          description: string | null;
+          hsn_code: string | null;
+          gst_rate_percent: number;
+          status: 'active' | 'inactive' | 'archived';
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          organization_id: string;
+          name: string;
+          description?: string | null;
+          hsn_code?: string | null;
+          gst_rate_percent?: number;
+          status?: 'active' | 'inactive' | 'archived';
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          organization_id?: string;
+          name?: string;
+          description?: string | null;
+          hsn_code?: string | null;
+          gst_rate_percent?: number;
+          status?: 'active' | 'inactive' | 'archived';
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'categories_organization_id_fkey';
+            columns: ['organization_id'];
+            isOneToOne: false;
+            referencedRelation: 'organizations';
+            referencedColumns: ['id'];
+          }
+        ];
+      };
+      units: {
+        Row: {
+          id: string;
+          organization_id: string | null;
+          name: string;
+          code: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          organization_id?: string | null;
+          name: string;
+          code: string;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          organization_id?: string | null;
+          name?: string;
+          code?: string;
+          created_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'units_organization_id_fkey';
+            columns: ['organization_id'];
+            isOneToOne: false;
+            referencedRelation: 'organizations';
+            referencedColumns: ['id'];
+          }
+        ];
+      };
+      products: {
+        Row: {
+          id: string;
+          organization_id: string;
+          name: string;
+          description: string | null;
+          sku: string;
+          barcode: string | null;
+          category_id: string | null;
+          unit_id: string | null;
+          unit_code: string;
+          cost_price: number;
+          selling_price: number;
+          status: 'active' | 'inactive' | 'archived';
+          created_by: string | null;
+          updated_by: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          organization_id: string;
+          name: string;
+          description?: string | null;
+          sku: string;
+          barcode?: string | null;
+          category_id?: string | null;
+          unit_id?: string | null;
+          unit_code?: string;
+          cost_price?: number;
+          selling_price?: number;
+          status?: 'active' | 'inactive' | 'archived';
+          created_by?: string | null;
+          updated_by?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          organization_id?: string;
+          name?: string;
+          description?: string | null;
+          sku?: string;
+          barcode?: string | null;
+          category_id?: string | null;
+          unit_id?: string | null;
+          unit_code?: string;
+          cost_price?: number;
+          selling_price?: number;
+          status?: 'active' | 'inactive' | 'archived';
+          created_by?: string | null;
+          updated_by?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'products_organization_id_fkey';
+            columns: ['organization_id'];
+            isOneToOne: false;
+            referencedRelation: 'organizations';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'products_category_id_fkey';
+            columns: ['category_id'];
+            isOneToOne: false;
+            referencedRelation: 'categories';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'products_unit_id_fkey';
+            columns: ['unit_id'];
+            isOneToOne: false;
+            referencedRelation: 'units';
+            referencedColumns: ['id'];
+          }
+        ];
+      };
     };
     Views: {
       [_ in never]: never;
