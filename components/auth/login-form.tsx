@@ -1,9 +1,10 @@
 'use client';
 
-import { useActionState, useState } from 'react';
+import { useActionState, useState, useRef, useCallback } from 'react';
 import Link from 'next/link';
-import { Mail, Lock, Eye, EyeOff, ArrowRight, Loader2 } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, ArrowRight, Loader2, FlaskConical } from 'lucide-react';
 import { loginAction, AuthActionResult } from '@/lib/auth/actions';
+import { DEMO_EMAIL, DEMO_PASSWORD } from '@/lib/demo/config';
 
 export function LoginForm({ nextPath }: { nextPath: string }) {
   const [state, formAction, isPending] = useActionState<AuthActionResult | null, FormData>(
@@ -11,9 +12,22 @@ export function LoginForm({ nextPath }: { nextPath: string }) {
     null
   );
   const [showPassword, setShowPassword] = useState(false);
+  const formRef = useRef<HTMLFormElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+
+  const handleDemoLogin = useCallback(() => {
+    if (!DEMO_EMAIL || !DEMO_PASSWORD) return;
+    if (emailRef.current) emailRef.current.value = DEMO_EMAIL;
+    if (passwordRef.current) passwordRef.current.value = DEMO_PASSWORD;
+    // Submit the form after a short delay so React renders the values
+    setTimeout(() => formRef.current?.requestSubmit(), 50);
+  }, []);
+
+  const hasDemoCredentials = Boolean(DEMO_EMAIL && DEMO_PASSWORD);
 
   return (
-    <form action={formAction} className="space-y-4.5">
+    <form ref={formRef} action={formAction} className="space-y-4.5">
       <input type="hidden" name="next" value={nextPath} />
 
       {state?.error && (
@@ -29,6 +43,7 @@ export function LoginForm({ nextPath }: { nextPath: string }) {
         <div className="relative">
           <Mail className="absolute left-3.5 top-2.5 h-4 w-4 text-text-muted" />
           <input
+            ref={emailRef}
             type="email"
             name="email"
             required
@@ -55,6 +70,7 @@ export function LoginForm({ nextPath }: { nextPath: string }) {
         <div className="relative">
           <Lock className="absolute left-3.5 top-2.5 h-4 w-4 text-text-muted" />
           <input
+            ref={passwordRef}
             type={showPassword ? 'text' : 'password'}
             name="password"
             required
@@ -91,6 +107,19 @@ export function LoginForm({ nextPath }: { nextPath: string }) {
           </>
         )}
       </button>
+
+      {hasDemoCredentials && (
+        <button
+          type="button"
+          onClick={handleDemoLogin}
+          disabled={isPending}
+          id="demo-login-btn"
+          className="flex w-full items-center justify-center gap-2 rounded-md border border-amber-500/30 bg-amber-500/8 py-2.5 text-xs sm:text-sm font-medium text-amber-700 dark:text-amber-400 hover:bg-amber-500/15 transition-colors cursor-pointer disabled:opacity-60"
+        >
+          <FlaskConical className="h-3.5 w-3.5" />
+          <span>Use Demo Account</span>
+        </button>
+      )}
     </form>
   );
 }

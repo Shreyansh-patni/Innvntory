@@ -20,7 +20,7 @@ The public website provides product information, documentation, publications, an
 | `/articles/[slug]` | Editorial Article Detail | **Implemented** | `MarketingLayout` + Long-form Reading Layout & Author Attribution |
 | `/about` | Company Vision & Philosophy | **Implemented** | `MarketingLayout` + Sahaya Tech Overview & 4-Phase Roadmap |
 | `/contact` | Solutions & Sales Inquiries | **Implemented** | `MarketingLayout` + Contact Info & Visual Form Structure |
-| `/login` | Workspace Sign In Entry | **Implemented (Full Auth)** | `MarketingLayout` + Interactive `LoginForm` with `loginAction` |
+| `/login` | Workspace Sign In Entry | **Implemented (Full Auth + Demo)** | `MarketingLayout` + Interactive `LoginForm` with `loginAction` and public Demo Account credentials panel |
 | `/signup` | Workspace Registration & Onboarding | **Implemented (Full Auth)** | `MarketingLayout` + Interactive `SignupForm` with `signupAction` |
 | `/forgot-password` | Password Recovery Request | **Implemented (Full Auth)** | `MarketingLayout` + Interactive `ForgotPasswordForm` |
 | `/reset-password` | Set New Password | **Implemented (Full Auth)** | `MarketingLayout` + Interactive `ResetPasswordForm` |

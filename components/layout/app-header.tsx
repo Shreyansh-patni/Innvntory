@@ -2,15 +2,18 @@ import { MobileNavigation } from "@/components/layout/mobile-navigation";
 import { CommandCenterTrigger } from "@/components/layout/command-center-trigger";
 import { UserAccountMenu } from "@/components/layout/user-account-menu";
 import { Separator } from "@/components/ui/separator";
-import { Building2, Warehouse, Bell, ChevronDown } from "lucide-react";
+import { Building2, Warehouse, Bell, ChevronDown, FlaskConical } from "lucide-react";
 import { getUserContext } from "@/lib/auth/session";
+import { isDemoOrganization } from "@/lib/demo/config";
 
 export async function AppHeader() {
   const userContext = await getUserContext();
 
   const orgName = userContext?.organization?.name || "Sahaya Technologies";
+  const orgSlug = userContext?.organization?.slug;
   const userEmail = userContext?.user?.email;
   const userFullName = userContext?.user?.fullName;
+  const isDemo = isDemoOrganization(orgSlug);
 
   return (
     <header className="flex h-14 shrink-0 items-center border-b border-border-subtle bg-background px-4 lg:px-6 z-10">
@@ -29,9 +32,16 @@ export async function AppHeader() {
         <div className="flex items-center gap-2 rounded-md border border-border-subtle bg-surface px-2.5 py-1 text-xs text-text-secondary hover:border-border transition-colors cursor-pointer">
           <Building2 className="h-3.5 w-3.5 text-text-muted" />
           <span className="font-medium text-text-primary">{orgName}</span>
-          <span className="rounded bg-surface-muted px-1.5 py-0.2 text-[10px] font-mono text-text-muted">
-            Workspace
-          </span>
+          {isDemo ? (
+            <span className="inline-flex items-center gap-1 rounded bg-amber-500/10 border border-amber-500/20 px-1.5 py-0.5 text-[10px] font-medium text-amber-700 dark:text-amber-400">
+              <FlaskConical className="h-2.5 w-2.5" />
+              Demo
+            </span>
+          ) : (
+            <span className="rounded bg-surface-muted px-1.5 py-0.2 text-[10px] font-mono text-text-muted">
+              Workspace
+            </span>
+          )}
           <ChevronDown className="h-3 w-3 text-text-muted ml-0.5" />
         </div>
 
@@ -66,6 +76,7 @@ export async function AppHeader() {
           email={userEmail}
           fullName={userFullName}
           organizationName={orgName}
+          isDemoWorkspace={isDemo}
         />
       </div>
     </header>

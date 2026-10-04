@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "test": "node --test tests/unit/*.test.mjs"
+    "test": "node --test tests/unit/*.test.mjs",
+    "demo:provision": "node scripts/provision-demo-account.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.8.0",

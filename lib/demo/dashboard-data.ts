@@ -156,10 +156,21 @@ export function isDemoModeEnabled(): boolean {
 }
 
 /**
- * Returns typed demo dashboard data if demo mode is enabled, otherwise null.
+ * Returns typed demo dashboard data when:
+ *   a) NEXT_PUBLIC_DEMO_MODE=true (env-based fixture mode for all users), OR
+ *   b) The authenticated user belongs to the Demo Workspace organization.
+ *
+ * NOTE: This returns fixture data for not-yet-implemented domains (inventory, sales, etc).
+ * Real catalog data (products, categories) is fetched directly from Supabase via RLS.
+ * Do NOT use this function to handle Supabase errors — errors must surface truthfully.
+ *
+ * @param orgSlug - The authenticated user's organization slug (from UserContext).
  */
-export function getDashboardData(): DashboardDemoData | null {
-  if (isDemoModeEnabled()) {
+export function getDashboardData(orgSlug?: string | null): DashboardDemoData | null {
+  const envDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === "true";
+  const isDemoWorkspace = orgSlug === "innvntory-demo";
+
+  if (envDemoMode || isDemoWorkspace) {
     return demoDashboardData;
   }
   return null;

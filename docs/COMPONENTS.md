@@ -28,7 +28,7 @@ Interactive authentication forms implementing client-side validation, server act
 
 | Component | Path | Description | Client/Server |
 | :--- | :--- | :--- | :--- |
-| `LoginForm` | `components/auth/login-form.tsx` | Work email and password form submitting to `loginAction` with error alert handling. | Client |
+| `LoginForm` | `components/auth/login-form.tsx` | Work email and password form submitting to `loginAction` with error alert handling and one-click "Use Demo Account" flow. | Client |
 | `SignupForm` | `components/auth/signup-form.tsx` | Workspace registration form (Full Name, Work Email, Organization Name, Password) with `signupAction`. | Client |
 | `ForgotPasswordForm`| `components/auth/forgot-password-form.tsx` | Password reset request form with non-leaking dispatched notice. | Client |
 | `ResetPasswordForm` | `components/auth/reset-password-form.tsx` | New password setup form verifying password confirmation match and minimum length. | Client |
@@ -55,7 +55,7 @@ Layout and navigation components providing the persistent operational applicatio
 | :--- | :--- | :--- | :--- |
 | `AppShell` | `components/layout/app-shell.tsx` | Top-level layout container composing sidebar, header, and scrollable content area with max-width container. | Server |
 | `AppSidebar` | `components/layout/app-sidebar.tsx` | Persistent desktop left navigation with active route highlights, section groups, and public site return link. | Client |
-| `AppHeader` | `components/layout/app-header.tsx` | Operational top header with organization context, warehouse switcher, notifications, and profile menu. | Server |
+| `AppHeader` | `components/layout/app-header.tsx` | Operational top header with organization context, Demo Workspace indicator badge, notifications, and profile menu. | Server |
 | `UserAccountMenu` | `components/layout/user-account-menu.tsx` | Account dropdown displaying authenticated user initials/email and sign out action. | Client |
 | `MobileNavigation` | `components/layout/mobile-navigation.tsx` | Accessible slide-out sheet drawer for mobile and tablet navigation with active route indicators. | Client |
 | `CommandCenterTrigger`| `components/layout/command-center-trigger.tsx` | Visual entry point button for the command center showing platform-aware `⌘K` or `Ctrl+K`. | Client |

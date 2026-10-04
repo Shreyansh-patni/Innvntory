@@ -29,7 +29,15 @@
 
 ---
 
-## 3. Deferred Security Work (Subsequent Phases)
+## 3. Public Demo Account Security Model (SETUP 11.4)
+- **Public Sandbox Principle:** The demo account (`demo@innvntory.sahaya.tech`) credentials are intentionally public and displayed on `/login`.
+- **Tenant Isolation Enforcement:** The demo identity is bound strictly to `Innvntory Demo Workspace` (`innvntory-demo`). RLS strictly prevents any cross-tenant visibility or mutation.
+- **Least-Privilege Role:** Assigned the `viewer` system role (`00000000-0000-0000-0000-000000000007`), ensuring read-only catalog access with zero administrative, billing, or member management permissions.
+- **Service Role Protection:** The demo provisioning script (`scripts/provision-demo-account.mjs`) is an offline manual tool requiring `SUPABASE_SERVICE_ROLE_KEY`. It is never executed in browser contexts or automated build/deploy steps.
+
+---
+
+## 4. Deferred Security Work (Subsequent Phases)
 - Time-based One-Time Password (TOTP) Multi-Factor Authentication (MFA) enforcement.
 - SAML 2.0 Single Sign-On (SSO) enterprise connectors.
 - IP allowlisting and geo-fencing policies.

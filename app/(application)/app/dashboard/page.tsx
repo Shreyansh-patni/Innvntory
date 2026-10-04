@@ -23,14 +23,17 @@ import { MetricCard } from "@/components/shared/metric-card";
 import { EmptyState } from "@/components/shared/empty-state";
 import { StatusBadge } from "@/components/shared/status-badge";
 import { getDashboardData } from "@/lib/demo/dashboard-data";
+import { getUserContext } from "@/lib/auth/session";
 
 export const metadata: Metadata = {
   title: "Dashboard — Innvntory Operations OS",
   description: "Operations dashboard and live inventory health overview.",
 };
 
-export default function DashboardPage() {
-  const demoData = getDashboardData();
+export default async function DashboardPage() {
+  const userContext = await getUserContext();
+  const orgSlug = userContext?.organization?.slug;
+  const demoData = getDashboardData(orgSlug);
   const isDemo = demoData !== null;
 
   return (
@@ -40,7 +43,7 @@ export default function DashboardPage() {
         title="Operations Dashboard"
         description={
           isDemo
-            ? "Simulated operational overview of inventory valuation, multi-warehouse movements, and procurement pipelines."
+            ? "You're viewing a sample Innvntory workspace with demonstration data."
             : "Real-time overview of inventory valuation, multi-warehouse movements, and procurement pipelines."
         }
         badge={

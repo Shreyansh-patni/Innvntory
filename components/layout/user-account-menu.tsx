@@ -2,19 +2,21 @@
 
 import { useState, useTransition } from 'react';
 import Link from 'next/link';
-import { LogOut, User, Settings, ShieldCheck, Loader2 } from 'lucide-react';
+import { LogOut, User, Settings, ShieldCheck, Loader2, FlaskConical } from 'lucide-react';
 import { logoutAction } from '@/lib/auth/actions';
 
 interface UserAccountMenuProps {
   email?: string;
   fullName?: string;
   organizationName?: string;
+  isDemoWorkspace?: boolean;
 }
 
 export function UserAccountMenu({
   email = 'admin@sahaya.tech',
   fullName,
   organizationName = 'Sahaya Technologies',
+  isDemoWorkspace = false,
 }: UserAccountMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
@@ -54,7 +56,15 @@ export function UserAccountMenu({
           />
           <div className="absolute right-0 top-full mt-2 w-56 rounded-lg border border-border-subtle bg-surface p-1.5 shadow-lg z-50 animate-in fade-in zoom-in-95 duration-100">
             <div className="px-3 py-2 border-b border-border-subtle mb-1">
-              <p className="text-xs font-medium text-text-primary truncate">{displayName}</p>
+              <div className="flex items-center justify-between gap-2">
+                <p className="text-xs font-medium text-text-primary truncate">{displayName}</p>
+                {isDemoWorkspace && (
+                  <span className="inline-flex items-center gap-1 shrink-0 rounded bg-amber-500/10 border border-amber-500/20 px-1.5 py-0.5 text-[10px] font-medium text-amber-700 dark:text-amber-400">
+                    <FlaskConical className="h-2.5 w-2.5" />
+                    Demo
+                  </span>
+                )}
+              </div>
               <p className="text-[11px] text-text-muted truncate font-mono">{email}</p>
             </div>
 
