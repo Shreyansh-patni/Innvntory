@@ -22,7 +22,7 @@ import { PageHeader } from "@/components/shared/page-header";
 import { MetricCard } from "@/components/shared/metric-card";
 import { EmptyState } from "@/components/shared/empty-state";
 import { StatusBadge } from "@/components/shared/status-badge";
-import { getDashboardData } from "@/lib/demo/dashboard-data";
+import { getLiveDashboardData } from "@/lib/dashboard/dashboard";
 import { getUserContext } from "@/lib/auth/session";
 
 export const metadata: Metadata = {
@@ -32,9 +32,10 @@ export const metadata: Metadata = {
 
 export default async function DashboardPage() {
   const userContext = await getUserContext();
+  const orgId = userContext?.organization?.id || '00000000-0000-0000-0000-000000000000';
   const orgSlug = userContext?.organization?.slug;
-  const demoData = getDashboardData(orgSlug);
-  const isDemo = demoData !== null;
+  const dashboardData = await getLiveDashboardData(orgId, orgSlug);
+  const isDemo = dashboardData.isDemoMode;
 
   return (
     <div className="space-y-8">
@@ -80,28 +81,28 @@ export default async function DashboardPage() {
       <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         <MetricCard
           title="Stock Valuation"
-          value={demoData ? demoData.metrics.stockValuation : "—"}
+          value={dashboardData.metrics.stockValuation}
           subtitle="FIFO / Weighted-Average valuation"
           statusBadge={isDemo ? "reconciled" : "awaiting-data"}
           icon={Boxes}
         />
         <MetricCard
           title="Monthly Revenue"
-          value={demoData ? demoData.metrics.monthlyRevenue : "—"}
+          value={dashboardData.metrics.monthlyRevenue}
           subtitle="Cleared GST sales revenue"
           statusBadge={isDemo ? "completed" : "awaiting-data"}
           icon={ShoppingCart}
         />
         <MetricCard
           title="Open Orders"
-          value={demoData ? String(demoData.metrics.openOrders) : "—"}
+          value={String(dashboardData.metrics.openOrders)}
           subtitle="Active POs & sales allocations"
           statusBadge={isDemo ? "in-transit" : "awaiting-data"}
           icon={Truck}
         />
         <MetricCard
           title="Low Stock Alerts"
-          value={demoData ? String(demoData.metrics.lowStockAlerts) : "—"}
+          value={String(dashboardData.metrics.lowStockAlerts)}
           subtitle="Items below safety threshold"
           statusBadge={isDemo ? "low-stock" : "reconciled"}
           icon={TrendingUp}
@@ -128,9 +129,9 @@ export default async function DashboardPage() {
               />
             </div>
 
-            {demoData ? (
+            {dashboardData.recentActivity.length > 0 ? (
               <div className="divide-y divide-border-subtle/50">
-                {demoData.recentActivity.map((activity) => {
+                {dashboardData.recentActivity.map((activity) => {
                   const getIcon = () => {
                     switch (activity.type) {
                       case "grn":
@@ -210,13 +211,13 @@ export default async function DashboardPage() {
               </div>
               <StatusBadge
                 status={isDemo ? "low-stock" : "reconciled"}
-                label={isDemo ? "5 Critical SKUs" : "Buffers Normal"}
+                label={isDemo ? `${dashboardData.lowStockItems.length} Critical SKUs` : "Buffers Normal"}
               />
             </div>
 
-            {demoData ? (
+            {dashboardData.lowStockItems.length > 0 ? (
               <div className="space-y-3">
-                {demoData.lowStockItems.map((item) => (
+                {dashboardData.lowStockItems.map((item) => (
                   <div
                     key={item.id}
                     className="p-2.5 rounded-lg border border-border-subtle bg-surface-muted/30 flex items-center justify-between gap-3 text-xs"
