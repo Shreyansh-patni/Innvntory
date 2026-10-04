@@ -39,8 +39,8 @@ A premium, modern, disciplined inventory/business SaaS.
 
 ## 3. Typography System
 
-**Typeface:** `Geist` or `Inter` (TBD pending licensing/framework defaults). 
-*The system uses a single high-quality sans-serif for all UI elements.*
+**Typeface:** `NewBlack` (Primary / Display) and `LT-amber` (Secondary / UI). 
+*The system uses these custom brand fonts for all UI elements. The main logo/wordmark is also `NewBlack`.*
 
 | Token | Size | Weight | Line Height | Tracking | Usage | Status |
 |-------|------|--------|-------------|----------|-------|--------|
@@ -153,5 +153,4 @@ The primary visual extraction is based on a light, editorial theme. A full dark 
 
 ## 12. Unresolved / TBD Decisions
 - Primary Brand Color / Accent Color.
-- Exact Font Family (Geist vs Inter vs other).
 - Dark Mode Token Strategy.

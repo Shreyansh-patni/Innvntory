@@ -6,7 +6,6 @@ Do not prematurely choose technologies or values to fill these gaps.
 
 ## Design & UI
 - Final Innvntory color tokens (including Primary CTA color)
-- Final typography (Geist vs Inter vs other)
 - Dark Mode token strategy (Is it required for MVP?)
 - Exact responsive breakpoints
 

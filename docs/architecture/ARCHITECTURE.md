@@ -6,10 +6,13 @@
 - **Backend / Platform:** Supabase (PostgreSQL, Auth, Storage, Realtime)
 - **Billing:** Polar
 
-## Component Boundaries (Server / Client Model)
+## Next.js Architecture & Boundaries
+- **App Router:** The application uses Next.js App Router exclusively.
 - **Default:** Server Components.
 - **Client Components:** Use only when needed for interaction, local client state, browser APIs, or client-only behavior. Avoid making the entire application client-rendered.
 - **Data vs Rendering:** Keep content structured and separated from view logic (`content/`).
+- **Server-Side Data Access:** Database access, auth checks, and external API calls must happen on the server.
+- **Loading & Errors:** Utilize `loading.tsx`, `error.tsx`, and `not-found.tsx` for predictable boundaries.
 
 ## Project Structure
 - `app/`: Next.js routing and pages.
@@ -21,7 +24,7 @@
 ## Core Rules
 - **Simplicity:** Complexity belongs in architecture, simplicity in the interface.
 - **Multi-tenant:** Organization-level isolation from day one via Supabase RLS. Every tenant-owned record should have an organization boundary.
-- **Security by Design:** Validate everything, never trust the client.
+- **Security by Design:** Validate everything, never trust the client. Runtime validation via Zod at all boundaries.
 - **Cloud & API First.**
 - **Data First & Automation First.**
 - **Production Quality & Mobile-Friendly.**

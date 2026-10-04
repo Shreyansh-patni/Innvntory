@@ -8,10 +8,10 @@
 - Server-side authorization enforcement.
 - Tenant isolation is mandatory (via Supabase RLS and application logic).
 - Use least privilege for database access, service roles, and users.
-- Safe error responses (avoid leaking internal errors).
-- Protect against XSS and CSRF.
-- Webhook signature verification strictly.
+- Safe error responses (avoid leaking internal errors/stack traces).
+- Protect against XSS and CSRF (via React defaults and SameSite cookies).
+- Webhook signature verification strictly required.
 - Make sensitive operations idempotent.
-- Audit logging for important actions.
-- Review dependencies regularly.
-- Define data retention/deletion planning.
+- Audit logging for important actions (user creation, stock adjustments, role changes).
+- Review dependencies regularly (dependabot/audit).
+- Define data retention/deletion planning (soft deletes vs hard deletes based on compliance).
