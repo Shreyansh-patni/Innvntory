@@ -21,6 +21,7 @@ import {
   Plug,
   Wallet,
   Lock,
+  Palette,
   type LucideIcon,
   Boxes,
 } from "lucide-react";
@@ -91,6 +92,7 @@ export const navigation: (NavItem | NavSection)[] = [
   {
     label: "Settings",
     items: [
+      { label: "Appearance", href: "/app/settings/appearance", icon: Palette },
       { label: "Organization", href: "/app/settings/organization", icon: Building },
       { label: "Users", href: "/app/settings/users", icon: UserCog },
       { label: "Roles", href: "/app/settings/roles", icon: Shield },

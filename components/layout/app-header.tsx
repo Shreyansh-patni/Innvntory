@@ -1,6 +1,7 @@
 import { MobileNavigation } from "@/components/layout/mobile-navigation";
 import { CommandCenterTrigger } from "@/components/layout/command-center-trigger";
 import { UserAccountMenu } from "@/components/layout/user-account-menu";
+import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { Separator } from "@/components/ui/separator";
 import { Building2, Warehouse, Bell, ChevronDown, FlaskConical } from "lucide-react";
 import { getUserContext } from "@/lib/auth/session";
@@ -58,9 +59,12 @@ export async function AppHeader() {
       {/* Spacer */}
       <div className="flex-1" />
 
-      {/* Right Tools: Command Center, Notifications, User Profile */}
+      {/* Right Tools: Command Center, Theme Toggle, Notifications, User Profile */}
       <div className="flex items-center gap-3">
         <CommandCenterTrigger />
+
+        {/* Theme Quick Toggle */}
+        <ThemeToggle />
 
         {/* Notifications Placeholder */}
         <button

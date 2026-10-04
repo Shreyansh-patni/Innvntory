@@ -33,6 +33,15 @@
 - `public.units`: Units of measure (`id`, `organization_id`, `name`, `code`). Seeded with standard global units (`PCS`, `BOX`, `KG`, etc.).
 - `public.products`: Master catalog items (`id`, `organization_id`, `name`, `description`, `sku`, `barcode`, `category_id`, `unit_code`, `cost_price`, `selling_price`, `status`, `created_by`, `updated_by`). Unique on `(organization_id, sku)` and `(organization_id, barcode)`.
 
+### Domain 3: Operations, Business & Inventory Domains (Implemented SETUP 11.6)
+- `public.warehouses`, `public.stock_balances`, `public.inventory_transfers`, `public.inventory_adjustments`, `public.inventory_movements`
+- `public.customers`, `public.suppliers`, `public.purchase_orders`, `public.purchase_order_items`, `public.purchase_receipts`, `public.purchase_returns`, `public.purchase_payments`
+- `public.sales_orders`, `public.sales_order_items`, `public.invoices`, `public.sales_payments`, `public.sales_returns`
+
+### Domain 4: User Preferences & Theme System (Implemented SETUP 11.7)
+- `public.user_preferences`: User-level application preferences (`user_id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE`, `theme TEXT NOT NULL DEFAULT 'light' CHECK (theme IN ('light', 'dark'))`, `created_at`, `updated_at`).
+- Independent of tenant organizations; protected by RLS strictly allowing users to read and modify their own records (`auth.uid() = user_id`).
+
 ---
 
 ## 3. Row Level Security (RLS) Implementation
@@ -54,10 +63,6 @@ Both helper functions execute with `SECURITY DEFINER` and `SET search_path = pub
 All database modifications are versioned in `supabase/migrations/` using timestamped SQL files:
 - `20261004000000_multi_tenant_core.sql`: Core organizations, memberships, roles, permissions, audit logs, indexes, and RLS policies.
 - `20261004010000_catalog_domain.sql`: Categories, units of measure, products, SKU/barcode uniqueness, RLS, and global unit seeds.
+- `20261004020000_operations_and_business_domain.sql`: Warehouses, stock balances, transfers, adjustments, movements, customers, suppliers, purchases, sales, invoices, and payments.
+- `20261004030000_user_preferences.sql`: User preferences table, check constraints, automatic updated_at trigger, and user-isolated RLS policies.
 
----
-
-## 5. Deferred Database Work (Next Phases)
-- Multi-Location Inventory Domain (`warehouses`, `stock_balances`, `stock_transfers`, `stock_adjustments`, `stock_movements`)
-- Inbound Purchasing Domain (`suppliers`, `purchase_orders`, `goods_receipts`, `purchase_returns`, `purchase_payments`)
-- Outbound Sales Domain (`customers`, `sales_orders`, `invoices`, `sales_returns`, `sales_payments`)

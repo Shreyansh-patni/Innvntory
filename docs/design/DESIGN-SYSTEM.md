@@ -87,7 +87,19 @@ The color scales are rooted in the explicit source files:
 
 ---
 
-## 6. Accessibility & Motion
+## 6. Persistent Theme System (SETUP 11.7)
+
+- **Default Theme:** `light` (Default baseline for all unauthenticated visitors and initial accounts).
+- **Supported Themes:** `light` and `dark` strictly (no system/auto override).
+- **Persistence Architecture:**
+  - **Authenticated Users:** Stored durably in PostgreSQL table `public.user_preferences` (`user_id`, `theme`, timestamps) and queried server-side.
+  - **Fast SSR / Anti-Flicker:** Cached via `innvntory_theme` cookie and executed through inline script before DOM paint to ensure 0 flash of unstyled theme.
+  - **Demo Account Isolation:** For the shared public demo account (`demo@innvntory.sahaya.tech`), theme selection is preserved locally in the visitor's browser (cookie & localStorage) without mutating the shared database row for other visitors.
+  - **Settings Control:** Managed at `/app/settings/appearance` and quick header toggle. Selection changes theme immediately without full page reload.
+
+---
+
+## 7. Accessibility & Motion
 
 - **Focus State:** Visible `:focus-visible` outline rings with offset (`outline-2 outline-offset-2 outline-border`).
 - **Touch Targets:** Minimum 44px on mobile touch interactions.

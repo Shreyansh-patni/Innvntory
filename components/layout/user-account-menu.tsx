@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from 'react';
 import Link from 'next/link';
-import { LogOut, User, Settings, ShieldCheck, Loader2, FlaskConical } from 'lucide-react';
+import { LogOut, User, Settings, ShieldCheck, Loader2, FlaskConical, Palette } from 'lucide-react';
 import { logoutAction } from '@/lib/auth/actions';
 
 interface UserAccountMenuProps {
@@ -67,6 +67,15 @@ export function UserAccountMenu({
               </div>
               <p className="text-[11px] text-text-muted truncate font-mono">{email}</p>
             </div>
+
+            <Link
+              href="/app/settings/appearance"
+              onClick={() => setIsOpen(false)}
+              className="flex items-center gap-2 px-3 py-1.5 text-xs text-text-secondary hover:bg-surface-muted hover:text-text-primary rounded-md transition-colors"
+            >
+              <Palette className="w-3.5 h-3.5 text-text-muted" />
+              <span>Appearance</span>
+            </Link>
 
             <Link
               href="/app/settings/organization"
