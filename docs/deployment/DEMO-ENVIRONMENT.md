@@ -49,7 +49,7 @@ for a disposable sandbox, not as protected authentication material.
 | Organization    | Innvntory Demo Workspace     |
 | Slug            | `innvntory-demo`             |
 | Role            | `viewer` (read-only)         |
-| Catalog         | 5 categories, 35 products    |
+| Catalog         | 5 categories, 33 products    |
 | Billing access  | None                         |
 | Admin access    | None                         |
 
@@ -139,7 +139,7 @@ These records exist in Supabase and are served via authenticated RLS queries:
 - `memberships` — demo user ↔ Demo Workspace link
 - `membership_roles` — viewer role assignment
 - `categories` — 5 demo categories (Apparel, Footwear, etc.)
-- `products` — 35 realistic demo products
+- `products` — 33 realistic demo products
 
 These records are **real database data**. They appear in `/app/products`,
 `/app/categories`, etc. just like any real workspace would.
