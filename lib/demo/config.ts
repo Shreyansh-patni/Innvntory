@@ -13,13 +13,13 @@
 
 /** Public demo email, sourced from environment for runtime flexibility. */
 export const DEMO_EMAIL =
-  process.env.NEXT_PUBLIC_DEMO_EMAIL ?? "demo@innvntory.sahaya.tech";
+  process.env.NEXT_PUBLIC_DEMO_EMAIL ?? "demo@innvntory.com";
 
 /**
  * Public demo password.
  * Displayed on the login page. Only grants access to the isolated Demo Workspace.
  */
-export const DEMO_PASSWORD = process.env.NEXT_PUBLIC_DEMO_PASSWORD ?? "";
+export const DEMO_PASSWORD = process.env.NEXT_PUBLIC_DEMO_PASSWORD ?? "demo@1234";
 
 /** Slug of the dedicated Demo Workspace organization. */
 export const DEMO_ORG_SLUG = "innvntory-demo";

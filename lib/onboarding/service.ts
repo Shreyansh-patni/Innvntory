@@ -24,7 +24,7 @@ export async function getOnboardingStatus(): Promise<OnboardingStatus> {
     };
   }
 
-  const isDemo = userContext.user.email === 'demo@innvntory.sahaya.tech' || isDemoOrganization(userContext.organization?.slug);
+  const isDemo = userContext.user.email === 'demo@innvntory.com' || userContext.user.email === 'demo@innvntory.sahaya.tech' || isDemoOrganization(userContext.organization?.slug);
 
   if (isDemo) {
     const cookieStore = await cookies();

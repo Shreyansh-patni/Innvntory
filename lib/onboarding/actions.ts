@@ -27,7 +27,7 @@ export async function saveOnboardingStepAction(
 
   if (!user) return { success: false, error: 'Unauthorized' };
 
-  const isDemo = user.email === 'demo@innvntory.sahaya.tech';
+  const isDemo = user.email === 'demo@innvntory.com' || user.email === 'demo@innvntory.sahaya.tech';
   if (isDemo) return { success: true };
 
   // Fetch existing draft data to merge cleanly
@@ -75,7 +75,7 @@ export async function completeOnboardingAction(
 
   if (!user) return { success: false, error: 'Unauthorized' };
 
-  const isDemo = user.email === 'demo@innvntory.sahaya.tech';
+  const isDemo = user.email === 'demo@innvntory.com' || user.email === 'demo@innvntory.sahaya.tech';
   if (isDemo) {
     // Demo completion sets cookie only
     const cookieStore = await cookies();

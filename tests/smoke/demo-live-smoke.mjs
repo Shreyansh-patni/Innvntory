@@ -37,8 +37,8 @@ loadEnv();
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-const DEMO_EMAIL = process.env.NEXT_PUBLIC_DEMO_EMAIL || 'demo@innvntory.sahaya.tech';
-const DEMO_PASSWORD = process.env.NEXT_PUBLIC_DEMO_PASSWORD;
+const DEMO_EMAIL = process.env.NEXT_PUBLIC_DEMO_EMAIL || 'demo@innvntory.com';
+const DEMO_PASSWORD = process.env.NEXT_PUBLIC_DEMO_PASSWORD || 'demo@1234';
 
 console.log('[SMOKE TEST] Initializing Client Supabase connection...');
 

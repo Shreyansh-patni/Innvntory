@@ -94,7 +94,7 @@ The color scales are rooted in the explicit source files:
 - **Persistence Architecture:**
   - **Authenticated Users:** Stored durably in PostgreSQL table `public.user_preferences` (`user_id`, `theme`, timestamps) and queried server-side.
   - **Fast SSR / Anti-Flicker:** Cached via `innvntory_theme` cookie and executed through inline script before DOM paint to ensure 0 flash of unstyled theme.
-  - **Demo Account Isolation:** For the shared public demo account (`demo@innvntory.sahaya.tech`), theme selection is preserved locally in the visitor's browser (cookie & localStorage) without mutating the shared database row for other visitors.
+  - **Demo Account Isolation:** For the shared public demo account (`demo@innvntory.com`), theme selection is preserved locally in the visitor's browser (cookie & localStorage) without mutating the shared database row for other visitors.
   - **Settings Control:** Managed at `/app/settings/appearance` and quick header toggle. Selection changes theme immediately without full page reload.
 
 ---

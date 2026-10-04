@@ -48,8 +48,8 @@ loadEnv();
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
-const DEMO_EMAIL = process.env.NEXT_PUBLIC_DEMO_EMAIL || 'demo@innvntory.sahaya.tech';
-const DEMO_PASSWORD = process.env.NEXT_PUBLIC_DEMO_PASSWORD;
+const DEMO_EMAIL = process.env.NEXT_PUBLIC_DEMO_EMAIL || 'demo@innvntory.com';
+const DEMO_PASSWORD = process.env.NEXT_PUBLIC_DEMO_PASSWORD || 'demo@1234';
 
 if (!SUPABASE_URL || SUPABASE_URL === 'TBD') {
   console.error('[ABORT] NEXT_PUBLIC_SUPABASE_URL is not set. Configure .env.local first.');

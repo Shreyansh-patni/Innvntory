@@ -45,7 +45,7 @@ export async function updateThemePreferenceAction(theme: Theme): Promise<UpdateT
     return { success: true, theme, isDemo: false };
   }
 
-  const isDemo = user.email === 'demo@innvntory.sahaya.tech';
+  const isDemo = user.email === 'demo@innvntory.com' || user.email === 'demo@innvntory.sahaya.tech';
   if (isDemo) {
     // Demo user: do NOT overwrite the shared DB row for other visitors
     return { success: true, theme, isDemo: true };

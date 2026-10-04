@@ -35,7 +35,7 @@ export async function getResolvedThemePreference(): Promise<UserPreferencesResul
   }
 
   // Check if this is the shared public demo account
-  const isDemo = user.email === 'demo@innvntory.sahaya.tech' || isDemoOrganization(user.user_metadata?.org_slug);
+  const isDemo = user.email === 'demo@innvntory.com' || user.email === 'demo@innvntory.sahaya.tech' || isDemoOrganization(user.user_metadata?.org_slug);
 
   if (isDemo) {
     // Demo accounts use isolated browser cookie/storage

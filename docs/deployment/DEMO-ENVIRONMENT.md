@@ -77,8 +77,8 @@ for a disposable sandbox, not as protected authentication material.
 ### Public (intentionally displayable)
 
 ```env
-NEXT_PUBLIC_DEMO_EMAIL=demo@innvntory.sahaya.tech
-NEXT_PUBLIC_DEMO_PASSWORD=<set this in Vercel environment settings>
+NEXT_PUBLIC_DEMO_EMAIL=demo@innvntory.com
+NEXT_PUBLIC_DEMO_PASSWORD=demo@1234
 NEXT_PUBLIC_DEMO_MODE=false   # controls env-wide fixture mode; normally false
 ```
 

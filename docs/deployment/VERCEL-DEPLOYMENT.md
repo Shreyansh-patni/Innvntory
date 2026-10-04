@@ -54,7 +54,7 @@ Vercel environments are strictly isolated between **Production**, **Preview**, a
 | `NEXT_PUBLIC_SUPABASE_URL` | Public / Client | Production & Preview | Supabase Project REST API URL | `https://qwsdusjpidhwdxoztepu.supabase.co` |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Public / Client | Production & Preview | Supabase public anonymous API key | Public JWT anon key |
 | `NEXT_PUBLIC_DEMO_MODE` | Public / Client | Production & Preview | Controlled simulated dashboard toggle | `false` |
-| `NEXT_PUBLIC_DEMO_EMAIL` | Public / Client | Production & Preview | Public demo account username | `demo@innvntory.sahaya.tech` |
+| `NEXT_PUBLIC_DEMO_EMAIL` | Public / Client | Production & Preview | Public demo account username | `demo@innvntory.com` |
 | `SUPABASE_SERVICE_ROLE_KEY` | Server-Only | Production & Preview | Elevated service role key for migrations / admin tasks | Server-only key (NEVER prefix with `NEXT_PUBLIC_`) |
 | `POLAR_ACCESS_TOKEN` | Server-Only | Production & Preview | Polar SaaS billing API access token | `polar_at_...` (Planned) |
 | `POLAR_ORGANIZATION_ID` | Server-Only | Production & Preview | Polar organization ID | UUID (Planned) |

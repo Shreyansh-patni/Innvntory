@@ -19,7 +19,7 @@ import { resolve } from 'node:path';
 // ---------------------------------------------------------------------------
 const DEMO_ORG_SLUG = 'innvntory-demo';
 const DEMO_ORG_NAME = 'Innvntory Demo Workspace';
-const DEMO_EMAIL_DEFAULT = 'demo@innvntory.sahaya.tech';
+const DEMO_EMAIL_DEFAULT = 'demo@innvntory.com';
 
 // ---------------------------------------------------------------------------
 // 1. Demo config constants
@@ -34,7 +34,7 @@ test('DEMO_ORG_NAME matches expected value', () => {
 });
 
 test('DEMO_EMAIL_DEFAULT is a valid Innvntory email', () => {
-  assert.ok(DEMO_EMAIL_DEFAULT.endsWith('@innvntory.sahaya.tech'));
+  assert.ok(DEMO_EMAIL_DEFAULT.endsWith('@innvntory.com'));
 });
 
 // ---------------------------------------------------------------------------
