@@ -1485,18 +1485,30 @@ export type Database = {
       user_preferences: {
         Row: {
           created_at: string
+          onboarding_completed: boolean
+          onboarding_completed_at: string | null
+          onboarding_data: Json
+          onboarding_step: number
           theme: string
           updated_at: string
           user_id: string
         }
         Insert: {
           created_at?: string
+          onboarding_completed?: boolean
+          onboarding_completed_at?: string | null
+          onboarding_data?: Json
+          onboarding_step?: number
           theme?: string
           updated_at?: string
           user_id: string
         }
         Update: {
           created_at?: string
+          onboarding_completed?: boolean
+          onboarding_completed_at?: string | null
+          onboarding_data?: Json
+          onboarding_step?: number
           theme?: string
           updated_at?: string
           user_id?: string

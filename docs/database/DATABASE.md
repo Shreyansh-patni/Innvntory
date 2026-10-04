@@ -65,4 +65,5 @@ All database modifications are versioned in `supabase/migrations/` using timesta
 - `20261004010000_catalog_domain.sql`: Categories, units of measure, products, SKU/barcode uniqueness, RLS, and global unit seeds.
 - `20261004020000_operations_and_business_domain.sql`: Warehouses, stock balances, transfers, adjustments, movements, customers, suppliers, purchases, sales, invoices, and payments.
 - `20261004030000_user_preferences.sql`: User preferences table, check constraints, automatic updated_at trigger, and user-isolated RLS policies.
+- `20261004040000_user_onboarding.sql`: Onboarding progress tracking fields (`onboarding_completed`, `onboarding_step`, `onboarding_completed_at`, `onboarding_data`).
 

@@ -1,7 +1,22 @@
-import { AppSidebar } from "@/components/layout/app-sidebar";
-import { AppHeader } from "@/components/layout/app-header";
+'use client';
 
-export function AppShell({ children }: { children: React.ReactNode }) {
+import { usePathname } from 'next/navigation';
+import { AppSidebar } from "@/components/layout/app-sidebar";
+
+export function AppShell({
+  children,
+  header,
+}: {
+  children: React.ReactNode;
+  header: React.ReactNode;
+}) {
+  const pathname = usePathname();
+
+  // Onboarding page renders its own focused header and layout
+  if (pathname === '/app/onboarding') {
+    return <>{children}</>;
+  }
+
   return (
     <div className="flex h-screen overflow-hidden bg-background">
       {/* Desktop sidebar */}
@@ -9,7 +24,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
       {/* Main area */}
       <div className="flex flex-1 flex-col overflow-hidden">
-        <AppHeader />
+        {header}
 
         {/* Content region */}
         <main className="flex-1 overflow-y-auto">

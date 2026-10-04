@@ -184,6 +184,14 @@ The demo password is never shown in the authenticated application.
 
 ---
 
+## First-Time Onboarding Behavior (SETUP 11.8)
+
+- **Normal Accounts:** Undergoes a 4-step business profile and warehouse setup wizard at `/app/onboarding`. Progress and completion state are saved server-side to PostgreSQL `public.user_preferences`.
+- **Demo Workspace:** Displays a dedicated 3-step interactive tour explaining the pre-populated catalog and operational ledger.
+- **Browser-Scoped Isolation:** Demo completion is stored in the visitor's local browser (`innvntory_demo_onboarding_completed` cookie and `localStorage`). It **never modifies the shared demo user record in PostgreSQL**, ensuring other concurrent or future demo visitors receive their initial walkthrough cleanly.
+
+---
+
 ## Security Review
 
 | Item                                  | Status                         |
