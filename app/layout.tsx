@@ -17,6 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
+        suppressHydrationWarning
         className={`${fontPrimary.variable} ${fontSecondary.variable} font-sans bg-background text-text-primary antialiased min-h-screen flex flex-col`}
       >
         {children}
