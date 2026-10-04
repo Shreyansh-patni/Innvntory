@@ -64,10 +64,7 @@ async function handleReset(request: NextRequest) {
     ok: true,
     result: {
       organizationSlug: result.organizationSlug,
-      restoredCategories: result.restoredCategories,
-      prunedCategories: result.prunedCategories,
-      restoredProducts: result.restoredProducts,
-      prunedProducts: result.prunedProducts,
+      counts: result.counts,
       durationMs: result.durationMs,
     },
   });

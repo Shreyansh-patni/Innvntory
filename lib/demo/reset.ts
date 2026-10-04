@@ -29,6 +29,10 @@ import {
   UNIT_SET,
 } from './dataset';
 
+export { DEMO_ORG_SLUG };
+export const CANONICAL_CATEGORIES = DEMO_CATEGORIES;
+export const CANONICAL_PRODUCTS = DEMO_PRODUCTS;
+
 export interface ResetResult {
   success: boolean;
   organizationId?: string;

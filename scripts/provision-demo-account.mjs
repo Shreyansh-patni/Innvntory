@@ -22,7 +22,11 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { createClient } from '@supabase/supabase-js';
-import { resetDemoWorkspace, DEMO_ORG_SLUG, DEMO_ORG_NAME, VIEWER_ROLE_ID } from '../lib/demo/reset-engine.mjs';
+import { resetDemoWorkspace } from '../lib/demo/reset-engine.mjs';
+
+const DEMO_ORG_SLUG = 'innvntory-demo';
+const DEMO_ORG_NAME = 'Innvntory Demo Workspace';
+const VIEWER_ROLE_ID = '00000000-0000-0000-0000-000000000007';
 
 function loadEnv() {
   try {
