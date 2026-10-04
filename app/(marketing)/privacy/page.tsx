@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Shield, AlertCircle } from "lucide-react";
+import { AlertCircle } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Privacy Policy — Innvntory",

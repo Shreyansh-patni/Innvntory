@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Clock, Calendar, BookOpen } from "lucide-react";
+import { ArrowRight, Clock, Calendar } from "lucide-react";
 import { articles } from "@/content/marketing/articles";
 
 export const metadata: Metadata = {

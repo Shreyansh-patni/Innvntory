@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { ArrowRight, ShieldCheck, Target, Layers, Zap } from "lucide-react";
+import { ShieldCheck, Target } from "lucide-react";
 import { CTASection } from "@/components/marketing/cta-section";
 
 export const metadata: Metadata = {

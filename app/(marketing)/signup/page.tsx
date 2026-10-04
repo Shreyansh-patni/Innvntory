@@ -27,7 +27,7 @@ export default function SignupPage() {
         </div>
 
         {/* Form Visual Structure */}
-        <form className="mt-8 space-y-4" onSubmit={(e) => e.preventDefault?.()}>
+        <form className="mt-8 space-y-4">
           <div>
             <label className="block text-xs font-semibold text-text-primary mb-1.5">
               Full Name

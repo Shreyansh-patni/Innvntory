@@ -1,36 +1,36 @@
 # Innvntory
 
-**Company:** Sahaya Technologies Pvt. Ltd.
+**Company:** Sahaya Technologies Pvt. Ltd.  
 **Description:** A modern business operating system for inventory-driven businesses. Making inventory and everyday business operations simple, reliable, and accessible from anywhere.
 
 ## Current Status
-Workspace Initialized. Product implementation has NOT been started.
+**SETUP 06 Completed:** Public marketing website architecture and authenticated application shell established.
 
-## Current Milestone
-V0 — Foundation Setup.
+## Architecture
+- **Frontend:** Next.js (App Router), React 19, TypeScript, Tailwind CSS v4
+- **UI Primitives:** shadcn/ui & base-ui
+- **Typography:** `NewBlack` (Primary / Display) and `LT-amber` (Secondary / UI)
+- **Backend / DB:** Supabase (PostgreSQL, Auth, Storage) — *To be connected in future setup phases*
+- **SaaS Billing:** Polar — *To be connected in future setup phases*
 
-## Architecture Direction
-- **Frontend:** Next.js, React, TypeScript, Tailwind CSS
-- **UI Libraries:** shadcn/ui (Primary)
-- **Backend:** Supabase (PostgreSQL, Auth, Storage)
-- **Billing:** Polar
+## Routing Structure
+- **Public Marketing Website (`/`):**
+  - `/` — Product Landing Page (Aoutive-adapted layout)
+  - `/features` — Categorized Platform Capabilities
+  - `/pricing` — Multi-tier Plan Matrix (Free, Starter, Growth, Business, Enterprise)
+  - `/docs` & `/docs/[slug]` — User-facing Documentation Hub
+  - `/articles` & `/articles/[slug]` — Editorial Publications & Notes
+  - `/about` — Company Vision & Long-Term Roadmap
+  - `/contact` — Enterprise Solutions & Inquiries
+  - `/login` & `/signup` — Authentication Entry Points
+  - `/privacy`, `/terms`, `/cookie-policy`, `/disclaimer` — Legal & Governance Guidelines
+- **Authenticated Application (`/app/*`):**
+  - `/app/dashboard` — Application Shell Preview
+  - Collapsible persistent navigation, command-center trigger (`⌘K`), and mobile drawer.
 
-## Development Methodology
-- Follow the Vibe Coding A-Z Playbook.
-- Context → Plan → Implement → Validate → Commit.
-
-## Documentation Structure
-- `docs/source-of-truth/` - Core product definitions
-- `docs/architecture/` - System architecture
-- `docs/design/` - UI and design systems
-- `docs/database/` - Database schemas and rules
-- `docs/api/` - API documentation
-- `docs/references/` - External references and methodology
-
-## What has NOT been implemented yet
-- Dashboard
-- Authentication
-- Products, Inventory, Sales, Purchases, Reports
-- Database schema
-- UI features
-- APIs
+## What is NOT Implemented Yet
+- Live database queries and mutations
+- Real authentication flows (Supabase Auth)
+- Products CRUD, Inventory Movements, Sales, Purchases, Reports
+- SaaS billing integrations (Polar)
+- Business logic / real transaction records

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Check, HelpCircle, ArrowRight } from "lucide-react";
+import { Check, ArrowRight } from "lucide-react";
 import { pricingPlans } from "@/content/marketing/pricing";
 import { FAQSection } from "@/components/marketing/faq-section";
 

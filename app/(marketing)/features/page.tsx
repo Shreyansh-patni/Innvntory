@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { ArrowRight, CheckCircle2 } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
 import { featureCategories } from "@/content/marketing/features";
 import { CTASection } from "@/components/marketing/cta-section";
 

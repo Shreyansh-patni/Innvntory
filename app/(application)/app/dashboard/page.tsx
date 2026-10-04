@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Building2, Settings, ArrowRight, BookOpen, Layers, Terminal } from "lucide-react";
+import { Building2, ArrowRight, BookOpen, Layers } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Dashboard — Innvntory Application",

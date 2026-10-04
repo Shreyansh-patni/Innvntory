@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, BookOpen, Terminal, Sparkles } from "lucide-react";
+import { ArrowRight, BookOpen } from "lucide-react";
 import { docCategories } from "@/content/marketing/docs";
 
 export const metadata: Metadata = {

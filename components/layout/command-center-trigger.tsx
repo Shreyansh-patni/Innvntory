@@ -1,14 +1,25 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import { Search } from "lucide-react";
 
-export function CommandCenterTrigger() {
-  const [isMac, setIsMac] = useState(false);
+function subscribe() {
+  return () => {};
+}
 
-  useEffect(() => {
-    setIsMac(navigator.platform.toUpperCase().includes("MAC"));
-  }, []);
+function getSnapshot() {
+  if (typeof window === "undefined" || typeof navigator === "undefined") {
+    return false;
+  }
+  return /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform);
+}
+
+function getServerSnapshot() {
+  return false;
+}
+
+export function CommandCenterTrigger() {
+  const isMac = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
   return (
     <button

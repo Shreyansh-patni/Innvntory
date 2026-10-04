@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowLeft, BookOpen, Clock, FileText } from "lucide-react";
+import { ArrowLeft, BookOpen, FileText } from "lucide-react";
 import { docCategories } from "@/content/marketing/docs";
 
 export async function generateMetadata({

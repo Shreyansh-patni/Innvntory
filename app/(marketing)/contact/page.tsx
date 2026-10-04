@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Mail, MapPin, Building2, Clock, Send } from "lucide-react";
+import { Mail, Building2, Clock, Send } from "lucide-react";
 import { FAQSection } from "@/components/marketing/faq-section";
 
 export const metadata: Metadata = {

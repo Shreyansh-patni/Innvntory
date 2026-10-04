@@ -1,55 +1,34 @@
 # ARCHITECTURE
 
 ## Direction
-- **Frontend:** Next.js, React, TypeScript, Tailwind CSS
-- **UI Libraries:** shadcn/ui (Primary). Watermelon UI, Aceternity UI, Magic UI, Motion Primitives, HeroUI used ONLY when explicitly justified.
+- **Frontend:** Next.js (App Router), React 19, TypeScript, Tailwind CSS v4
+- **UI Libraries:** shadcn/ui (Primary).
 - **Backend / Platform:** Supabase (PostgreSQL, Auth, Storage, Realtime)
 - **Billing:** Polar
 
-## Next.js Architecture & Boundaries
-- **App Router:** The application uses Next.js App Router exclusively.
+## Next.js Architecture & Route Groups
+- **App Router Structure:**
+  - `app/(marketing)/...`: Public website owning `/`, `/features`, `/pricing`, `/docs`, `/articles`, `/about`, `/contact`, `/login`, `/signup`, `/privacy`, `/terms`, `/cookie-policy`, `/disclaimer`.
+  - `app/(application)/app/...`: Authenticated operational SaaS owning `/app/dashboard`, `/app/products`, `/app/inventory/*`, etc.
+  - `app/layout.tsx`: Root shell defining HTML, typography fonts (`NewBlack` and `LT-amber`), and global CSS.
 - **Default:** Server Components.
-- **Client Components:** Use only when needed for interaction, local client state, browser APIs, or client-only behavior. Avoid making the entire application client-rendered.
-- **Data vs Rendering:** Keep content structured and separated from view logic (`content/`).
-- **Server-Side Data Access:** Database access, auth checks, and external API calls must happen on the server.
-- **Loading & Errors:** Utilize `loading.tsx`, `error.tsx`, and `not-found.tsx` for predictable boundaries.
+- **Client Components:** Used strictly where required for interactive state (e.g. mobile drawer sheet, accordion toggle, platform detection).
+- **Data vs Rendering:** Reusable structured static content in `content/` (e.g. `content/marketing/`, `content/navigation.ts`).
+- **Loading & Errors:** Handled via `loading.tsx`, `error.tsx`, and `not-found.tsx`.
 
 ## Project Structure
-- `app/`: Next.js routing and pages.
-- `components/ui/`: Reusable primitives (shadcn).
-- `components/<feature>/`: Feature specific composition.
-- `lib/<service>/`: Integration logic and service boundaries (e.g., Supabase, Polar).
-- `public/`: Static assets for the application.
+- `app/(marketing)/`: Marketing routes with dedicated `MarketingHeader` and `MarketingFooter`.
+- `app/(application)/app/`: Application routes wrapped with `AppShell`, `AppSidebar`, and `AppHeader`.
+- `components/marketing/`: High-level marketing composition components.
+- `components/layout/`: Application shell and navigation layout primitives.
+- `components/ui/`: Reusable primitives (shadcn/ui & base-ui).
+- `content/marketing/`: Structured copy and data for marketing pages.
+- `lib/`: Utilities, font registration (`lib/fonts.ts`), and future integration modules.
+- `public/`: Static font files and assets.
 
 ## Core Rules
 - **Simplicity:** Complexity belongs in architecture, simplicity in the interface.
-- **Multi-tenant:** Organization-level isolation from day one via Supabase RLS. Every tenant-owned record should have an organization boundary.
-- **Security by Design:** Validate everything, never trust the client. Runtime validation via Zod at all boundaries.
-- **Cloud & API First.**
-- **Data First & Automation First.**
-- **Production Quality & Mobile-Friendly.**
-
-## Data & Tenancy Principles
-- Multi-tenant from day one.
-- Tenant isolation enforced via RLS and DB constraints.
-- Full referential integrity and transaction usage.
-- Consistent inventory state is paramount. Inventory operations should be atomic; no partial inventory state.
-- Safe migrations and auditability.
-
-## API Principles
-- **Convention:** `/api/v1/...`
-- **Behaviors:** Authentication, authorization, validation, pagination, filtering, sorting, search, rate limiting, idempotency, structured errors, request IDs.
-- External services must sit behind service/lib boundaries.
-
-## External Integrations (Future/Post-MVP)
-- **Payments:** Razorpay, Stripe (Operational payments, NOT SaaS billing).
-- **Accounting:** Tally, Zoho Books, QuickBooks.
-- **Communication:** WhatsApp, Email, SMS.
-- **Commerce:** Shopify, WooCommerce, Amazon.
-- **Tax:** GST, E-Invoice, E-Way Bill.
-*(Note: Do not implement these integrations now).*
-
-## State Model
-Where applicable, every important feature should consider:
-Default, Loading, Success, Empty, Error, Disabled, Offline/unavailable, Permission denied.
-Distinguish between UI state, server state, persisted state, and integration state. (Do not implement yet).
+- **Multi-tenant:** Organization-level isolation from day one via Supabase RLS.
+- **Security by Design:** Validate everything, never trust the client. Runtime validation via Zod at boundaries.
+- **Data Integrity:** Consistent inventory state is paramount. Atomic operations; zero partial inventory state.
+- **API Convention:** `/api/v1/...` for developer endpoints.
