@@ -78,34 +78,51 @@ SUPABASE_SERVICE_ROLE_KEY=...   # used by provisioning script only
 
 ---
 
-## Provisioning Command
+## Provisioning & Reset Commands
 
+### 1. Initial Provisioning
 ```bash
 npm run demo:provision
 ```
+Runs `scripts/provision-demo-account.mjs` to idempotently create the demo user, workspace, viewer role, 5 categories, and 33 products.
 
-This runs `scripts/provision-demo-account.mjs`. It:
-1. Loads credentials from `.env.local`
-2. Creates/verifies the demo Supabase Auth user
-3. Creates/verifies the Demo Workspace organization (`innvntory-demo`)
-4. Creates/verifies the membership
-5. Assigns the `viewer` role
-6. Creates demo categories (idempotent upsert)
-7. Creates demo products (idempotent upsert)
-8. Prints a summary (never prints the password)
-
-**When to run:**
-- When provisioning a fresh Supabase project
-- When demo data has been corrupted or deleted
-- Never during `npm install`, `npm build`, or Vercel deployments
-
-**Required env:**
-```env
-NEXT_PUBLIC_SUPABASE_URL=...
-SUPABASE_SERVICE_ROLE_KEY=...
-NEXT_PUBLIC_DEMO_EMAIL=demo@innvntory.sahaya.tech
-NEXT_PUBLIC_DEMO_PASSWORD=...
+### 2. Manual Baseline Reset
+```bash
+npm run demo:reset
 ```
+Runs `scripts/reset-demo-workspace.mjs` to restore the demo workspace to canonical baseline, pruning any visitor-created transient products or categories while preserving the demo auth identity and organization.
+
+---
+
+## Automated 2-Hour Reset Architecture
+
+Innvntory implements an automated **2-hour server-side reset** to keep the public demo sandbox clean, deterministic, and operational:
+
+### 1. Scheduler (`vercel.json`)
+Vercel Cron triggers the reset job on the 2-hour cadence:
+```json
+{
+  "crons": [
+    {
+      "path": "/api/cron/demo-reset",
+      "schedule": "0 */2 * * *"
+    }
+  ]
+}
+```
+
+### 2. Protected Endpoint (`/api/cron/demo-reset`)
+- **Route Handler:** `app/api/cron/demo-reset/route.ts`
+- **Security:** Requires `Authorization: Bearer <CRON_SECRET>` or `x-cron-secret: <CRON_SECRET>`. In production, requests without a valid secret are rejected with `401 Unauthorized`.
+- **Scope Restriction:** Scoped strictly to `innvntory-demo`. Never resets or touches any non-demo organization.
+- **Fail-Safe:** Validates organization identity before performing any mutations.
+- **Audit:** Logs safe operational telemetry (restored counts, pruned counts, duration) without exposing secrets.
+
+### 3. Reset Engine (`lib/demo/reset.ts`)
+- **Deterministic Baseline:** 5 canonical categories and 33 canonical products.
+- **Upsert / Restore:** Updates modified canonical records back to their pristine baseline.
+- **Transient Cleanup:** Prunes any categories or products created during visitor exploration.
+- **Identity Preservation:** Leaves `auth.users`, `organizations`, `memberships`, and `membership_roles` intact so demo sessions remain stable.
 
 ---
 
