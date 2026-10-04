@@ -1,45 +1,56 @@
-import type { Metadata } from "next";
-import { Plus } from "lucide-react";
-import { PageHeader } from "@/components/shared/page-header";
-import { PageToolbar } from "@/components/shared/page-toolbar";
-import { DataPlaceholderTable } from "@/components/shared/data-placeholder-table";
+import { Metadata } from 'next';
+import { PageHeader } from '@/components/shared/page-header';
+import { SupplierTable } from '@/components/suppliers/supplier-table';
+import { getSuppliers } from '@/lib/business/suppliers';
+import { getUserContext } from '@/lib/auth/session';
 
 export const metadata: Metadata = {
-  title: "Suppliers — Innvntory",
-  description: "Vendor directory, lead times, and procurement terms.",
+  title: 'Suppliers Directory — Innvntory',
+  description: 'Manage verified manufacturers, distributors, and institutional vendor records.',
 };
 
-export default function SuppliersPage() {
+export default async function SuppliersPage(props: {
+  searchParams: Promise<{
+    search?: string;
+    status?: string;
+    page?: string;
+  }>;
+}) {
+  const searchParams = await props.searchParams;
+  const userContext = await getUserContext();
+  const orgId = userContext?.organization?.id || '00000000-0000-0000-0000-000000000000';
+
+  const page = parseInt(searchParams.page || '1', 10);
+  const search = searchParams.search || '';
+  const status = searchParams.status || 'all';
+
+  const data = await getSuppliers({
+    organizationId: orgId,
+    search,
+    status,
+    page,
+    pageSize: 25,
+  });
+
   return (
     <div className="space-y-6">
       <PageHeader
-        title="Suppliers & Vendors"
-        description="Maintain authorized vendor profiles, payment terms, and delivery performance metrics."
-        breadcrumbs={[{ label: "Business" }, { label: "Suppliers" }]}
-        badge="Vendors"
-        actions={
-          <button
-            type="button"
-            className="inline-flex items-center gap-1.5 rounded-md bg-text-primary px-3 py-1.5 text-xs font-medium text-background hover:bg-text-primary/90 transition-colors cursor-pointer"
-          >
-            <Plus className="h-3.5 w-3.5" />
-            Add Supplier
-          </button>
-        }
+        title="Suppliers"
+        description="Authorized procurement vendors, mills, component fabricators, and payment terms."
+        breadcrumbs={[
+          { label: 'Application', href: '/app/dashboard' },
+          { label: 'Business', href: '/app/suppliers' },
+          { label: 'Suppliers' },
+        ]}
       />
 
-      <PageToolbar searchPlaceholder="Search vendor name, contact, GSTIN…" />
-
-      <DataPlaceholderTable
-        moduleName="Supplier"
-        columns={[
-          { header: "Vendor Name", width: "25%" },
-          { header: "GSTIN / State", width: "20%" },
-          { header: "Payment Terms", width: "15%" },
-          { header: "Active POs", width: "15%", align: "center" },
-          { header: "Payables", width: "15%", align: "right" },
-          { header: "Status", width: "10%", align: "right" },
-        ]}
+      <SupplierTable
+        suppliers={data.suppliers}
+        totalCount={data.totalCount}
+        currentPage={data.page}
+        totalPages={data.totalPages}
+        searchParam={search}
+        statusParam={status}
       />
     </div>
   );

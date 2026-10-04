@@ -1,45 +1,56 @@
-import type { Metadata } from "next";
-import { Plus } from "lucide-react";
-import { PageHeader } from "@/components/shared/page-header";
-import { PageToolbar } from "@/components/shared/page-toolbar";
-import { DataPlaceholderTable } from "@/components/shared/data-placeholder-table";
+import { Metadata } from 'next';
+import { PageHeader } from '@/components/shared/page-header';
+import { CustomerTable } from '@/components/customers/customer-table';
+import { getCustomers } from '@/lib/business/customers';
+import { getUserContext } from '@/lib/auth/session';
 
 export const metadata: Metadata = {
-  title: "Customers — Innvntory",
-  description: "Customer accounts, credit limits, and contact directory.",
+  title: 'Customers Directory — Innvntory',
+  description: 'Manage institutional retail accounts, credit limits, and commercial customer profiles.',
 };
 
-export default function CustomersPage() {
+export default async function CustomersPage(props: {
+  searchParams: Promise<{
+    search?: string;
+    status?: string;
+    page?: string;
+  }>;
+}) {
+  const searchParams = await props.searchParams;
+  const userContext = await getUserContext();
+  const orgId = userContext?.organization?.id || '00000000-0000-0000-0000-000000000000';
+
+  const page = parseInt(searchParams.page || '1', 10);
+  const search = searchParams.search || '';
+  const status = searchParams.status || 'all';
+
+  const data = await getCustomers({
+    organizationId: orgId,
+    search,
+    status,
+    page,
+    pageSize: 25,
+  });
+
   return (
     <div className="space-y-6">
       <PageHeader
         title="Customers"
-        description="Manage customer accounts, tax registrations (GSTIN), credit limits, and outstanding balances."
-        breadcrumbs={[{ label: "Business" }, { label: "Customers" }]}
-        badge="Directory"
-        actions={
-          <button
-            type="button"
-            className="inline-flex items-center gap-1.5 rounded-md bg-text-primary px-3 py-1.5 text-xs font-medium text-background hover:bg-text-primary/90 transition-colors cursor-pointer"
-          >
-            <Plus className="h-3.5 w-3.5" />
-            Add Customer
-          </button>
-        }
+        description="Institutional buyer entities, retail network accounts, and credit profiles."
+        breadcrumbs={[
+          { label: 'Application', href: '/app/dashboard' },
+          { label: 'Business', href: '/app/customers' },
+          { label: 'Customers' },
+        ]}
       />
 
-      <PageToolbar searchPlaceholder="Search customer name, GSTIN, phone…" />
-
-      <DataPlaceholderTable
-        moduleName="Customer"
-        columns={[
-          { header: "Customer Name", width: "25%" },
-          { header: "GSTIN / State", width: "20%" },
-          { header: "Contact Person", width: "20%" },
-          { header: "Credit Limit", width: "15%", align: "right" },
-          { header: "Outstanding", width: "10%", align: "right" },
-          { header: "Status", width: "10%", align: "right" },
-        ]}
+      <CustomerTable
+        customers={data.customers}
+        totalCount={data.totalCount}
+        currentPage={data.page}
+        totalPages={data.totalPages}
+        searchParam={search}
+        statusParam={status}
       />
     </div>
   );
