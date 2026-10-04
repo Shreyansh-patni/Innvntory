@@ -1,4 +1,32 @@
 # Innvntory — Component Inventory (Planning)
+## shadcn/ui Level 1 primitives (installed)
+
+shadcn/ui is the default UI foundation (`AGENTS.md` §4, `docs/UI-LIBRARIES.md`).
+Installed and adapted to Innvntory tokens rather than used at default styling.
+
+| Primitive | File | Notes |
+|---|---|---|
+| Button | `components/ui/button.tsx` | Black primary CTA per DESIGN-SYSTEM.md. Defaults to `type="button"` so it cannot submit a form by accident |
+| Input + Field | `components/ui/input.tsx` | `Field` supplies a real `<label>`, hint, and `role="alert"` error. Placeholders are never labels |
+| Badge | `components/ui/badge.tsx` | Status never conveyed by colour alone |
+| Table | `components/ui/badge.tsx` | Used by `app/primitives.tsx` via `TableShell`/`Th`/`Td` |
+| Dialog | `components/ui/dialog.tsx` | Radix — supplies focus trap, Escape handling, `aria-modal` |
+| DropdownMenu | `components/ui/dropdown-menu.tsx` | Radix — supplies menu roles and keyboard navigation |
+
+New application composites in this pass:
+
+| Component | Purpose |
+|---|---|
+| `app/auth-form.tsx` | Shared `/login` + `/signup` form. Inert submit; never fakes success |
+| `app/organization-switcher.tsx` | Active-organization control, disabled until a session exists |
+
+Innvntory composites (`components/app/primitives.tsx`) build on these: KPI cards,
+empty states, the AI stage track, status pills.
+
+**No Level 2 library installed** (Watermelon UI, Aceternity, Magic UI, Motion
+Primitives, HeroUI). None was needed for the current shell.
+
+
 
 **Status:** Phase 0 — **planning only. No component exists. No UI library is
 installed.**

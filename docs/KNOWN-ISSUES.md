@@ -133,17 +133,41 @@ product attribute).
 
 See `docs/DATABASE.md` §4.
 
-### 1.4 Authentication provider and session strategy
+### 1.4 Authentication provider and session strategy — **ARCHITECTURE DECIDED, provider deferred**
 
-**Status:** Open.
+**Status:** Session architecture **DECIDED** — [ADR
+0005](decisions/0005-authentication-and-session-architecture.md) (`Accepted`,
+2026-10-04). **Provider selection remains OPEN.**
 
 Spec §30 fixes the *launch methods* — Email + Password and Google only — but not the
-implementation. Provider, session strategy and lifetime, password hashing algorithm,
-MFA policy, and account recovery are undecided.
+implementation.
 
-Also unresolved: whether a user may belong to multiple organizations. Spec §31 shows
-a user under a single organization and does not address multi-organization
-membership, which spec §43 implies via "Switch organization".
+**Now settled by ADR 0005:** authentication is an identity boundary only;
+server-side trusted session; provider-neutral adapter contract; active organization
+resolved from session state with **server-side membership verification** before any
+switch; RBAC stays Innvntory-owned; unauthenticated requests fail closed; CSRF and
+origin validation are Innvntory's responsibility.
+
+**Still open — the provider decision:**
+
+| # | Question | Why it is open |
+|---|---|---|
+| A1 | **Which provider?** | No account, no credentials, no external service, and no expected user volume exist in this repository. Cost cannot be evaluated. Selecting on convenience is prohibited by `docs/DEPENDENCIES.md` §1 |
+| A2 | Session persistence model | Provider-owned until chosen. **No session table was created** — inventing one pre-emptively would be speculative |
+| A3 | MFA policy per plan | Plan contents are `TBD` (spec §47) |
+| A4 | Account recovery flow | Provider-dependent |
+
+**Runtime verification status: NONE.** No provider is configured, so every protected
+route returns 401 by design. `/login` and `/signup` are real UI but cannot
+authenticate. The authentication architecture is **production-shaped, not
+production-ready**.
+
+**Second blocker for full auth:** the database-dependent suite still skips without
+`DATABASE_URL`, so RLS and the membership lookup path are unverified at runtime.
+
+> Previously recorded here and now **resolved:** whether a user may belong to
+> multiple organizations. **YES** — decided in ADR 0003 (Q1). Membership is the
+> relationship; the active organization is session state.
 
 ### 1.5 Test stack
 

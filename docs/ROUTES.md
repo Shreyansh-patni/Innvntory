@@ -1,4 +1,27 @@
 # Innvntory — Routes (Planning)
+## Status note — authentication routes now exist
+
+Added with [ADR 0005](decisions/0005-authentication-and-session-architecture.md)
+(`Accepted`, 2026-10-04). This section updates the "no concrete paths" intent below:
+paths are still not fixed by specification, but two real routes now exist in code.
+
+| Route | Class | Status |
+|---|---|---|
+| `/login` | B | Real UI. **Cannot authenticate** — no provider configured |
+| `/signup` | B | Real UI. **Cannot authenticate** — no provider configured |
+
+Both use the marketing surface's calmer density (DESIGN-SYSTEM.md §11), shadcn/ui
+`Input`/`Button`, real `<label>` elements, and an explicit deferred-submit state.
+They do not store passwords, implement cryptography, or fake success.
+
+**Organization switching** has a UI foundation (`OrganizationSwitcher`) in the
+application sidebar, permanently disabled until a real session exists. Membership is
+verified server-side in any case (ADR 0005 §4).
+
+The rest of this document remains accurate: specification §36 fixes the API
+convention, and the application paths listed below are still planning intent.
+
+
 
 **Status:** Phase 0 — **planning only. No route exists. No router is installed. No
 page is created.**

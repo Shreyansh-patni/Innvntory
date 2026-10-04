@@ -36,6 +36,28 @@ permission-state disclosure.
 
 ## 2. Authentication
 
+**Architecture: DECIDED** - [ADR
+0005](decisions/0005-authentication-and-session-architecture.md) (`Accepted`, 2026-10-04).
+**Provider: DEFERRED** - not selected.
+
+Authentication is an **identity boundary only**. It establishes user identity, a
+server-side session, session lifecycle, and account state. Business authorization
+stays inside Innvntory's backend; the provider must never become the source of roles,
+permissions, or tenant-data authorization.
+
+Sessions are server-side and trusted. `actorId`, `organizationId`, `role` and
+`permissions` are **never** accepted from a request body, query, or client header.
+The authenticated session is the only source of identity.
+
+Ownership split: password hashing, MFA, OAuth callback validation and session-token
+issuance belong to the **provider**. Session-expiry re-checking, CSRF, origin
+validation, RBAC, organization-switch verification and audit belong to **Innvntory**.
+RLS and row isolation belong to the **database**. See ADR 0005 §9 for the full table.
+
+**Production authentication does not work.** No provider is configured, so every
+protected route fails closed with `UNAUTHENTICATED`. `/login` and `/signup` exist as
+real UI but cannot authenticate and say so.
+
 **Required:**
 
 - Secure authentication with hashed passwords (spec §50).

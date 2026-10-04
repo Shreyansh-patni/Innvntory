@@ -537,7 +537,7 @@ All architectural decisions, in one place. Each requires an ADR in `docs/decisio
 | 1 | **Backend architecture** — Next.js API vs dedicated service | **DECIDED** — dedicated backend service, modular monolith. [ADR 0001](decisions/0001-backend-architecture.md), Accepted 2026-10-03 |
 | 2 | Frontend framework and rendering strategy | **DECIDED** — Next.js + React. [ADR 0002](decisions/0002-frontend-framework.md), Accepted 2026-10-03. Per-route rendering strategy (U2) still open |
 | 3 | Database isolation mechanism and access layer | **DECIDED** — Option C, hybrid: application data-access scoping + PostgreSQL RLS backstop. [ADR 0003](decisions/0003-database-isolation-access-layer.md), Accepted 2026-10-04. Q2/Q4/Q5/Q6/Q7 resolved in [ADR 0004](decisions/0004-orm-query-access-and-pooling.md) |
-| 4 | Auth provider and session strategy | Open |
+| 4 | Auth provider and session strategy | **PARTIALLY DECIDED** - architecture [ADR 0005](decisions/0005-authentication-and-session-architecture.md) `Accepted` 2026-10-04; **provider selection DEFERRED** (no account/credentials/cost basis) |
 | 5 | RBAC storage and enforcement model | Open |
 | 6 | Queue / worker implementation | Open — worker process shape fixed by ADR 0001; technology is not |
 | 7 | Object storage provider and residency | Open |

@@ -120,6 +120,17 @@ AI must never observe or act across organization boundaries. Tenant isolation
 (spec §31, §35, §58) applies identically to AI reads and AI writes. There is no
 "platform-wide AI view".
 
+### 3.3a Identity of an AI-initiated operation
+
+Per [ADR 0005](decisions/0005-authentication-and-session-architecture.md) §10: an
+AI tool **inherits the invoking user's authenticated `TenantContext`**. It does not
+construct its own and cannot select an organization. A session claiming an
+organization the user is not an active member of is rejected server-side before any
+tool runs, so a model cannot widen scope by naming another tenant.
+
+Enforced by test: an `ai_tool` context carries only the invoking actor's
+organization, and a claimed-but-unverified organization fails closed.
+
 ### 3.4 RBAC parity — no elevated privilege
 
 The model has **no** permissions of its own. Every AI-initiated read and write is

@@ -1,5 +1,18 @@
+import { Check, Circle } from "lucide-react";
+
+import { Badge, type BadgeProps } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Table as ShadcnTable, TableCell, TableHead } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
+
 /**
- * Shared UI primitives for the application surface.
+ * Innvntory application primitives.
+ *
+ * These compose the shadcn/ui base components (installed as the Level 1 foundation
+ * per `AGENTS.md` §4) with the Innvntory design tokens from `docs/DESIGN-SYSTEM.md`.
+ * shadcn supplies accessible behaviour; these supply Innvntory's visual language and
+ * the domain-shaped pieces (metric tiles, empty states, the AI stage track).
  *
  * Presentational only. No business rules and no data access — those belong in the
  * backend business services (ADR 0004 Q4 layer table).
@@ -8,6 +21,8 @@
  */
 
 import type { ReactNode } from "react";
+
+export { Button, Input };
 
 /* -------------------------------------------------------------------------- */
 /* Page header                                                                  */
@@ -50,13 +65,6 @@ export function PageHeader({
 
 export type KpiTone = "neutral" | "positive" | "caution" | "critical";
 
-const TONE_CLASS: Record<KpiTone, string> = {
-  neutral: "text-ink",
-  positive: "text-positive",
-  caution: "text-caution",
-  critical: "text-critical",
-};
-
 export function KpiCard({
   label,
   value,
@@ -72,25 +80,26 @@ export function KpiCard({
 }) {
   return (
     <div className="card p-5">
-      <p className="text-[0.6875rem] font-medium tracking-[0.02em] text-ink-muted">
-        {label}
-      </p>
+      <p className="text-[0.6875rem] font-medium tracking-[0.02em] text-ink-muted">{label}</p>
       {unavailable ? (
         <>
-          {/* Distinguishable without relying on colour alone. */}
           <p className="mt-3 text-[1.375rem] leading-none text-ink-faint">—</p>
-          <p className="mt-2 text-[0.6875rem] text-ink-faint">
-            Not connected yet
-          </p>
+          <p className="mt-2 text-[0.6875rem] text-ink-faint">Not connected yet</p>
         </>
       ) : (
         <>
-          <p className={`tabular mt-3 text-[1.375rem] leading-none ${TONE_CLASS[tone]}`}>
+          <p
+            className={cn(
+              "tabular mt-3 text-[1.375rem] leading-none",
+              tone === "positive" && "text-positive",
+              tone === "caution" && "text-caution",
+              tone === "critical" && "text-critical",
+              tone === "neutral" && "text-ink",
+            )}
+          >
             {value}
           </p>
-          {detail ? (
-            <p className="mt-2 text-[0.6875rem] text-ink-faint">{detail}</p>
-          ) : null}
+          {detail ? <p className="mt-2 text-[0.6875rem] text-ink-faint">{detail}</p> : null}
         </>
       )}
     </div>
@@ -115,13 +124,11 @@ export function Section({
   className?: string;
 }) {
   return (
-    <section className={`card overflow-hidden ${className ?? ""}`}>
+    <section className={cn("card overflow-hidden", className)}>
       <div className="flex flex-col justify-between gap-3 border-b border-hairline px-5 py-4 sm:flex-row sm:items-center">
         <div className="min-w-0">
           <h2 className="text-sm font-medium tracking-tight">{title}</h2>
-          {description ? (
-            <p className="mt-1 text-xs text-ink-muted">{description}</p>
-          ) : null}
+          {description ? <p className="mt-1 text-xs text-ink-muted">{description}</p> : null}
         </div>
         {actions ? <div className="flex shrink-0 items-center gap-2">{actions}</div> : null}
       </div>
@@ -145,41 +152,26 @@ export function EmptyState({
   primaryAction?: { label: string; disabled?: boolean };
   secondaryAction?: { label: string; disabled?: boolean };
 }) {
+  const deferred = "Available once the application is connected";
   return (
     <div className="px-6 py-14 text-center">
       <p className="text-sm font-medium text-ink">{title}</p>
-      <p className="mx-auto mt-2 max-w-sm text-xs leading-relaxed text-ink-muted">
-        {body}
-      </p>
+      <p className="mx-auto mt-2 max-w-sm text-xs leading-relaxed text-ink-muted">{body}</p>
       {primaryAction || secondaryAction ? (
         <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
           {primaryAction ? (
-            <button
-              type="button"
-              className="btn btn-primary"
-              disabled={primaryAction.disabled}
-              title={
-                primaryAction.disabled
-                  ? "Available once the application is connected"
-                  : undefined
-              }
-            >
+            <Button disabled={primaryAction.disabled} title={primaryAction.disabled ? deferred : undefined}>
               {primaryAction.label}
-            </button>
+            </Button>
           ) : null}
           {secondaryAction ? (
-            <button
-              type="button"
-              className="btn btn-secondary"
+            <Button
+              variant="secondary"
               disabled={secondaryAction.disabled}
-              title={
-                secondaryAction.disabled
-                  ? "Available once the application is connected"
-                  : undefined
-              }
+              title={secondaryAction.disabled ? deferred : undefined}
             >
               {secondaryAction.label}
-            </button>
+            </Button>
           ) : null}
         </div>
       ) : null}
@@ -188,27 +180,18 @@ export function EmptyState({
 }
 
 /* -------------------------------------------------------------------------- */
-/* Table primitives                                                             */
+/* Table primitives — shadcn Table with Innvntory density                       */
 /* -------------------------------------------------------------------------- */
 
 export function TableShell({ children }: { children: ReactNode }) {
-  return (
-    <div className="overflow-x-auto">
-      <table className="w-full min-w-[44rem] border-collapse text-left text-sm">
-        {children}
-      </table>
-    </div>
-  );
+  return <ShadcnTable className="min-w-[44rem]">{children}</ShadcnTable>;
 }
 
 export function Th({ children, className }: { children: ReactNode; className?: string }) {
   return (
-    <th
-      scope="col"
-      className={`border-b border-hairline px-5 py-3 text-[0.6875rem] font-semibold tracking-[0.02em] text-ink-muted ${className ?? ""}`}
-    >
+    <TableHead scope="col" className={className}>
       {children}
-    </th>
+    </TableHead>
   );
 }
 
@@ -219,38 +202,44 @@ export function Td({
 }: {
   children: ReactNode;
   className?: string;
-  /** Use the monospace face — appropriate for SKUs, barcodes and references. */
+  /** Monospace face — appropriate for SKUs, barcodes and references. */
   mono?: boolean;
 }) {
-  return (
-    <td
-      className={`border-b border-hairline-soft px-5 py-3.5 ${mono ? "mono text-xs" : ""} ${className ?? ""}`}
-    >
-      {children}
-    </td>
-  );
+  return <TableCell className={cn(mono && "mono text-xs", className)}>{children}</TableCell>;
 }
 
 /* -------------------------------------------------------------------------- */
-/* Status                                                                       */
+/* Status — never colour alone; the label is always present (spec §72)          */
 /* -------------------------------------------------------------------------- */
 
 export type StatusTone = "positive" | "caution" | "critical" | "neutral";
 
-const STATUS_DOT: Record<StatusTone, string> = {
-  positive: "bg-positive",
-  caution: "bg-caution",
-  critical: "bg-critical",
-  neutral: "bg-ink-faint",
+const STATUS_ICON: Record<StatusTone, "check" | "dot"> = {
+  positive: "check",
+  neutral: "dot",
+  caution: "dot",
+  critical: "dot",
 };
 
-/** Status is never colour alone — a text label always accompanies the dot. */
 export function StatusPill({ tone, label }: { tone: StatusTone; label: string }) {
+  const variant: BadgeProps["variant"] =
+    tone === "positive"
+      ? "positive"
+      : tone === "caution"
+        ? "caution"
+        : tone === "critical"
+          ? "critical"
+          : "neutral";
+
   return (
-    <span className="inline-flex items-center gap-1.5 text-xs text-ink-secondary">
-      <span aria-hidden className={`status-dot ${STATUS_DOT[tone]}`} />
+    <Badge variant={variant}>
+      {STATUS_ICON[tone] === "check" ? (
+        <Check aria-hidden />
+      ) : (
+        <Circle aria-hidden className="size-1.5 fill-current" />
+      )}
       {label}
-    </span>
+    </Badge>
   );
 }
 
@@ -272,12 +261,12 @@ export function SearchField({ placeholder }: { placeholder: string }) {
       <label htmlFor="table-search" className="sr-only">
         {placeholder}
       </label>
-      <input
+      <Input
         id="table-search"
         type="search"
         placeholder={placeholder}
         disabled
-        className="w-full rounded-md border border-hairline bg-surface px-3 py-2 text-sm text-ink placeholder:text-ink-faint disabled:cursor-not-allowed disabled:bg-surface-muted"
+        className="disabled:cursor-not-allowed"
       />
       <p className="sr-only">Search is disabled until the application is connected.</p>
     </div>
@@ -285,7 +274,7 @@ export function SearchField({ placeholder }: { placeholder: string }) {
 }
 
 /* -------------------------------------------------------------------------- */
-/* AI activity stages — foundation only (DESIGN-SYSTEM.md §12)                    */
+/* AI activity stages — foundation only (DESIGN-SYSTEM.md §12)                   */
 /* -------------------------------------------------------------------------- */
 
 export const AI_STAGES = [
@@ -310,23 +299,21 @@ export function AiStageTrack({ active }: { active: AiStageId }) {
           <li key={stage.id} className="flex items-center gap-1.5">
             <span
               aria-current={state === "active" ? "step" : undefined}
-              className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[0.6875rem] ${
+              className={cn(
+                "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[0.6875rem]",
                 state === "active"
                   ? "border-hairline-strong bg-surface font-medium text-ink"
                   : state === "done"
                     ? "border-transparent bg-accent-soft text-accent"
-                    : "border-hairline bg-surface-muted text-ink-faint"
-              }`}
+                    : "border-hairline bg-surface-muted text-ink-faint",
+              )}
             >
               <span
                 aria-hidden
-                className={`status-dot ${
-                  state === "active"
-                    ? "bg-ink"
-                    : state === "done"
-                      ? "bg-accent"
-                      : "bg-ink-faint"
-                }`}
+                className={cn(
+                  "status-dot",
+                  state === "active" ? "bg-ink" : state === "done" ? "bg-accent" : "bg-ink-faint",
+                )}
               />
               {stage.label}
               {state === "done" ? <span className="sr-only">(completed)</span> : null}

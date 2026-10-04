@@ -1,4 +1,21 @@
 # Innvntory Design System
+## Implementation note — tokens are now in code
+
+The values below are still `TBD — requires brand decision` as a *brand* question,
+but the working implementation lives in `apps/web/app/globals.css` under `@theme`:
+warm cream canvas, near-black ink, hairline borders, restrained radius (3/5/8/12px),
+4px spacing base, and a single `--color-accent`. Primary CTAs are **ink**, not a
+saturated brand hue. Depth is hairline-only; no drop shadows.
+
+Those tokens are **provisional** and chosen to validate the direction. When brand
+identity is decided, only the `@theme` block changes — the component layer consumes
+tokens, not raw values.
+
+shadcn/ui is installed as the Level 1 foundation and its primitives are re-specified
+against these tokens rather than kept at library defaults. `components/ui/*` holds the
+accessible behaviour; `components/app/primitives.tsx` holds Innvntory composites.
+
+
 
 **Status:** Phase 0 — approved *direction* only. No tokens, theme files, or
 components have been implemented.

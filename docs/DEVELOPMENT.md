@@ -84,6 +84,21 @@ passed.**
 
 ### Step 8 — Visual QA (UI changes only)
 
+### Authentication and tenant boundaries
+
+Per [ADR 0005](decisions/0005-authentication-and-session-architecture.md):
+
+- `pnpm lint` runs **ESLint**. It is no longer an alias for `tsc`.
+- `pnpm --filter @innvntory/api test` includes the authentication security-boundary
+  suite. These assert what must never happen: a request body cannot become an
+  identity, and membership is always verified server-side.
+- **No provider is configured.** Do not add one casually: a vendor needs an account,
+  credentials and a cost basis, none of which this repository has. Record the choice
+  as an ADR first.
+- The database-dependent suite **skips visibly** without `DATABASE_URL`. That is a
+  real gap, not a pass.
+
+
 Required whenever a change affects the interface. Specification §39 and §41 apply.
 
 Check, at minimum:

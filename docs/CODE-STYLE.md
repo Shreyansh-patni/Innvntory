@@ -158,6 +158,22 @@ incomplete — specification §70 requires every major screen to have a *useful*
 
 ## 9. Security in code
 
+### Authentication code
+
+Per [ADR 0005](decisions/0005-authentication-and-session-architecture.md):
+
+- Authentication lives in `apps/api/src/auth/`. Vendor SDKs, if ever added, are
+  confined to one adapter file and imported by nothing else.
+- Never read `actorId`, `organizationId`, `role`, or `permissions` from a request
+  body, query string, or client-supplied header. Use `rejectIdentityFromRequest()`
+  where the temptation exists.
+- Always fail closed. No anonymous tenant, no default organization, no fallback
+  identity, and no development bypass outside tests.
+- Test doubles belong in `test/` behind a guard that refuses to load in production.
+- Permissions are derived server-side from Innvntory's own tables, never from a
+  provider claim.
+
+
 - Tenant context is established server-side and never trusted from the client.
 - Authorization is enforced in the business service layer, not in the UI
   (`docs/SECURITY.md` §3).

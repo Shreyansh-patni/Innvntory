@@ -1,5 +1,6 @@
-import { CommandMenu } from "@/components/command/command-menu";
 import { Sidebar } from "@/components/app/sidebar";
+import { CommandMenu } from "@/components/command/command-menu";
+import { Button } from "@/components/ui/button";
 import { ALL_NAV_ITEMS, APP_NAV } from "@/lib/nav";
 
 /**
@@ -42,9 +43,9 @@ export default function AppLayout({
               <span aria-hidden className="status-dot bg-caution" />
               Not signed in
             </span>
-            <button type="button" className="btn btn-secondary" disabled>
+            <Button variant="secondary" disabled title="Available once a session provider is configured">
               Sign in
-            </button>
+            </Button>
           </div>
         </header>
 

@@ -1,3 +1,4 @@
+import { OrganizationSwitcher } from "@/components/app/organization-switcher";
 import type { NavGroup, NavItem } from "@/lib/nav";
 
 /**
@@ -67,24 +68,25 @@ function SidebarLink({ item, active }: { item: NavItem; active: boolean }) {
 }
 
 /**
- * Makes the isolation model visible in the UI.
+ * Active-organization control and the isolation note.
  *
- * Shown because it is a real product property (specification §31, §58), not
- * decoration: each business's data is separated at the database.
+ * Shown because tenant scoping is a real product property (specification §31, §58),
+ * not decoration. The switcher is disabled until a real session exists; switching is
+ * verified server-side in any case (ADR 0005 §4).
  */
 function TenantBoundaryNote() {
   return (
-    <div className="shrink-0 border-t border-hairline p-4">
+    <div className="shrink-0 space-y-2 border-t border-hairline p-3">
+      <OrganizationSwitcher organizations={[]} enabled={false} />
+
       <div className="rounded-md border border-hairline bg-surface-muted p-3">
         <p className="text-[0.6875rem] font-semibold tracking-tight text-ink">
-          Organization scope
+          Data isolation
         </p>
         <p className="mt-1 text-[0.6875rem] leading-relaxed text-ink-muted">
-          Data is scoped to one organization and enforced at the database.
+          Records are scoped to one organization and enforced at the database.
         </p>
-        <p className="mono mt-2 text-[0.625rem] text-ink-faint">
-          tenant: unconfigured
-        </p>
+        <p className="mono mt-2 text-[0.625rem] text-ink-faint">session: none</p>
       </div>
     </div>
   );

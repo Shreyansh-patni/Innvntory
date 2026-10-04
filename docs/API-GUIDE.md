@@ -162,6 +162,37 @@ See `docs/SECURITY.md` §2, §9.
 
 ---
 
+## 4a. Authentication is resolved before `TenantContext`
+
+Per [ADR 0005](decisions/0005-authentication-and-session-architecture.md)
+(`Accepted`, 2026-10-04), every protected route runs `guardProtectedRequest()`
+**before** a `TenantContext` exists. The order is fixed:
+
+```text
+request cookies
+  -> AuthProvider.resolveSession()          identity only
+  -> session expiry + account-state check
+  -> membership verification for the session's active organization
+  -> permissions derived from Innvntory's own role tables
+  -> TenantContext
+  -> authorization
+  -> business service
+  -> data access (tenant-scoped transaction) -> PostgreSQL RLS
+```
+
+**Never accepted from a request:** `actorId`, `organizationId`, `role`,
+`permissions`. The auth module exposes `rejectIdentityFromRequest()` so that misuse
+fails loudly instead of being silently ignored.
+
+An unauthenticated request **fails closed** with HTTP 401. There is no anonymous
+tenant, no default organization, and no development-admin identity in production code.
+
+CSRF and origin validation are enforced by Innvntory on unsafe methods while cookie
+sessions are in use, because no provider owns that defence yet.
+
+**Current state:** no provider is configured, so every protected route returns 401.
+That is deliberate, not a defect.
+
 ## 5. Authorization
 
 Required (spec §37): authorization on every endpoint, enforced server-side.

@@ -6,7 +6,7 @@ This directory holds Innvntory's architectural decision records (ADRs).
 
 ## Status
 
-**Four decisions accepted.**
+**Five decisions accepted.**
 
 | # | Decision | Status | Date |
 |---|---|---|---|
@@ -14,6 +14,7 @@ This directory holds Innvntory's architectural decision records (ADRs).
 | [0002](0002-frontend-framework.md) | Frontend framework - **Next.js + React** | **Accepted** | 2026-10-03 |
 | [0003](0003-database-isolation-access-layer.md) | Database isolation & access layer - **Option C, hybrid application + PostgreSQL RLS** | **Accepted** | 2026-10-04 |
 | [0004](0004-orm-query-access-and-pooling.md) | ORM, query access, pooling, roles & platform access - **Drizzle + transaction-local context** | **Accepted** | 2026-10-04 |
+| [0005](0005-authentication-and-session-architecture.md) | Authentication & session architecture - identity boundary, provider-neutral | **Accepted** | 2026-10-04 |
 
 **No architecture blocker remains** for initial application scaffolding and the
 identity/tenant/RBAC schema foundation. The decisions still needing records are listed
@@ -146,3 +147,4 @@ Maintain this list as records are added.
 | [0002](0002-frontend-framework.md) | Frontend framework — Next.js + React | **Accepted** | 2026-10-03 |
 | [0003](0003-database-isolation-access-layer.md) | Database isolation & access layer — Option C (hybrid) | **Accepted** | 2026-10-04 |
 | [0004](0004-orm-query-access-and-pooling.md) | ORM, query access, pooling, roles & platform access — Drizzle | **Accepted** | 2026-10-04 |
+| [0005](0005-authentication-and-session-architecture.md) | Authentication & session architecture | **Accepted** | 2026-10-04 |
