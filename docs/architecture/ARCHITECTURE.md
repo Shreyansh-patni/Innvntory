@@ -29,7 +29,10 @@
 - `components/ui/`: Foundational UI primitives (shadcn/ui & base-ui).
 - `content/marketing/`: Structured copy and data for marketing pages.
 - `lib/auth/`: Server actions (`actions.ts`) and authenticated context resolvers (`session.ts`).
+- `lib/catalog/`: Catalog domain queries, server actions, and Zod validation schemas.
+- `lib/demo/`: In-memory typed fixtures for controlled Dashboard Demo Mode (`dashboard-data.ts`).
 - `lib/supabase/`: Client and server `@supabase/ssr` factories (`client.ts`, `server.ts`, `middleware.ts`).
+- `proxy.ts`: Next.js 16 request interceptor for JWT session management and route protection.
 - `types/`: Strongly-typed PostgreSQL contract (`database.types.ts`).
 - `public/`: Static font files and assets.
 

@@ -40,7 +40,7 @@ The authenticated application is protected server-side via Next.js `middleware.t
 | Route | Purpose | Status | Notes |
 | :--- | :--- | :--- | :--- |
 | `/app` | Application Root | **Implemented** | Redirects to `/app/dashboard` |
-| `/app/dashboard` | Operational Dashboard Shell | **Implemented** | High-density operational KPI cards, ledger state, reorder alerts, quick actions |
+| `/app/dashboard` | Operational Dashboard Shell | **Implemented (Demo Mode Support)** | High-density operational KPI cards, ledger state, reorder alerts, quick actions. Controllable via `NEXT_PUBLIC_DEMO_MODE`. |
 | `/app/products` | Product Master Catalog | **Implemented (Full CRUD)** | Server-side pagination, search, category filter, operational table, and status pills |
 | `/app/products/new` | Create Product Record | **Implemented (Full CRUD)** | Form for item name, SKU, barcode, category, UOM, and price points |
 | `/app/products/[id]` | Edit & Inspect Product Details | **Implemented (Full CRUD)** | Edit master item details, price adjustments, and archive lifecycle management |

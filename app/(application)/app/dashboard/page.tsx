@@ -11,11 +11,18 @@ import {
   ShieldCheck,
   Plus,
   ArrowLeftRight,
+  ArrowDownLeft,
+  ArrowUpRight,
+  RotateCcw,
+  Receipt,
+  AlertTriangle,
+  FlaskConical,
 } from "lucide-react";
 import { PageHeader } from "@/components/shared/page-header";
 import { MetricCard } from "@/components/shared/metric-card";
 import { EmptyState } from "@/components/shared/empty-state";
 import { StatusBadge } from "@/components/shared/status-badge";
+import { getDashboardData } from "@/lib/demo/dashboard-data";
 
 export const metadata: Metadata = {
   title: "Dashboard — Innvntory Operations OS",
@@ -23,13 +30,29 @@ export const metadata: Metadata = {
 };
 
 export default function DashboardPage() {
+  const demoData = getDashboardData();
+  const isDemo = demoData !== null;
+
   return (
     <div className="space-y-8">
-      {/* 1. Page Header */}
+      {/* 1. Page Header with Demo Mode Indicator */}
       <PageHeader
         title="Operations Dashboard"
-        description="Real-time overview of inventory valuation, multi-warehouse movements, and procurement pipelines."
-        badge="V0 Foundation"
+        description={
+          isDemo
+            ? "Simulated operational overview of inventory valuation, multi-warehouse movements, and procurement pipelines."
+            : "Real-time overview of inventory valuation, multi-warehouse movements, and procurement pipelines."
+        }
+        badge={
+          isDemo ? (
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-500/10 px-2.5 py-0.5 text-[11px] font-medium text-amber-700 dark:text-amber-400 border border-amber-500/20">
+              <FlaskConical className="h-3 w-3" />
+              Demo Workspace
+            </span>
+          ) : (
+            "V0 Foundation"
+          )
+        }
         actions={
           <>
             <Link
@@ -53,31 +76,31 @@ export default function DashboardPage() {
       {/* 2. KPI Metric Cards */}
       <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         <MetricCard
-          title="Total Stock Valuation"
-          value="—"
+          title="Stock Valuation"
+          value={demoData ? demoData.metrics.stockValuation : "—"}
           subtitle="FIFO / Weighted-Average valuation"
-          statusBadge="Awaiting Data"
+          statusBadge={isDemo ? "reconciled" : "awaiting-data"}
           icon={Boxes}
         />
         <MetricCard
-          title="Active Catalog SKUs"
-          value="—"
-          subtitle="Total product & variant count"
-          statusBadge="Awaiting Data"
-          icon={Package}
+          title="Monthly Revenue"
+          value={demoData ? demoData.metrics.monthlyRevenue : "—"}
+          subtitle="Cleared GST sales revenue"
+          statusBadge={isDemo ? "completed" : "awaiting-data"}
+          icon={ShoppingCart}
         />
         <MetricCard
-          title="Procurement Pipeline"
-          value="—"
-          subtitle="Active POs awaiting Goods Receipt"
-          statusBadge="Awaiting Data"
+          title="Open Orders"
+          value={demoData ? String(demoData.metrics.openOrders) : "—"}
+          subtitle="Active POs & sales allocations"
+          statusBadge={isDemo ? "in-transit" : "awaiting-data"}
           icon={Truck}
         />
         <MetricCard
-          title="Low-Stock Alerts"
-          value="—"
+          title="Low Stock Alerts"
+          value={demoData ? String(demoData.metrics.lowStockAlerts) : "—"}
           subtitle="Items below safety threshold"
-          statusBadge="All Healthy"
+          statusBadge={isDemo ? "low-stock" : "reconciled"}
           icon={TrendingUp}
         />
       </div>
@@ -96,19 +119,70 @@ export default function DashboardPage() {
                   Immutable event stream of stock receipts, picks, and inter-facility transfers.
                 </p>
               </div>
-              <StatusBadge status="active" label="Event Engine Ready" />
+              <StatusBadge
+                status="active"
+                label={isDemo ? "5 Recent Events" : "Event Engine Ready"}
+              />
             </div>
 
-            <EmptyState
-              icon={Clock}
-              title="No Stock Movements Recorded"
-              description="Audit transactions will stream here in real time once stock receipts (GRN), dispatches, or adjustments execute."
-              action={{
-                label: "View Stock Ledger",
-                href: "/app/inventory/stock",
-              }}
-              compact
-            />
+            {demoData ? (
+              <div className="divide-y divide-border-subtle/50">
+                {demoData.recentActivity.map((activity) => {
+                  const getIcon = () => {
+                    switch (activity.type) {
+                      case "grn":
+                        return <ArrowDownLeft className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />;
+                      case "transfer":
+                        return <ArrowLeftRight className="h-4 w-4 text-sky-600 dark:text-sky-400" />;
+                      case "sales":
+                        return <ArrowUpRight className="h-4 w-4 text-purple-600 dark:text-purple-400" />;
+                      case "adjustment":
+                        return <RotateCcw className="h-4 w-4 text-amber-600 dark:text-amber-400" />;
+                      case "invoice":
+                        return <Receipt className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />;
+                      default:
+                        return <Clock className="h-4 w-4 text-text-muted" />;
+                    }
+                  };
+
+                  return (
+                    <div key={activity.id} className="py-3 first:pt-0 last:pb-0 flex items-start justify-between gap-3">
+                      <div className="flex items-start gap-3">
+                        <div className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-surface-muted">
+                          {getIcon()}
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs font-semibold text-text-primary">{activity.title}</span>
+                            <span className="font-mono text-[10px] rounded bg-surface-muted px-1.5 py-0.5 text-text-secondary">
+                              {activity.reference}
+                            </span>
+                          </div>
+                          <p className="text-[11px] text-text-secondary mt-0.5">{activity.description}</p>
+                        </div>
+                      </div>
+                      <div className="text-right shrink-0">
+                        <span className="text-[10px] font-mono text-text-muted block">{activity.timestamp}</span>
+                        <div className="mt-1 flex justify-end">
+                          <StatusBadge status={activity.status} />
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <EmptyState
+                icon={Clock}
+                title="No Stock Movements Recorded"
+                description="Audit transactions will stream here in real time once stock receipts (GRN), dispatches, or adjustments execute."
+                action={{
+                  label: "View Stock Ledger",
+                  href: "/app/inventory/stock",
+                }}
+                compact
+              />
+            )}
           </div>
 
           <div className="mt-5 pt-3.5 border-t border-border-subtle/60 flex items-center justify-between text-[11px] text-text-muted">
@@ -131,15 +205,47 @@ export default function DashboardPage() {
                   Automated reorder triggers by warehouse facility.
                 </p>
               </div>
-              <StatusBadge status="reconciled" label="Buffers Normal" />
+              <StatusBadge
+                status={isDemo ? "low-stock" : "reconciled"}
+                label={isDemo ? "5 Critical SKUs" : "Buffers Normal"}
+              />
             </div>
 
-            <EmptyState
-              icon={Boxes}
-              title="All Inventory Levels Normal"
-              description="Zero SKUs currently fall below warehouse minimum safety buffers. Reorder suggestions will populate automatically when thresholds trigger."
-              compact
-            />
+            {demoData ? (
+              <div className="space-y-3">
+                {demoData.lowStockItems.map((item) => (
+                  <div
+                    key={item.id}
+                    className="p-2.5 rounded-lg border border-border-subtle bg-surface-muted/30 flex items-center justify-between gap-3 text-xs"
+                  >
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-1.5 truncate">
+                        <AlertTriangle className="h-3.5 w-3.5 text-amber-500 shrink-0" />
+                        <span className="font-medium text-text-primary truncate">{item.name}</span>
+                      </div>
+                      <div className="flex items-center gap-2 mt-0.5 text-[11px] font-mono text-text-muted">
+                        <span>{item.sku}</span>
+                        <span>•</span>
+                        <span>{item.category}</span>
+                      </div>
+                    </div>
+                    <div className="text-right shrink-0">
+                      <div className="font-mono text-xs font-semibold text-amber-600 dark:text-amber-400">
+                        {item.currentStock} / {item.reorderPoint} {item.unit}
+                      </div>
+                      <span className="text-[10px] text-text-muted block">Current / Buffer</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <EmptyState
+                icon={Boxes}
+                title="All Inventory Levels Normal"
+                description="Zero SKUs currently fall below warehouse minimum safety buffers. Reorder suggestions will populate automatically when thresholds trigger."
+                compact
+              />
+            )}
           </div>
 
           <div className="mt-5 pt-3.5 border-t border-border-subtle/60 flex items-center justify-between text-[11px] text-text-muted">
@@ -242,6 +348,7 @@ export default function DashboardPage() {
         </div>
         <div className="flex items-center gap-2 font-mono text-[11px] text-text-muted">
           <span>Engine: Next.js + Tailwind</span>
+          {isDemo && <span className="text-amber-600 font-semibold">• Demo Mode ON</span>}
         </div>
       </div>
     </div>

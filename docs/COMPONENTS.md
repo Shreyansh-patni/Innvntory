@@ -74,6 +74,7 @@ High-density, reusable operational UI primitives designed for data-dense busines
 | `StatusBadge` | `components/shared/status-badge.tsx` | Operational status indicator pill with semantic variants (success, warning, error, info, neutral, outline). | Server |
 | `PageToolbar` | `components/shared/page-toolbar.tsx` | Standardized table/module search bar with multi-category filter dropdowns, sort buttons, and secondary actions. | Client |
 | `DataPlaceholderTable`| `components/shared/data-placeholder-table.tsx` | High-density table scaffolding with column headers, alignment support, and integrated truthful empty state. | Server |
+| `DashboardDemoData` | `lib/demo/dashboard-data.ts` | Typed in-memory fixture dataset providing simulated operational metrics, live activity stream, and reorder queue when `NEXT_PUBLIC_DEMO_MODE=true`. | Server / Shared |
 
 ---
 

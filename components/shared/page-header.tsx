@@ -9,7 +9,7 @@ export interface BreadcrumbItem {
 interface PageHeaderProps {
   title: string;
   description?: string;
-  badge?: string;
+  badge?: React.ReactNode;
   breadcrumbs?: BreadcrumbItem[];
   actions?: React.ReactNode;
 }
