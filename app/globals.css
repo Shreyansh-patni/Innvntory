@@ -5,6 +5,7 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  /* Innvntory semantic color tokens */
   --color-canvas: var(--canvas);
   --color-background: var(--background);
   --color-background-subtle: var(--background-subtle);
@@ -15,16 +16,18 @@
   --color-text-primary: var(--text-primary);
   --color-text-secondary: var(--text-secondary);
   --color-text-muted: var(--text-muted);
+  --color-text-disabled: var(--text-disabled);
   --color-success: var(--success);
   --color-warning: var(--warning);
   --color-error: var(--error);
 
+  /* Typography */
   --font-sans: var(--font-newblack);
-  --font-mono: monospace;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
   --font-heading: var(--font-newblack);
   --font-secondary: var(--font-lt-amber);
 
-  /* Mapping to shadcn's expected vars to keep components functional */
+  /* shadcn compatibility mappings */
   --color-foreground: var(--text-primary);
   --color-muted: var(--surface-muted);
   --color-muted-foreground: var(--text-muted);
@@ -42,6 +45,18 @@
   --color-destructive-foreground: var(--background);
   --color-ring: var(--border);
   --color-input: var(--border);
+
+  /* sidebar tokens for shadcn sidebar/sheet */
+  --color-sidebar-ring: var(--border);
+  --color-sidebar-border: var(--border-subtle);
+  --color-sidebar-accent-foreground: var(--text-primary);
+  --color-sidebar-accent: var(--surface-muted);
+  --color-sidebar-primary-foreground: var(--background);
+  --color-sidebar-primary: var(--text-primary);
+  --color-sidebar-foreground: var(--text-secondary);
+  --color-sidebar: var(--background-subtle);
+
+  /* Radii — 8px for controls (Cursor principle), 12px for cards (Aoutive feel) */
   --radius-sm: 4px;
   --radius-md: 8px;
   --radius-lg: 12px;
@@ -51,44 +66,53 @@
   --radius-4xl: 28px;
 }
 
+/* ============================================================
+   LIGHT MODE — Source: docs/design/reference-images/Light Mode.md
+   ============================================================ */
 :root {
-  /* LIGHT MODE PALETTE mapped to semantic roles */
   --canvas: #f7f7f7;
-  
+
   --background: #FFFFFF;
   --background-subtle: #F8F8F8;
   --surface: #FFFFFF;
   --surface-muted: #F0F1F2;
-  
+
   --border-subtle: #DDDEE1;
   --border: #B7B9BE;
-  
+
   --text-primary: #1E1F21;
   --text-secondary: #505258;
   --text-muted: #7D818A;
-  
+  --text-disabled: #8C8F97;
+
   --success: #10b261;
   --warning: #f08519;
   --error: #ea6118;
 }
 
+/* ============================================================
+   DARK MODE — Source: docs/design/reference-images/Dark Mode.md
+   ============================================================ */
 .dark {
-  /* DARK MODE PALETTE mapped to semantic roles */
   --canvas: #111213;
-  
+
   --background: #111213;
   --background-subtle: #18191A;
   --surface: #1F1F21;
   --surface-muted: #242528;
-  
+
   --border-subtle: #2B2C2F;
   --border: #3D3F43;
-  
+
   --text-primary: #E2E3E4;
   --text-secondary: #A9ABAF;
   --text-muted: #7E8188;
+  --text-disabled: #63666B;
 }
 
+/* ============================================================
+   BASE LAYER
+   ============================================================ */
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -97,6 +121,11 @@
     @apply bg-background text-text-primary antialiased;
   }
   html {
-    @apply font-sans;
+    @apply font-sans scroll-smooth;
+  }
+
+  /* Focus ring — visible keyboard focus, restrained aesthetic */
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-border;
   }
 }

@@ -35,15 +35,17 @@ export function MobileNavigation() {
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger asChild>
-        <button
-          className="lg:hidden flex items-center justify-center h-9 w-9 rounded-md text-text-secondary hover:bg-surface-muted hover:text-text-primary transition-colors"
-          aria-label="Open navigation menu"
-        >
-          <Menu className="h-5 w-5" />
-        </button>
+      <SheetTrigger
+        render={
+          <button
+            className="lg:hidden flex items-center justify-center h-9 w-9 rounded-md text-text-secondary hover:bg-surface-muted hover:text-text-primary transition-colors"
+            aria-label="Open navigation menu"
+          />
+        }
+      >
+        <Menu className="h-5 w-5" />
       </SheetTrigger>
-      <SheetContent side="left" className="w-[280px] bg-background-subtle p-0 border-r border-border-subtle">
+      <SheetContent side="left" showCloseButton={false} className="w-[280px] bg-background-subtle p-0 border-r border-border-subtle">
         <SheetTitle className="sr-only">Navigation</SheetTitle>
         {/* Wordmark */}
         <div className="flex h-14 items-center justify-between px-5 border-b border-border-subtle">
