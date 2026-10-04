@@ -1,13 +1,13 @@
 # INNVNTORY ROUTING ARCHITECTURE
 
-**Status:** IMPLEMENTED & EXPANDED (SETUP 08)
+**Status:** IMPLEMENTED & EXPANDED (SETUP 10)
 **Last Updated:** October 2026
 
 ---
 
-## 1. Public Marketing Website (`/`)
+## 1. Public Marketing Website & Authentication (`/`)
 
-The public website provides product information, documentation, publications, and authentication entry points. It is powered by `app/(marketing)/...`.
+The public website provides product information, documentation, publications, and authentication entry points. It is powered by `app/(marketing)/...` and `app/auth/...`.
 
 | Route | Purpose | Status | Layout / Experience |
 | :--- | :--- | :--- | :--- |
@@ -20,8 +20,11 @@ The public website provides product information, documentation, publications, an
 | `/articles/[slug]` | Editorial Article Detail | **Implemented** | `MarketingLayout` + Long-form Reading Layout & Author Attribution |
 | `/about` | Company Vision & Philosophy | **Implemented** | `MarketingLayout` + Sahaya Tech Overview & 4-Phase Roadmap |
 | `/contact` | Solutions & Sales Inquiries | **Implemented** | `MarketingLayout` + Contact Info & Visual Form Structure |
-| `/login` | Workspace Sign In Entry | **Implemented** | `MarketingLayout` + Minimalist Auth Form |
-| `/signup` | Workspace Registration Entry | **Implemented** | `MarketingLayout` + Onboarding Registration Form |
+| `/login` | Workspace Sign In Entry | **Implemented (Full Auth)** | `MarketingLayout` + Interactive `LoginForm` with `loginAction` |
+| `/signup` | Workspace Registration & Onboarding | **Implemented (Full Auth)** | `MarketingLayout` + Interactive `SignupForm` with `signupAction` |
+| `/forgot-password` | Password Recovery Request | **Implemented (Full Auth)** | `MarketingLayout` + Interactive `ForgotPasswordForm` |
+| `/reset-password` | Set New Password | **Implemented (Full Auth)** | `MarketingLayout` + Interactive `ResetPasswordForm` |
+| `/auth/callback` | Auth Token & Code Exchange Handler | **Implemented (Route Handler)** | Server-side code exchange with safe internal redirect sanitization |
 | `/privacy` | Privacy Policy | **Implemented** | `MarketingLayout` + Legal Draft Guidelines |
 | `/terms` | Terms & Conditions | **Implemented** | `MarketingLayout` + Legal Draft Guidelines |
 | `/cookie-policy` | Cookie & Local Storage Policy | **Implemented** | `MarketingLayout` + Session Token Documentation |
@@ -32,7 +35,7 @@ The public website provides product information, documentation, publications, an
 
 ## 2. Authenticated SaaS Application (`/app/*`)
 
-The authenticated application is wrapped with `AppShell`, persistent desktop sidebar (`AppSidebar`), mobile drawer (`MobileNavigation`), top header (`AppHeader`), and shared operational UI primitives (`PageHeader`, `PageToolbar`, `DataPlaceholderTable`, `EmptyState`, `MetricCard`).
+The authenticated application is protected server-side via Next.js `middleware.ts` and wrapped with `AppShell`, persistent desktop sidebar (`AppSidebar`), mobile drawer (`MobileNavigation`), top header (`AppHeader`), and shared operational UI primitives.
 
 | Route | Purpose | Status | Notes |
 | :--- | :--- | :--- | :--- |

@@ -1,13 +1,13 @@
 # INNVNTORY COMPONENT REGISTRY
 
-**Status:** IMPLEMENTED & REFINED (SETUP 08)
+**Status:** IMPLEMENTED & REFINED (SETUP 10)
 **Last Updated:** October 2026
 
 ---
 
 ## 1. Marketing Components (`components/marketing/`)
 
-Reusable components engineered specifically for the public marketing website (`/`, `/features`, `/pricing`, `/docs`, `/articles`, `/about`, `/contact`, `/login`, `/signup`, `/privacy`, `/terms`).
+Reusable components engineered specifically for the public marketing website (`/`, `/features`, `/pricing`, `/docs`, `/articles`, `/about`, `/contact`, `/privacy`, `/terms`).
 
 | Component | Path | Description | Client/Server |
 | :--- | :--- | :--- | :--- |
@@ -22,7 +22,20 @@ Reusable components engineered specifically for the public marketing website (`/
 
 ---
 
-## 2. Authenticated Application Shell (`components/layout/`)
+## 2. Authentication Components (`components/auth/`)
+
+Interactive authentication forms implementing client-side validation, server actions, password visibility toggles, and safe normalized error reporting.
+
+| Component | Path | Description | Client/Server |
+| :--- | :--- | :--- | :--- |
+| `LoginForm` | `components/auth/login-form.tsx` | Work email and password form submitting to `loginAction` with error alert handling. | Client |
+| `SignupForm` | `components/auth/signup-form.tsx` | Workspace registration form (Full Name, Work Email, Organization Name, Password) with `signupAction`. | Client |
+| `ForgotPasswordForm`| `components/auth/forgot-password-form.tsx` | Password reset request form with non-leaking dispatched notice. | Client |
+| `ResetPasswordForm` | `components/auth/reset-password-form.tsx` | New password setup form verifying password confirmation match and minimum length. | Client |
+
+---
+
+## 3. Authenticated Application Shell (`components/layout/`)
 
 Layout and navigation components providing the persistent operational application shell for `/app/*`.
 
@@ -30,13 +43,14 @@ Layout and navigation components providing the persistent operational applicatio
 | :--- | :--- | :--- | :--- |
 | `AppShell` | `components/layout/app-shell.tsx` | Top-level layout container composing sidebar, header, and scrollable content area with max-width container. | Server |
 | `AppSidebar` | `components/layout/app-sidebar.tsx` | Persistent desktop left navigation with active route highlights, section groups, and public site return link. | Client |
-| `AppHeader` | `components/layout/app-header.tsx` | Operational top header with organization context, warehouse switcher, notifications, profile menu, and command center entry. | Server |
+| `AppHeader` | `components/layout/app-header.tsx` | Operational top header with organization context, warehouse switcher, notifications, and profile menu. | Server |
+| `UserAccountMenu` | `components/layout/user-account-menu.tsx` | Account dropdown displaying authenticated user initials/email and sign out action. | Client |
 | `MobileNavigation` | `components/layout/mobile-navigation.tsx` | Accessible slide-out sheet drawer for mobile and tablet navigation with active route indicators. | Client |
 | `CommandCenterTrigger`| `components/layout/command-center-trigger.tsx` | Visual entry point button for the command center showing platform-aware `⌘K` or `Ctrl+K`. | Client |
 
 ---
 
-## 3. Shared Application Primitives (`components/shared/`)
+## 4. Shared Application Primitives (`components/shared/`)
 
 High-density, reusable operational UI primitives designed for data-dense business workflows across all `/app/*` modules.
 
@@ -51,7 +65,7 @@ High-density, reusable operational UI primitives designed for data-dense busines
 
 ---
 
-## 4. UI Primitives (`components/ui/`)
+## 5. UI Primitives (`components/ui/`)
 
 Foundational UI primitives built on Radix UI / shadcn/ui.
 
